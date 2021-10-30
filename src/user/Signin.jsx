@@ -22,6 +22,7 @@ const Signin = () => {
     event.preventDefault();
     setValues({ ...values, error: false, loading: true });
     signin({ email, password }).then((data) => {
+      console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else {
@@ -87,7 +88,7 @@ const Signin = () => {
   return (
     <Layout
       title="Signin"
-      description="Signin to Node React E-commerce App"
+      description="Signin to EMH App"
       className="container col-md-8 offset-md-2"
     >
       {showLoading()}
