@@ -14,8 +14,8 @@ export default function MedicalStaffDashboard() {
         <h4 className="card-header">Medical Staff Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
-            <Link className="nav-link" to="/verify/staff">
-              Verify Medical Staff
+            <Link className="nav-link" to="/search/user">
+              Search user
             </Link>
           </li>
           <li className="list-group-item">
@@ -41,7 +41,11 @@ export default function MedicalStaffDashboard() {
           <li className="list-group-item">{name}</li>
           <li className="list-group-item">{email}</li>
           <li className="list-group-item">
-            {role === 1 ? "Admin" : "Registered User"}
+            {role === 1
+              ? "Medical Staff"
+              : role === 2
+              ? "Admin"
+              : "Registered User"}
           </li>
         </ul>
       </div>

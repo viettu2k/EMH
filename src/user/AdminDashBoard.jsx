@@ -36,7 +36,11 @@ export default function AdminDashboard() {
           <li className="list-group-item">{name}</li>
           <li className="list-group-item">{email}</li>
           <li className="list-group-item">
-            {role === 1 ? "Admin" : "Registered User"}
+            {role === 1
+              ? "Medical Staff"
+              : role === 2
+              ? "Admin"
+              : "Registered User"}
           </li>
         </ul>
       </div>
