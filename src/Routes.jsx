@@ -8,6 +8,7 @@ import AdminRoute from "./auth/AdminRoute";
 import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import Dashboard from "./user/UserDashboard";
 import AdminDashboard from "./user/AdminDashboard";
+import AddCenter from "./admin/AddCenter";
 import MedicalStaffDashboard from "./user/MedicalStaffDashboard";
 
 export default function Routes() {
@@ -19,6 +20,7 @@ export default function Routes() {
         <Route path="/signup" exact component={Signup} />
         <PrivateRoute path="/user/dashboard" exact component={Dashboard} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
+        <AdminRoute path="/create/center" exact component={AddCenter} />
         <MedicalStaffRoute
           path="/staff/dashboard"
           exact
