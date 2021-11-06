@@ -4,12 +4,13 @@ import Signup from "./user/Signup";
 import Signin from "./user/Signin";
 import Home from "./core/Home";
 import PrivateRoute from "./auth/PrivateRoute";
-import AdminRoute from "./auth/AdminRoute";
-import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import Dashboard from "./user/UserDashboard";
+import AdminRoute from "./auth/AdminRoute";
 import AdminDashboard from "./user/AdminDashboard";
 import AddCenter from "./admin/AddCenter";
+import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import MedicalStaffDashboard from "./user/MedicalStaffDashboard";
+import AddVaccination from "./staff/AddVaccination";
 
 export default function Routes() {
   return (
@@ -25,6 +26,11 @@ export default function Routes() {
           path="/staff/dashboard"
           exact
           component={MedicalStaffDashboard}
+        />
+        <MedicalStaffRoute
+          path="/create/vaccination"
+          exact
+          component={AddVaccination}
         />
       </Switch>
     </BrowserRouter>
