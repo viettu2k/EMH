@@ -14,8 +14,18 @@ export default function Dashboard() {
         <h4 className="card-header">User Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
-            <Link className="nav-link" to="/profile/update">
+            <Link className="nav-link" to={`/profile/${_id}`}>
               Update Profile
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link className="nav-link" to="/register/vaccination">
+              Register Vaccination
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link className="nav-link" to="/register/vaccination">
+              Register Test
             </Link>
           </li>
         </ul>
