@@ -14,6 +14,7 @@ import AddVaccination from "./staff/AddVaccination";
 import Profile from "./user/Profile";
 import ForgotPassword from "./user/ForgotPassword";
 import ResetPassword from "./user/ResetPassword";
+import Centers from "./user/Centers";
 
 export default function Routes() {
   return (
@@ -28,6 +29,7 @@ export default function Routes() {
           path="/reset-password/:resetPasswordToken"
           component={ResetPassword}
         />
+        <Route exact path="/centers" component={Centers} />
         <PrivateRoute path="/user/dashboard" exact component={Dashboard} />
         <PrivateRoute path="/profile/:userId" exact component={Profile} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
