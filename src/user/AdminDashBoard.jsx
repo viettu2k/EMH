@@ -14,6 +14,11 @@ export default function AdminDashboard() {
         <h4 className="card-header">Admin Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
+            <Link className="nav-link" to={`/profile/${_id}`}>
+              Update Profile
+            </Link>
+          </li>
+          <li className="list-group-item">
             <Link className="nav-link" to="/verify/staff">
               Verify Medical Staff
             </Link>
