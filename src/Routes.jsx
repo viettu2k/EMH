@@ -14,7 +14,7 @@ import AddVaccination from "./staff/AddVaccination";
 import Profile from "./user/Profile";
 import ForgotPassword from "./user/ForgotPassword";
 import ResetPassword from "./user/ResetPassword";
-import Centers from "./user/Centers";
+import Centers from "./core/Centers";
 
 export default function Routes() {
   return (

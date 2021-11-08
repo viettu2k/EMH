@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getCenters } from "../staff/apiStaff";
 import { API } from "../config";
-import Layout from "../core/Layout";
+import Layout from "./Layout";
 // import DefaultProfile from "../images/avatar.jpg";
 
 export default function Centers() {
