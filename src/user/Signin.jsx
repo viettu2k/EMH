@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Layout from "../core/Layout";
 import { signin, authenticate, isAuthenticated } from "../auth";
 
@@ -104,6 +104,12 @@ const Signin = () => {
       {showError()}
       {signInForm()}
       {redirectUser()}
+
+      <p>
+        <Link to="/forgot-password" className="text-danger">
+          Forgot Password
+        </Link>
+      </p>
     </Layout>
   );
 };
