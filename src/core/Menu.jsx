@@ -74,7 +74,7 @@ const Menu = ({ history }) => {
                 style={isActive(history, "/signin")}
                 to="/signin"
               >
-                Signin
+                Sign In
               </Link>
             </li>
 
@@ -84,7 +84,7 @@ const Menu = ({ history }) => {
                 style={isActive(history, "/signup")}
                 to="/signup"
               >
-                Signup
+                Sign Up
               </Link>
             </li>
           </>
@@ -101,7 +101,7 @@ const Menu = ({ history }) => {
                 })
               }
             >
-              Signout
+              Sign Out
             </span>
           </li>
         )}

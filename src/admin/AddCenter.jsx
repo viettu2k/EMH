@@ -8,7 +8,7 @@ const AddCenter = () => {
   const [values, setValues] = useState({
     name: "",
     description: "",
-    hotline: "",
+    phoneNumber: "",
     address: "",
     photo: "",
     loading: false,
@@ -22,7 +22,7 @@ const AddCenter = () => {
   const {
     name,
     description,
-    hotline,
+    phoneNumber,
     address,
     // photo,
     loading,
@@ -50,7 +50,7 @@ const AddCenter = () => {
           ...values,
           name: "",
           description: "",
-          hotline: "",
+          phoneNumber: "",
           address: "",
           photo: "",
           loading: false,
@@ -94,12 +94,12 @@ const AddCenter = () => {
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Hotline</label>
+        <label className="text-muted">Phone Number</label>
         <input
-          onChange={handleChange("hotline")}
+          onChange={handleChange("phoneNumber")}
           type="text"
           className="form-control"
-          value={hotline}
+          value={phoneNumber}
         />
       </div>
 
