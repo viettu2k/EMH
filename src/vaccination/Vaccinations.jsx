@@ -35,6 +35,7 @@ export default function Vaccinations() {
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Type</th>
+          <th scope="col">Limit</th>
           <th scope="col">Address</th>
           <th scope="col">Ownership</th>
           <th scope="col">View</th>
@@ -47,6 +48,7 @@ export default function Vaccinations() {
               <th scope="row">{i}</th>
               <td>{v.name}</td>
               <td>{v.type}</td>
+              <td>{v.limit}</td>
               <td>{v.address}</td>
               <td>{v.ownership}</td>
               <td>
@@ -54,7 +56,7 @@ export default function Vaccinations() {
                   to={`/vaccinations/${v._id}`}
                   className="btn btn-raised btn-primary btn-sm"
                 >
-                  View Information
+                  Detail
                 </Link>
               </td>
             </tr>

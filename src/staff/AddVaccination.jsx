@@ -10,6 +10,7 @@ const AddVaccination = () => {
     type: "",
     notes: "",
     address: "",
+    limit: "",
     centers: [],
     ownership: "",
     loading: false,
@@ -24,6 +25,7 @@ const AddVaccination = () => {
     type,
     notes,
     address,
+    limit,
     centers,
     // ownership,
     loading,
@@ -100,6 +102,16 @@ const AddVaccination = () => {
           type="text"
           className="form-control"
           value={type}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Limit</label>
+        <input
+          type="number"
+          onChange={handleChange("limit")}
+          className="form-control"
+          value={limit}
         />
       </div>
 
