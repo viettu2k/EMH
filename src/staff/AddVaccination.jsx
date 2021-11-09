@@ -60,27 +60,33 @@ const AddVaccination = () => {
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    const { name, type, notes, address } = values;
-    createVaccination(user._id, token, { name, type, notes, address }).then(
-      (data) => {
-        console.log(data);
-        if (data.error) {
-          setValues({ ...values, error: data.error });
-        } else {
-          setValues({
-            ...values,
-            name: "",
-            type: "",
-            notes: "",
-            address: "",
-            ownership: "",
-            centers: "",
-            loading: false,
-            createdVaccination: data.name,
-          });
-        }
+    const { name, type, notes, address, limit, ownership } = values;
+    createVaccination(user._id, token, {
+      name,
+      type,
+      notes,
+      address,
+      limit,
+      ownership,
+    }).then((data) => {
+      console.log(data);
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({
+          ...values,
+          name: "",
+          type: "",
+          limit: "",
+          notes: "",
+          address: "",
+          ownership: "",
+          centers: "",
+          loading: false,
+          createdVaccination: data.name,
+        });
       }
-    );
+    });
   };
 
   const newPostForm = () => (
