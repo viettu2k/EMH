@@ -16,10 +16,23 @@ export default function Center(props) {
     });
   };
 
-  useEffect(() => {
-    const centerId = props.match.params.centerId;
-    loadSingleCenter(centerId);
-  }, []);
+  useEffect(
+    () => {
+      const centerId = props.match.params.centerId;
+      loadSingleCenter(centerId);
+    },
+    // eslint-disable-next-line
+    []
+  );
+
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
+    >
+      {error}
+    </div>
+  );
 
   return (
     <Layout
@@ -33,6 +46,7 @@ export default function Center(props) {
       className="container-fluid"
     >
       <div className="row"></div>
+      {showError()}
     </Layout>
   );
 }
