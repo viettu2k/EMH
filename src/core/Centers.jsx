@@ -39,17 +39,15 @@ export default function Centers() {
             style={{ height: "250px", width: "auto" }}
             className="img-thumbnail"
             src={`${API}/centers/photo/${center._id}`}
-            // onError={(i) => (i.target.src = `${DefaultProfile}`)}
             alt={center.name}
           />
           <div className="card-body">
             <h5 className="card-title">{center.name}</h5>
-            {/* <p className="card-text">{user.email}</p> */}
             <Link
               to={`/centers/${center._id}`}
               className="btn btn-raised btn-primary btn-sm"
             >
-              View Information
+              View Detail
             </Link>
           </div>
         </div>

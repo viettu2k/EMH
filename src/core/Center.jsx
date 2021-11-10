@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { getCenter } from "./apiCore";
+import { API } from "../config";
 
 export default function Center(props) {
   const [center, setCenter] = useState({});
@@ -45,7 +46,28 @@ export default function Center(props) {
       }
       className="container-fluid"
     >
-      <div className="row"></div>
+      <div className="row">
+        {center && (
+          <>
+            <div className="col-md-4">
+              <img
+                style={{ height: "250px", width: "auto" }}
+                className="img-thumbnail"
+                src={`${API}/centers/photo/${center._id}`}
+                alt={center.name}
+              />
+            </div>
+            <div className="col-md-8">
+              <div className="lead mt-2">
+                <p>{center.name}</p>
+                <p>{center.description}</p>
+                <p>Address: {center.address}</p>
+                <p>Hotline: {center.phoneNumber}</p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
       {showError()}
     </Layout>
   );
