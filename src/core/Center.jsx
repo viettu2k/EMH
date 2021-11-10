@@ -52,7 +52,7 @@ export default function Center(props) {
             <div className="col-md-4">
               <img
                 style={{ height: "250px", width: "auto" }}
-                className="img-thumbnail"
+                className="img-fluid rounded border border-primary"
                 src={`${API}/centers/photo/${center._id}`}
                 alt={center.name}
               />

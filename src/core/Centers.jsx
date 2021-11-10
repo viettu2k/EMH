@@ -34,10 +34,10 @@ export default function Centers() {
   const renderCenters = (centers) => (
     <div className="row">
       {centers.map((center, i) => (
-        <div className="card col-md-4" key={i}>
+        <div className="card col-md-4 border border-secondary" key={i}>
           <img
             style={{ height: "250px", width: "auto" }}
-            className="img-thumbnail"
+            className="img-thumbnail rounded border border-primary"
             src={`${API}/centers/photo/${center._id}`}
             alt={center.name}
           />
