@@ -4,6 +4,7 @@ import { getCenter } from "./apiCore";
 import { API } from "../config";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import DeleteCenter from "./DeleteCenter";
 
 export default function Center(props) {
   const [center, setCenter] = useState({});
@@ -71,6 +72,7 @@ export default function Center(props) {
                   >
                     Edit Center
                   </Link>
+                  <DeleteCenter />
                 </div>
               )}
             </div>

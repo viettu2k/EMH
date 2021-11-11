@@ -36,3 +36,18 @@ export const updateCenter = (centerId, userId, token, center) => {
             console.log(err);
         });
 };
+
+export const removeCenter = (centerId, userId, token) => {
+    return fetch(`${API}/centers/${centerId}/${userId}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.error(err));
+};
