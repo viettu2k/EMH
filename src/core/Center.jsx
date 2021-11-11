@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { getCenter } from "./apiCore";
 import { API } from "../config";
+import { isAuthenticated } from "../auth";
+import { Link } from "react-router-dom";
 
 export default function Center(props) {
   const [center, setCenter] = useState({});
@@ -12,6 +14,7 @@ export default function Center(props) {
       if (data.error) {
         setError(data.error);
       } else {
+        console.log(data);
         setCenter(data);
       }
     });
@@ -49,13 +52,27 @@ export default function Center(props) {
       <div className="row">
         {center && (
           <>
-            <div className="col-md-4">
+            <div className="card col-md-4 border-secondary">
               <img
                 style={{ height: "250px", width: "auto" }}
                 className="img-fluid rounded border border-primary"
                 src={`${API}/centers/photo/${center._id}`}
                 alt={center.name}
               />
+
+              {isAuthenticated() && isAuthenticated().user.role === 2 && (
+                <div className="card-body">
+                  <h5 className="card-title text-danger">
+                    Edit/Delete as an Admin
+                  </h5>
+                  <Link
+                    className="btn btn-raised btn-success mr-5"
+                    to={`/update/center/${props.match.params.centerId}`}
+                  >
+                    Edit Center
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="col-md-8">
               <div className="lead mt-2">

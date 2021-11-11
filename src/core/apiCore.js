@@ -19,3 +19,20 @@ export const getCenter = (centerId) => {
         })
         .catch((err) => console.log(err));
 };
+
+export const updateCenter = (centerId, userId, token, center) => {
+    return fetch(`${API}/centers/${centerId}/${userId}`, {
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: center,
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
