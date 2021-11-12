@@ -72,7 +72,7 @@ export default function Center(props) {
                   >
                     Edit Center
                   </Link>
-                  <DeleteCenter />
+                  <DeleteCenter centerId={center._id} />
                 </div>
               )}
             </div>

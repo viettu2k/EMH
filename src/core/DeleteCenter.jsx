@@ -21,7 +21,7 @@ export default function DeleteCenter({ centerId }) {
 
   const deleteConfirmed = () => {
     let answer = window.confirm(
-      "Are you sure you want to delete your account?"
+      "Are you sure you want to delete your medical center?"
     );
     if (answer) {
       deleteCenter();
@@ -38,7 +38,7 @@ export default function DeleteCenter({ centerId }) {
     <>
       {redirectToHome}
       <button onClick={deleteConfirmed} className="btn btn-raised btn-danger">
-        Delete Center
+        Delete Medical Center
       </button>
     </>
   );
