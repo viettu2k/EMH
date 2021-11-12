@@ -95,3 +95,18 @@ export const updateVaccination = (
             console.log(err);
         });
 };
+
+export const removeVaccination = (vaccinationId, userId, token) => {
+    return fetch(`${API}/centers/${vaccinationId}/${userId}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.error(err));
+};

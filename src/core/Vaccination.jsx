@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import { getVaccination } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import DeleteVaccination from "./DeleteVaccination";
 
 export default function Vaccination(props) {
   const [vaccination, setVaccination] = useState({});
@@ -74,7 +75,7 @@ export default function Vaccination(props) {
                   >
                     Edit Vaccination Schedule
                   </Link>
-                  {/* <DeleteCenter /> */}
+                  <DeleteVaccination vaccinationId={vaccination._id} />
                 </div>
               )}
             </div>
