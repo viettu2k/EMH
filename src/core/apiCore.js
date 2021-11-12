@@ -78,13 +78,15 @@ export const updateVaccination = (
     token,
     vaccination
 ) => {
-    return fetch(`${API}/centers/${vaccinationId}/${userId}`, {
+    console.log(vaccination);
+    return fetch(`${API}/vaccinations/${vaccinationId}/${userId}`, {
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: vaccination,
+            body: JSON.stringify(vaccination),
         })
         .then((response) => {
             return response.json();

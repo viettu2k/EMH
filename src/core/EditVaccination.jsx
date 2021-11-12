@@ -23,7 +23,7 @@ export default function EditCenter(props) {
       if (data.error) {
         setValues({ error: data.error });
       } else {
-        console.log(data);
+        // console.log(data);
         setValues({
           ...values,
           id: data._id,
@@ -81,6 +81,7 @@ export default function EditCenter(props) {
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
+    const { name, type, notes, address, limit, ownership } = values;
     if (isValid) {
       updateVaccination(id, user._id, token, {
         name,
@@ -96,7 +97,7 @@ export default function EditCenter(props) {
           setValues({
             ...values,
             loading: false,
-            editedCenter: data.name,
+            editedVaccination: name,
           });
         }
       });
