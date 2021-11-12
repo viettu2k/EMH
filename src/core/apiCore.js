@@ -52,6 +52,16 @@ export const removeCenter = (centerId, userId, token) => {
         .catch((err) => console.error(err));
 };
 
+export const getCenters = () => {
+    return fetch(`${API}/centers`, {
+            method: "GET",
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
+
 export const getVaccination = (vaccinationId) => {
     return fetch(`${API}/vaccinations/${vaccinationId}`, {
             method: "GET",
@@ -60,4 +70,26 @@ export const getVaccination = (vaccinationId) => {
             return response.json();
         })
         .catch((err) => console.log(err));
+};
+
+export const updateVaccination = (
+    vaccinationId,
+    userId,
+    token,
+    vaccination
+) => {
+    return fetch(`${API}/centers/${vaccinationId}/${userId}`, {
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: vaccination,
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
