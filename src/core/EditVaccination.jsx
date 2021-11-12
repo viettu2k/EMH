@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
-import { getVaccination, updateVaccination } from "./apiCore";
+import { getVaccination, updateVaccination, getCenters } from "./apiCore";
 import Layout from "./Layout";
 
 export default function EditCenter(props) {
@@ -17,6 +17,18 @@ export default function EditCenter(props) {
     error: "",
     editedVaccination: "",
   });
+
+  const [centers, setCenters] = useState([]);
+
+  const initCenters = () => {
+    getCenters().then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setCenters(data);
+      }
+    });
+  };
 
   const init = (vaccinationId) => {
     getVaccination(vaccinationId).then((data) => {
@@ -34,6 +46,7 @@ export default function EditCenter(props) {
           ownership: data.ownership,
           address: data.address,
         });
+        initCenters();
       }
     });
   };
@@ -155,7 +168,22 @@ export default function EditCenter(props) {
         />
       </div>
 
-      <button className="btn btn-outline-primary">Edit Center</button>
+      <div className="form-group">
+        <label className="text-muted">Ownership</label>
+        <select onChange={handleChange("ownership")} className="form-control">
+          <option>Please select</option>
+          {centers &&
+            centers.map((c, i) => (
+              <option key={i} value={c._id}>
+                {c.name}
+              </option>
+            ))}
+        </select>
+      </div>
+
+      <button className="btn btn-outline-primary">
+        Edit Vaccination Schedule
+      </button>
     </form>
   );
 
