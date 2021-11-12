@@ -51,3 +51,13 @@ export const removeCenter = (centerId, userId, token) => {
         })
         .catch((err) => console.error(err));
 };
+
+export const getVaccination = (vaccinationId) => {
+    return fetch(`${API}/vaccinations/${vaccinationId}`, {
+            method: "GET",
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};

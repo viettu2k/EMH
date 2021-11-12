@@ -16,6 +16,7 @@ import ForgotPassword from "./user/ForgotPassword";
 import ResetPassword from "./user/ResetPassword";
 import Centers from "./core/Centers";
 import Center from "./core/Center";
+import Vaccination from "./core/Vaccination";
 import EditCenter from "./core/EditCenter";
 
 export default function Routes() {
@@ -52,6 +53,11 @@ export default function Routes() {
           component={AddVaccination}
         />
         <Route path="/centers/:centerId" exact component={Center} />
+        <Route
+          path="/vaccinations/:vaccinationId"
+          exact
+          component={Vaccination}
+        />
       </Switch>
     </BrowserRouter>
   );
