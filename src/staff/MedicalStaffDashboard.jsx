@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import { listByMedicalStaff } from "./apiStaff";
 
 export default function MedicalStaffDashboard() {
   const {
+    token,
     user: { _id, name, email, role },
   } = isAuthenticated();
+
+  const [vaccinations, setVaccinations] = useState([]);
+
+  const init = () => {
+    listByMedicalStaff(_id, token).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setVaccinations(data);
+      }
+    });
+  };
+
+  useEffect(
+    () => {
+      init();
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const staffLinks = () => {
     return (
@@ -62,7 +84,14 @@ export default function MedicalStaffDashboard() {
       <div className="card mb-5">
         <h3 className="card-header">My Vaccination Schedule</h3>
         <ul className="list-group">
-          <li className="list-group-item">history</li>
+          {vaccinations &&
+            vaccinations.map((v, i) => {
+              return (
+                <li key={i} className="list-group-item list-group-item-action">
+                  <Link to={`/vaccinations/${v._id}`}>{v.name}</Link>
+                </li>
+              );
+            })}
         </ul>
       </div>
     );
