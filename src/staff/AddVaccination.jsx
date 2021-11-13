@@ -16,7 +16,6 @@ const AddVaccination = () => {
     loading: false,
     error: "",
     createdVaccination: "",
-    redirectToProfile: false,
   });
 
   const { user, token } = isAuthenticated();
@@ -27,11 +26,9 @@ const AddVaccination = () => {
     address,
     limit,
     centers,
-    // ownership,
     loading,
     error,
     createdVaccination,
-    // redirectToProfile,
   } = values;
 
   // load categories and set form data
