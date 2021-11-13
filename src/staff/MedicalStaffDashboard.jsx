@@ -57,6 +57,17 @@ export default function MedicalStaffDashboard() {
     );
   };
 
+  const myVaccination = () => {
+    return (
+      <div className="card mb-5">
+        <h3 className="card-header">My Vaccination Schedule</h3>
+        <ul className="list-group">
+          <li className="list-group-item">history</li>
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <Layout
       title="Dashboard"
@@ -65,7 +76,10 @@ export default function MedicalStaffDashboard() {
     >
       <div className="row">
         <div className="col-3">{staffLinks()}</div>
-        <div className="col-9">{staffInfo()}</div>
+        <div className="col-9">
+          {staffInfo()}
+          {myVaccination()}
+        </div>
       </div>
     </Layout>
   );
