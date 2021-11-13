@@ -97,7 +97,7 @@ export const updateVaccination = (
 };
 
 export const removeVaccination = (vaccinationId, userId, token) => {
-    return fetch(`${API}/centers/${vaccinationId}/${userId}`, {
+    return fetch(`${API}/vaccinations/${vaccinationId}/${userId}`, {
             method: "DELETE",
             headers: {
                 Accept: "application/json",
