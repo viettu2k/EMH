@@ -31,7 +31,6 @@ export default function DeleteVaccination({ vaccinationId }) {
     );
     if (answer) {
       deleteVaccination();
-      redirectToHome();
     }
   };
 

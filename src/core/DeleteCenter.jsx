@@ -36,10 +36,13 @@ export default function DeleteCenter({ centerId }) {
 
   return (
     <>
-      {redirectToHome}
-      <button onClick={deleteConfirmed} className="btn btn-raised btn-danger">
-        Delete Medical Center
-      </button>
+      {!redirect ? (
+        <button onClick={deleteConfirmed} className="btn btn-raised btn-danger">
+          Delete Medical Center
+        </button>
+      ) : (
+        redirectToHome()
+      )}
     </>
   );
 }
