@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { getCenter } from "./apiCore";
+import { getCenter, getVaccinationByCenter } from "./apiCore";
 import { API } from "../config";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -8,15 +8,30 @@ import DeleteCenter from "./DeleteCenter";
 
 export default function Center(props) {
   const [center, setCenter] = useState({});
+  const [vaccinations, setVaccinations] = useState([]);
   const [error, setError] = useState(false);
+
+  const { token } = isAuthenticated();
+
+  const loadListByCenter = (centerId) => {
+    getVaccinationByCenter(centerId, token).then((data) => {
+      console.log(data);
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setVaccinations(data);
+      }
+    });
+  };
 
   const loadSingleCenter = (centerId) => {
     getCenter(centerId).then((data) => {
       if (data.error) {
         setError(data.error);
       } else {
-        console.log(data);
+        // console.log(data);
         setCenter(data);
+        loadListByCenter(centerId);
       }
     });
   };
@@ -29,6 +44,24 @@ export default function Center(props) {
     // eslint-disable-next-line
     []
   );
+
+  const listByCenter = () => {
+    return (
+      <div className="card mb-5">
+        <h3 className="card-header">My Vaccination Schedule</h3>
+        <ul className="list-group">
+          {vaccinations &&
+            vaccinations.map((v, i) => {
+              return (
+                <li key={i} className="list-group-item list-group-item-action">
+                  <Link to={`/vaccinations/${v._id}`}>{v.name}</Link>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+    );
+  };
 
   const showError = () => (
     <div
@@ -84,6 +117,7 @@ export default function Center(props) {
                 <p>Hotline: {center.phoneNumber}</p>
               </div>
             </div>
+            {listByCenter()}
           </>
         )}
       </div>

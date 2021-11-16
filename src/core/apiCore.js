@@ -110,3 +110,13 @@ export const removeVaccination = (vaccinationId, userId, token) => {
         })
         .catch((err) => console.error(err));
 };
+
+export const getVaccinationByCenter = (centerId) => {
+    return fetch(`${API}/vaccinations/center/${centerId}`, {
+            method: "GET",
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
