@@ -39,13 +39,17 @@ export default function Dashboard() {
       <div className="card mb-5">
         <h3 className="card-header">User Information</h3>
         <ul className="list-group">
-          <li className="list-group-item">{name}</li>
-          <li className="list-group-item">{email}</li>
-          <li className="list-group-item">
-            {moment(dob).format("DD/MM/YYYY")}
-          </li>
-          <li className="list-group-item">{address}</li>
-          <li className="list-group-item">{phoneNumber}</li>
+          <li className="list-group-item">Name: {name}</li>
+          <li className="list-group-item">Email: {email}</li>
+          {dob && (
+            <li className="list-group-item">
+              Birth Date: {moment(dob).format("DD/MM/YYYY")}
+            </li>
+          )}
+          {address && <li className="list-group-item">Address: {address}</li>}
+          {phoneNumber && (
+            <li className="list-group-item">Phone Number: {phoneNumber}</li>
+          )}
           <li className="list-group-item">
             {role === 1
               ? "Medical Staff"

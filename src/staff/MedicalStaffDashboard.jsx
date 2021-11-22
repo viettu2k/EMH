@@ -3,11 +3,12 @@ import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { listByMedicalStaff } from "./apiStaff";
+import moment from "moment";
 
 export default function MedicalStaffDashboard() {
   const {
     token,
-    user: { _id, name, email, role },
+    user: { _id, name, email, role, dob, address, phoneNumber },
   } = isAuthenticated();
 
   const [vaccinations, setVaccinations] = useState([]);
@@ -65,8 +66,17 @@ export default function MedicalStaffDashboard() {
       <div className="card mb-5">
         <h3 className="card-header">User Information</h3>
         <ul className="list-group">
-          <li className="list-group-item">{name}</li>
-          <li className="list-group-item">{email}</li>
+          <li className="list-group-item">Name: {name}</li>
+          <li className="list-group-item">Email: {email}</li>
+          {dob && (
+            <li className="list-group-item">
+              Birth Date: {moment(dob).format("DD/MM/YYYY")}
+            </li>
+          )}
+          {address && <li className="list-group-item">Address: {address}</li>}
+          {phoneNumber && (
+            <li className="list-group-item">Phone Number: {phoneNumber}</li>
+          )}
           <li className="list-group-item">
             {role === 1
               ? "Medical Staff"
