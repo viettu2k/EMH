@@ -15,7 +15,6 @@ export default function Center(props) {
 
   const loadListByCenter = (centerId) => {
     getVaccinationByCenter(centerId, token).then((data) => {
-      console.log(data);
       if (data.error) {
         console.log(data.error);
       } else {
@@ -86,38 +85,40 @@ export default function Center(props) {
       <div className="row">
         {center && (
           <>
-            <div className="card col-md-4 border-secondary">
-              <img
-                style={{ height: "250px", width: "auto" }}
-                className="img-fluid rounded border border-primary"
-                src={`${API}/centers/photo/${center._id}`}
-                alt={center.name}
-              />
+            <div className="container">
+              <div className="card col-md-4 border-secondary">
+                <img
+                  style={{ height: "250px", width: "auto" }}
+                  className="img-fluid rounded border border-primary"
+                  src={`${API}/centers/photo/${center._id}`}
+                  alt={center.name}
+                />
 
-              {isAuthenticated() && isAuthenticated().user.role === 2 && (
-                <div className="card-body">
-                  <h5 className="card-title text-danger">
-                    Edit/Delete as an Admin
-                  </h5>
-                  <Link
-                    className="btn btn-raised btn-success mr-5"
-                    to={`/update/center/${props.match.params.centerId}`}
-                  >
-                    Edit Center
-                  </Link>
-                  <DeleteCenter centerId={center._id} />
-                </div>
-              )}
-            </div>
-            <div className="col-md-8">
-              <div className="lead mt-2">
-                <p>{center.name}</p>
-                <p>{center.description}</p>
-                <p>Address: {center.address}</p>
-                <p>Hotline: {center.phoneNumber}</p>
+                {isAuthenticated() && isAuthenticated().user.role === 2 && (
+                  <div className="card-body">
+                    <h5 className="card-title text-danger">
+                      Edit/Delete as an Admin
+                    </h5>
+                    <Link
+                      className="btn btn-raised btn-success mr-5"
+                      to={`/update/center/${props.match.params.centerId}`}
+                    >
+                      Edit Center
+                    </Link>
+                    <DeleteCenter centerId={center._id} />
+                  </div>
+                )}
               </div>
+              <div className="col-md-8">
+                <div className="lead mt-2">
+                  <p>{center.name}</p>
+                  <p>{center.description}</p>
+                  <p>Address: {center.address}</p>
+                  <p>Hotline: {center.phoneNumber}</p>
+                </div>
+              </div>
+              {listByCenter()}
             </div>
-            {listByCenter()}
           </>
         )}
       </div>
