@@ -2,10 +2,11 @@ import React from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 export default function Dashboard() {
   const {
-    user: { _id, name, email, role },
+    user: { _id, name, email, role, dob, address, phoneNumber },
   } = isAuthenticated();
 
   const userLinks = () => {
@@ -40,6 +41,11 @@ export default function Dashboard() {
         <ul className="list-group">
           <li className="list-group-item">{name}</li>
           <li className="list-group-item">{email}</li>
+          <li className="list-group-item">
+            {moment(dob).format("DD/MM/YYYY")}
+          </li>
+          <li className="list-group-item">{address}</li>
+          <li className="list-group-item">{phoneNumber}</li>
           <li className="list-group-item">
             {role === 1
               ? "Medical Staff"
