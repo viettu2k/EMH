@@ -35,25 +35,15 @@ export default function MedicalStaffDashboard() {
     return (
       <div className="card">
         <h4 className="card-header">Medical Staff Links</h4>
-        <li className="list-group-item">
-          <Link className="nav-link" to={`/profile/${_id}`}>
-            Update Profile
-          </Link>
-        </li>
         <ul className="list-group">
           <li className="list-group-item">
-            <Link className="nav-link" to="/search/user">
-              Search user
+            <Link className="nav-link" to={`/profile/${_id}`}>
+              Update Profile
             </Link>
           </li>
           <li className="list-group-item">
             <Link className="nav-link" to="/create/vaccination">
               Create Vaccination
-            </Link>
-          </li>
-          <li className="list-group-item">
-            <Link className="nav-link" to="/create/test">
-              Create Test
             </Link>
           </li>
         </ul>
