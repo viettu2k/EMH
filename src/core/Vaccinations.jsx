@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getVaccinations, getCenter } from "./apiCore";
+import { getVaccinations } from "./apiCore";
 import { Link } from "react-router-dom";
 
 export default function Vaccinations() {
-  const [centerName, setCenterName] = useState("");
   const [values, setValues] = useState({
     vaccinations: [],
     error: "",
@@ -38,16 +37,12 @@ export default function Vaccinations() {
           <th scope="col">Type</th>
           <th scope="col">Status</th>
           <th scope="col">Address</th>
-          <th scope="col">Ownership</th>
           <th scope="col">View</th>
         </tr>
       </thead>
       <tbody>
         {vaccinations &&
           vaccinations.map((v, i) => {
-            getCenter(v.ownership).then((data) => {
-              setCenterName(data.name);
-            });
             return (
               <tr key={i}>
                 <th scope="row">{i}</th>
@@ -63,14 +58,6 @@ export default function Vaccinations() {
                   {v.participants.length === v.limit ? "Full" : "Available"}
                 </td>
                 <td>{v.address}</td>
-                <td>
-                  <Link
-                    to={`/centers/${v.ownership}`}
-                    className="btn btn-raised btn-primary btn-sm"
-                  >
-                    {centerName}
-                  </Link>
-                </td>
                 <td>
                   <Link
                     to={`/vaccinations/${v._id}`}

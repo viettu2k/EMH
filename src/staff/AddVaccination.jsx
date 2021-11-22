@@ -25,6 +25,7 @@ const AddVaccination = () => {
     notes,
     address,
     limit,
+    vaccineDate,
     centers,
     loading,
     error,
@@ -65,6 +66,7 @@ const AddVaccination = () => {
       address,
       limit,
       ownership,
+      vaccineDate,
     }).then((data) => {
       console.log(data);
       if (data.error) {
@@ -79,6 +81,7 @@ const AddVaccination = () => {
           address: "",
           ownership: "",
           centers: "",
+          vaccineDate: undefined,
           loading: false,
           createdVaccination: data.name,
         });
@@ -115,6 +118,16 @@ const AddVaccination = () => {
           onChange={handleChange("limit")}
           className="form-control"
           value={limit}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Vaccine Date</label>
+        <input
+          type="datetime-local"
+          onChange={handleChange("vaccineDate")}
+          className="form-control"
+          value={vaccineDate}
         />
       </div>
 

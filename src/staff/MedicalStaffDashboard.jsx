@@ -82,7 +82,7 @@ export default function MedicalStaffDashboard() {
   const myVaccination = () => {
     return (
       <div className="card mb-5">
-        <h3 className="card-header">My Vaccination Schedule</h3>
+        <h3 className="card-header">Vaccination Schedule Management</h3>
         <ul className="list-group">
           {vaccinations &&
             vaccinations.map((v, i) => {
