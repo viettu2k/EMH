@@ -11,7 +11,7 @@ import AddCenter from "./admin/AddCenter";
 import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import MedicalStaffDashboard from "./staff/MedicalStaffDashboard";
 import AddVaccination from "./staff/AddVaccination";
-import Profile from "./user/Profile";
+import UpdateProfile from "./user/UpdateProfile";
 import ForgotPassword from "./user/ForgotPassword";
 import ResetPassword from "./user/ResetPassword";
 import Centers from "./core/Centers";
@@ -35,7 +35,7 @@ export default function Routes() {
         />
         <Route exact path="/centers" component={Centers} />
         <PrivateRoute path="/user/dashboard" exact component={Dashboard} />
-        <PrivateRoute path="/profile/:userId" exact component={Profile} />
+        <PrivateRoute path="/profile/:userId" exact component={UpdateProfile} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
         <AdminRoute path="/create/center" exact component={AddCenter} />
         <AdminRoute
