@@ -45,17 +45,19 @@ export default function Vaccinations() {
           vaccinations.map((v, i) => {
             return (
               <tr key={i}>
-                <th scope="row">{i}</th>
+                <th scope="row">{i + 1}</th>
                 <td>{v.name}</td>
                 <td>{v.type}</td>
-                <td
-                  className={`alert ${
-                    v.participants.length === v.limit
-                      ? "alert-danger"
-                      : "alert-success"
-                  }`}
-                >
-                  {v.participants.length === v.limit ? "Full" : "Available"}
+                <td>
+                  {v.participants.length === v.limit ? (
+                    <span style={{ color: "red" }}>
+                      <i className="fas fa-window-close"></i>
+                    </span>
+                  ) : (
+                    <span style={{ color: "green" }}>
+                      <i className="fas fa-check-square"></i>
+                    </span>
+                  )}
                 </td>
                 <td>{v.address}</td>
                 <td>
