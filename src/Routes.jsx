@@ -4,7 +4,7 @@ import Signup from "./user/Signup";
 import Signin from "./user/Signin";
 import Home from "./core/Home";
 import PrivateRoute from "./auth/PrivateRoute";
-import Dashboard from "./user/UserDashboard";
+import UserDashBoard from "./user/UserDashboard";
 import AdminRoute from "./auth/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
 import AddCenter from "./admin/AddCenter";
@@ -34,7 +34,7 @@ export default function Routes() {
           component={ResetPassword}
         />
         <Route exact path="/centers" component={Centers} />
-        <PrivateRoute path="/user/dashboard" exact component={Dashboard} />
+        <PrivateRoute path="/user/dashboard" exact component={UserDashBoard} />
         <PrivateRoute path="/profile/:userId" exact component={UpdateProfile} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
         <AdminRoute path="/create/center" exact component={AddCenter} />

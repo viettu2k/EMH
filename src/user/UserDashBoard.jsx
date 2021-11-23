@@ -4,7 +4,7 @@ import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-const Dashboard = () => {
+const UserDashBoard = () => {
   const {
     user: { _id, name, email, role, dob, address, phoneNumber },
   } = isAuthenticated();
@@ -102,4 +102,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default UserDashBoard;
