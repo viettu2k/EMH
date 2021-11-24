@@ -120,3 +120,35 @@ export const getVaccinationByCenter = (centerId) => {
         })
         .catch((err) => console.log(err));
 };
+
+export const registerVaccination = (userId, token, vaccinationId) => {
+    return fetch(`${API}/vaccinations/register`, {
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId, vaccinationId }),
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.error(err));
+};
+
+export const cancelRegister = (userId, token, vaccinationId) => {
+    return fetch(`${API}/vaccinations/cancelregister`, {
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId, vaccinationId }),
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.error(err));
+};

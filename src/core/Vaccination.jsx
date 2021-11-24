@@ -1,20 +1,36 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { getVaccination } from "./apiCore";
+import { getVaccination, registerVaccination, cancelRegister } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import DeleteVaccination from "./DeleteVaccination";
 
 export default function Vaccination(props) {
-  const [vaccination, setVaccination] = useState({});
-  const [error, setError] = useState(false);
+  const [values, setValues] = useState({
+    vaccination: {},
+    register: false,
+    redirectToSignin: false,
+    error: "",
+  });
+
+  const { vaccination, register, error } = values;
+
+  const checkRegister = (participants) => {
+    const userId = isAuthenticated() && isAuthenticated().user._id;
+    let match = participants.indexOf(userId) !== -1;
+    return match;
+  };
 
   const loadSingleVaccination = (vaccinationId) => {
     getVaccination(vaccinationId).then((data) => {
       if (data.error) {
-        setError(data.error);
+        setValues({ ...values, error: data.error });
       } else {
-        setVaccination(data);
+        setValues({
+          ...values,
+          vaccination: data,
+          register: checkRegister(data.participants),
+        });
       }
     });
   };
@@ -27,6 +43,25 @@ export default function Vaccination(props) {
     // eslint-disable-next-line
     []
   );
+
+  const registerToggle = () => {
+    if (!isAuthenticated()) {
+      setValues({ ...values, redirectToSignin: true });
+      return false;
+    }
+    let callApi = register ? registerVaccination : cancelRegister;
+    const userId = isAuthenticated().user._id;
+    const token = isAuthenticated().token;
+    const vaccinationId = vaccination._id;
+
+    callApi(userId, token, vaccinationId).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setValues({ ...values, register: !register, vaccination: data });
+      }
+    });
+  };
 
   const showError = () => (
     <div
@@ -64,7 +99,7 @@ export default function Vaccination(props) {
               {isAuthenticated() && isAuthenticated().user.role >= 1 && (
                 <div className="card-body">
                   <h5 className="card-title text-danger">
-                    Edit/Delete{" "}
+                    Edit/Delete
                     {`${
                       isAuthenticated().user.role === 1 ? "" : "as an Admin"
                     }`}
@@ -76,6 +111,16 @@ export default function Vaccination(props) {
                     Edit Vaccination Schedule
                   </Link>
                   <DeleteVaccination vaccinationId={vaccination._id} />
+                </div>
+              )}
+              {isAuthenticated() && isAuthenticated().user.role === 0 && (
+                <div className="card-body">
+                  <h5 className="card-title text-danger">
+                    Register/Cancel Register vaccination
+                  </h5>
+                  <button className="btn btn-raised btn-success mr-5">
+                    Register Vaccination
+                  </button>
                 </div>
               )}
             </div>
