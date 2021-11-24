@@ -5,7 +5,6 @@ import {
   registerVaccination,
   cancelRegister,
   getCenter,
-  // getUser,
 } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -25,8 +24,8 @@ export default function Vaccination(props) {
   const { vaccination, register, error, center } = values;
 
   const checkRegister = (participants) => {
-    const userId = isAuthenticated() && isAuthenticated().user._id;
-    let match = participants.indexOf(userId) !== -1;
+    const name = isAuthenticated() && isAuthenticated().user.name;
+    let match = participants.indexOf(name) !== -1;
     return match;
   };
 
@@ -42,21 +41,6 @@ export default function Vaccination(props) {
       }
     });
   };
-
-  // const loadUsersName = (participants) => {
-  //   participants.map((p) => {
-  //     getUser(p).then((data) => {
-  //       if (data.error) {
-  //         setValues({ ...values, error: data.error });
-  //       } else {
-  //         setValues({
-  //           ...values,
-  //           usersName: usersName.push(data.name),
-  //         });
-  //       }
-  //     });
-  //   });
-  // };
 
   const loadSingleVaccination = (vaccinationId) => {
     getVaccination(vaccinationId).then((data) => {
@@ -81,26 +65,17 @@ export default function Vaccination(props) {
     []
   );
 
-  useEffect(
-    () => {
-      console.log(vaccination.ownership);
-      loadSingleCenter(vaccination.ownership);
-    },
-    // eslint-disable-next-line
-    [vaccination]
-  );
-
   const registerToggle = () => {
     if (!isAuthenticated()) {
       setValues({ ...values, redirectToSignin: true });
       return false;
     }
     let callApi = register ? registerVaccination : cancelRegister;
-    const userId = isAuthenticated().user._id;
+    const name = isAuthenticated().user.name;
     const token = isAuthenticated().token;
     const vaccinationId = vaccination._id;
 
-    callApi(userId, token, vaccinationId).then((data) => {
+    callApi(name, token, vaccinationId).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
@@ -213,7 +188,19 @@ export default function Vaccination(props) {
                 <ol className="list-group list-group-numbered">
                   {vaccination.participants &&
                     vaccination.participants.map((p, i) => {
-                      return <li key={i}>{p}</li>;
+                      return (
+                        <li key={i} className="row">
+                          <div className="col">
+                            {i + 1}.{p}
+                          </div>
+                          <div className="col">
+                            {`${new Date(vaccination.vaccineDate).getHours()}:${
+                              new Date(vaccination.vaccineDate).getMinutes() +
+                              i * 5
+                            }`}
+                          </div>
+                        </li>
+                      );
                     })}
                 </ol>
               </div>
