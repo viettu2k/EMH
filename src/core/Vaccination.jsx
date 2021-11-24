@@ -115,12 +115,26 @@ export default function Vaccination(props) {
               )}
               {isAuthenticated() && isAuthenticated().user.role === 0 && (
                 <div className="card-body">
-                  <h5 className="card-title text-danger">
+                  <h5 className="card-title text-success">
                     Register/Cancel Register vaccination
                   </h5>
-                  <button className="btn btn-raised btn-success mr-5">
-                    Register Vaccination
-                  </button>
+                  {register ? (
+                    <h5 onClick={registerToggle}>
+                      <i
+                        className="fa fa-check-circle text-success bg-dark"
+                        style={{ padding: "10px", borderRadius: "50%" }}
+                      />{" "}
+                      Register Vaccination
+                    </h5>
+                  ) : (
+                    <h5 onClick={registerToggle}>
+                      <i
+                        className="fa fa-check-circle text-warning bg-dark"
+                        style={{ padding: "10px", borderRadius: "50%" }}
+                      />{" "}
+                      Cancel Register Vaccination
+                    </h5>
+                  )}
                 </div>
               )}
             </div>
