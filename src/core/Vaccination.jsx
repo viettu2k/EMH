@@ -1,25 +1,62 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { getVaccination, registerVaccination, cancelRegister } from "./apiCore";
+import {
+  getVaccination,
+  registerVaccination,
+  cancelRegister,
+  getCenter,
+  // getUser,
+} from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import DeleteVaccination from "./DeleteVaccination";
+import moment from "moment";
 
 export default function Vaccination(props) {
   const [values, setValues] = useState({
     vaccination: {},
+    usersName: [],
+    center: {},
     register: false,
     redirectToSignin: false,
     error: "",
   });
 
-  const { vaccination, register, error } = values;
+  const { vaccination, register, error, center } = values;
 
   const checkRegister = (participants) => {
     const userId = isAuthenticated() && isAuthenticated().user._id;
     let match = participants.indexOf(userId) !== -1;
     return match;
   };
+
+  const loadSingleCenter = (centerId) => {
+    getCenter(centerId).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({
+          ...values,
+          center: data,
+        });
+      }
+    });
+  };
+
+  // const loadUsersName = (participants) => {
+  //   participants.map((p) => {
+  //     getUser(p).then((data) => {
+  //       if (data.error) {
+  //         setValues({ ...values, error: data.error });
+  //       } else {
+  //         setValues({
+  //           ...values,
+  //           usersName: usersName.push(data.name),
+  //         });
+  //       }
+  //     });
+  //   });
+  // };
 
   const loadSingleVaccination = (vaccinationId) => {
     getVaccination(vaccinationId).then((data) => {
@@ -42,6 +79,15 @@ export default function Vaccination(props) {
     },
     // eslint-disable-next-line
     []
+  );
+
+  useEffect(
+    () => {
+      console.log(vaccination.ownership);
+      loadSingleCenter(vaccination.ownership);
+    },
+    // eslint-disable-next-line
+    [vaccination]
   );
 
   const registerToggle = () => {
@@ -129,7 +175,7 @@ export default function Vaccination(props) {
                   ) : (
                     <h5 onClick={registerToggle}>
                       <i
-                        className="fa fa-check-circle text-warning bg-dark"
+                        className="fa fa-times-circle text-warning bg-dark"
                         style={{ padding: "10px", borderRadius: "50%" }}
                       />{" "}
                       Cancel Register Vaccination
@@ -144,13 +190,31 @@ export default function Vaccination(props) {
                 <p>Type: {vaccination.type}</p>
                 <p>Address: {vaccination.address}</p>
                 <p>Limit: {vaccination.limit}</p>
+                <p>
+                  Vaccination time:{" "}
+                  {moment(vaccination.vaccineDate).format("LLLL")}
+                </p>
+                {vaccination.ownership && (
+                  <p>
+                    Organize By:{" "}
+                    <Link
+                      to={`/centers/${vaccination.ownership}`}
+                      className="btn btn-raised btn-primary btn-sm"
+                    >
+                      {center.name}
+                    </Link>
+                  </p>
+                )}
               </div>
             </div>
             <div className="col-md-3">
               <div className="lead mt-2">
                 <h4>Participants</h4>
                 <ol className="list-group list-group-numbered">
-                  <li className="list-group-item">Number 1</li>
+                  {vaccination.participants &&
+                    vaccination.participants.map((p, i) => {
+                      return <li key={i}>{p}</li>;
+                    })}
                 </ol>
               </div>
             </div>
