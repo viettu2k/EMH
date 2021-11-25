@@ -14,14 +14,14 @@ import moment from "moment";
 export default function Vaccination(props) {
   const [values, setValues] = useState({
     vaccination: {},
+    load: false,
     usersName: [],
     center: {},
     register: false,
-    redirectToSignin: false,
     error: "",
   });
 
-  const { vaccination, register, error, center } = values;
+  const { vaccination, register, error, center, load } = values;
 
   const checkRegister = (participants) => {
     const name = isAuthenticated() && isAuthenticated().user.name;
@@ -51,6 +51,7 @@ export default function Vaccination(props) {
           ...values,
           vaccination: data,
           register: checkRegister(data.participants),
+          load: true,
         });
       }
     });
@@ -63,6 +64,14 @@ export default function Vaccination(props) {
     },
     // eslint-disable-next-line
     []
+  );
+
+  useEffect(
+    () => {
+      loadSingleCenter(vaccination.ownership);
+    },
+    // eslint-disable-next-line
+    [load]
   );
 
   const registerToggle = () => {
@@ -171,7 +180,7 @@ export default function Vaccination(props) {
                 </p>
                 {vaccination.ownership && (
                   <p>
-                    Organize By:{" "}
+                    Organized By:{" "}
                     <Link
                       to={`/centers/${vaccination.ownership}`}
                       className="btn btn-raised btn-primary btn-sm"
