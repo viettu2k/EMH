@@ -8,11 +8,12 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     error: "",
     success: false,
   });
 
-  const { name, email, password, error, success } = values;
+  const { name, email, password, confirmPassword, error, success } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
@@ -20,6 +21,10 @@ const Signup = () => {
 
   const clickSubmit = (event) => {
     event.preventDefault();
+    if (confirmPassword !== password) {
+      setValues({ ...values, error: "Your password doesn't match" });
+      return false;
+    }
     setValues({ ...values, error: false });
     signup({ name, email, password }).then((data) => {
       if (data.error) {
@@ -30,6 +35,7 @@ const Signup = () => {
           name: "",
           email: "",
           password: "",
+          confirmPassword: "",
           error: "",
           success: true,
         });
@@ -66,6 +72,16 @@ const Signup = () => {
           type="password"
           className="form-control"
           value={password}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Confirm Password</label>
+        <input
+          onChange={handleChange("confirmPassword")}
+          type="password"
+          className="form-control"
+          value={confirmPassword}
         />
       </div>
       <button onClick={clickSubmit} className="btn btn-primary">
