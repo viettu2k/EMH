@@ -19,11 +19,12 @@ export default function Vaccination(props) {
     center: {},
     register: false,
     error: "",
+    success: false,
   });
 
-  const { vaccination, register, error, center, load } = values;
+  const { vaccination, register, error, center, load, success } = values;
 
-  const checkRegister = (participants) => {
+  const checkRegister = (participants = []) => {
     const name = isAuthenticated() && isAuthenticated().user.name;
     let match = participants.indexOf(name) !== -1;
     return match;
@@ -75,11 +76,7 @@ export default function Vaccination(props) {
   );
 
   const registerToggle = () => {
-    if (!isAuthenticated()) {
-      setValues({ ...values, redirectToSignin: true });
-      return false;
-    }
-    let callApi = register ? registerVaccination : cancelRegister;
+    let callApi = !register ? registerVaccination : cancelRegister;
     const name = isAuthenticated().user.name;
     const token = isAuthenticated().token;
     const vaccinationId = vaccination._id;
@@ -88,7 +85,12 @@ export default function Vaccination(props) {
       if (data.error) {
         console.log(data.error);
       } else {
-        setValues({ ...values, register: !register, vaccination: data });
+        setValues({
+          ...values,
+          register: !register,
+          vaccination: data,
+          success: !success,
+        });
       }
     });
   };
@@ -107,6 +109,23 @@ export default function Vaccination(props) {
       <Link to="/" className="text-warning">
         Back to Homepage
       </Link>
+    </div>
+  );
+
+  const handleVaccineTime = (vaccineTime) => {
+    return moment(vaccineTime)
+      .add(checkRegister(vaccination.participants) * 3, "m")
+      .calendar();
+  };
+
+  const showSuccess = () => (
+    <div
+      className="alert alert-info"
+      style={{ display: success ? "" : "none" }}
+    >
+      <h2>{`Registration successful! Your vaccine time is ${handleVaccineTime(
+        vaccination.vaccineDate
+      )} `}</h2>
     </div>
   );
 
@@ -148,7 +167,7 @@ export default function Vaccination(props) {
                   <h5 className="card-title text-success">
                     Register/Cancel Register vaccination
                   </h5>
-                  {register ? (
+                  {!register ? (
                     <h5 onClick={registerToggle}>
                       <i
                         className="fa fa-check-circle text-success bg-dark"
@@ -191,8 +210,8 @@ export default function Vaccination(props) {
                 )}
               </div>
             </div>
-            <div className="col-md-3">
-              <div className="lead mt-2">
+            <div className="col-md-4">
+              <div className="lead mt-3">
                 <h4>Participants</h4>
                 <ol className="list-group list-group-numbered">
                   {vaccination.participants &&
@@ -203,10 +222,9 @@ export default function Vaccination(props) {
                             {i + 1}.{p}
                           </div>
                           <div className="col">
-                            {`${new Date(vaccination.vaccineDate).getHours()}:${
-                              new Date(vaccination.vaccineDate).getMinutes() +
-                              i * 5
-                            }`}
+                            {`${moment(vaccination.vaccineDate)
+                              .add(i * 3, "m")
+                              .calendar()}`}
                           </div>
                         </li>
                       );
@@ -217,6 +235,7 @@ export default function Vaccination(props) {
           </>
         )}
       </div>
+      {showSuccess()}
       {showError()}
       {goBack()}
     </Layout>
