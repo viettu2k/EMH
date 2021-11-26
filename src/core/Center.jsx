@@ -47,7 +47,9 @@ export default function Center(props) {
   const listByCenter = () => {
     return (
       <div className="card mb-5">
-        <h3 className="card-header">My Vaccination Schedule</h3>
+        <h3 className="card-header">
+          Vaccination Schedule Organized by {center.name}
+        </h3>
         <ul className="list-group">
           {vaccinations &&
             vaccinations.map((v, i) => {
@@ -82,10 +84,10 @@ export default function Center(props) {
       }
       className="container-fluid"
     >
-      <div className="row">
-        {center && (
-          <>
-            <div className="container">
+      {center && (
+        <>
+          <div className="container">
+            <div className="row">
               <div className="card col-md-4 border-secondary">
                 <img
                   style={{ height: "250px", width: "auto" }}
@@ -109,7 +111,7 @@ export default function Center(props) {
                   </div>
                 )}
               </div>
-              <div className="col-md-8">
+              <div className="col-md-5">
                 <div className="lead mt-2">
                   <p>{center.name}</p>
                   <p>{center.description}</p>
@@ -117,11 +119,12 @@ export default function Center(props) {
                   <p>Hotline: {center.phoneNumber}</p>
                 </div>
               </div>
-              {listByCenter()}
             </div>
-          </>
-        )}
-      </div>
+            <hr />
+            {listByCenter()}
+          </div>
+        </>
+      )}
       {showError()}
     </Layout>
   );

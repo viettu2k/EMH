@@ -35,9 +35,13 @@ export default function Vaccinations() {
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Type</th>
-          <th scope="col">Status</th>
+          <th className="text-center" scope="col">
+            Status
+          </th>
           <th scope="col">Address</th>
-          <th scope="col">View</th>
+          <th className="text-center" scope="col">
+            View
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -48,19 +52,21 @@ export default function Vaccinations() {
                 <th scope="row">{i + 1}</th>
                 <td>{v.name}</td>
                 <td>{v.type}</td>
-                <td>
+                <td className="text-center">
                   {v.participants.length === v.limit ? (
-                    <span style={{ color: "red" }}>
-                      <i className="fas fa-window-close"></i>
-                    </span>
+                    <i
+                      style={{ color: "red" }}
+                      className="fas fa-window-close"
+                    ></i>
                   ) : (
-                    <span style={{ color: "green" }}>
-                      <i className="fas fa-check-square"></i>
-                    </span>
+                    <i
+                      style={{ color: "green" }}
+                      className="fas fa-check-square"
+                    ></i>
                   )}
                 </td>
                 <td>{v.address}</td>
-                <td>
+                <td className="text-center">
                   <Link
                     to={`/vaccinations/${v._id}`}
                     className="btn btn-raised btn-primary btn-sm"
