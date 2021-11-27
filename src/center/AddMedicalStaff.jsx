@@ -52,13 +52,12 @@ const AddMedicalStaff = () => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        const { _id, name } = data;
-        addMember(user._id, token, { _id, name }).then((data) => {
+        const { _id } = data;
+        addMember(user._id, token, { _id }).then((data) => {
           if (data.error) {
             setValues({ ...values, error: data.error });
           }
         });
-        console.log(data);
         setValues({
           ...values,
           name: "",
@@ -180,7 +179,7 @@ const AddMedicalStaff = () => {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to="/admin/dashboard" className="text-warning">
+      <Link to="/center/dashboard" className="text-warning">
         Back to Dashboard
       </Link>
     </div>
