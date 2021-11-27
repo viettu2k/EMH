@@ -50,7 +50,7 @@ const AddCenter = () => {
       return false;
     }
     setValues({ ...values, error: "", loading: true });
-    createCenter(token, formData).then((data) => {
+    createCenter(user._id, token, formData).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {

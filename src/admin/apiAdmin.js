@@ -1,7 +1,7 @@
 import { API } from "../config";
 
-export const createCenter = (token, center) => {
-    return fetch(`${API}/center`, {
+export const createCenter = (userId, token, center) => {
+    return fetch(`${API}/center/${userId}`, {
             method: "POST",
             headers: {
                 Accept: "application/json",

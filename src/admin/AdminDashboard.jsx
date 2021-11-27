@@ -21,12 +21,12 @@ export default function AdminDashboard() {
           </li>
           <li className="list-group-item">
             <Link className="nav-link" to="/verify/staff">
-              Verify Medical Staff
+              User Management
             </Link>
           </li>
           <li className="list-group-item">
             <Link className="nav-link" to="/create/center">
-              Create Center
+              Add Medical Center
             </Link>
           </li>
         </ul>
