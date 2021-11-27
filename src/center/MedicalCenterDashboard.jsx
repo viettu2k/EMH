@@ -35,7 +35,7 @@ export default function MedicalCenterDashboard() {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="/vaccine">
+            <Link className="nav-link" to={`/vaccines/${_id}`}>
               Vaccine management
             </Link>
           </li>
