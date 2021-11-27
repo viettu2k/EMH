@@ -6,7 +6,17 @@ import moment from "moment";
 
 export default function MedicalCenterDashboard() {
   const {
-    user: { _id, name, email, description, role, dob, address, phoneNumber },
+    user: {
+      _id,
+      name,
+      email,
+      description,
+      role,
+      dob,
+      address,
+      phoneNumber,
+      members,
+    },
   } = isAuthenticated();
 
   const centerLinks = () => {
@@ -72,6 +82,27 @@ export default function MedicalCenterDashboard() {
     );
   };
 
+  const listMembers = () => {
+    return (
+      <div className="card mb-5">
+        <h3 className="card-header">List Medical Staff</h3>
+        <ul className="list-group">
+          {members &&
+            members.map((m, i) => (
+              <li key={i} className="list-group-item">
+                <Link
+                  to={`/users/${m.id}`}
+                  className="btn btn-raised btn-primary btn-sm"
+                >
+                  {m.name}
+                </Link>
+              </li>
+            ))}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <Layout
       title="Dashboard"
@@ -80,7 +111,10 @@ export default function MedicalCenterDashboard() {
     >
       <div className="row">
         <div className="col-3">{centerLinks()}</div>
-        <div className="col-9">{centerInfo()}</div>
+        <div className="col-9">
+          {centerInfo()}
+          {listMembers()}
+        </div>
       </div>
     </Layout>
   );
