@@ -71,6 +71,8 @@ export default function MedicalStaffDashboard() {
             {role === 1
               ? "Medical Staff"
               : role === 2
+              ? "Medical Center"
+              : role === 3
               ? "Admin"
               : "Registered User"}
           </li>

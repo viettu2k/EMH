@@ -54,6 +54,8 @@ export default function AdminDashboard() {
             {role === 1
               ? "Medical Staff"
               : role === 2
+              ? "Medical Center"
+              : role === 3
               ? "Admin"
               : "Registered User"}
           </li>
