@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { createStaff } from "./apiCenter";
+import { createStaff, addMember } from "./apiCenter";
 
 const AddMedicalStaff = () => {
   const [values, setValues] = useState({
@@ -52,6 +52,12 @@ const AddMedicalStaff = () => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
+        const { _id, name } = data;
+        addMember(user._id, token, { _id, name }).then((data) => {
+          if (data.error) {
+            setValues({ ...values, error: data.error });
+          }
+        });
         console.log(data);
         setValues({
           ...values,
