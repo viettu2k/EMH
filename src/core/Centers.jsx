@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getCenters } from "../staff/apiStaff";
+import { getCenters } from "./apiCore";
 import { API } from "../config";
 import Layout from "./Layout";
 // import DefaultProfile from "../images/avatar.jpg";
@@ -38,17 +38,23 @@ export default function Centers() {
           <img
             style={{ height: "250px", width: "auto" }}
             className="img-thumbnail rounded border border-primary"
-            src={`${API}/centers/photo/${center._id}`}
+            src={`${API}/user/photo/${center._id}`}
             alt={center.name}
           />
           <div className="card-body">
-            <h5 className="card-title">{center.name}</h5>
-            <Link
-              to={`/centers/${center._id}`}
-              className="btn btn-raised btn-primary btn-sm"
-            >
-              View Detail
-            </Link>
+            <div className="row">
+              <div className="col">
+                <h5 className="card-title">{center.name}</h5>
+              </div>
+              <div className="col">
+                <Link
+                  to={`/centers/${center._id}`}
+                  className="btn btn-raised btn-primary btn-sm"
+                >
+                  View Detail
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       ))}
@@ -68,7 +74,7 @@ export default function Centers() {
     <Layout
       title="Medical Centers"
       description="Medical Center list in Da Nang City"
-      className="container-fluid"
+      className="container"
     >
       {showError()}
       {renderCenters(centers)}
