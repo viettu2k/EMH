@@ -9,7 +9,6 @@ export default function MedicalCenterDashboard() {
     user: { _id, name, email, description, role, dob, address, phoneNumber },
   } = isAuthenticated();
 
-  console.log(isAuthenticated());
   const centerLinks = () => {
     return (
       <div className="card">

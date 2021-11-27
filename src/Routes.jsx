@@ -9,6 +9,7 @@ import AdminDashboard from "./admin/AdminDashboard";
 import MedicalCenterDashboard from "./center/MedicalCenterDashboard";
 import UserDashboard from "./user/UserDashboard";
 import AddCenter from "./admin/AddCenter";
+import AddMedicalStaff from "./center/AddMedicalStaff";
 import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import MedicalStaffDashboard from "./staff/MedicalStaffDashboard";
 import AddVaccination from "./staff/AddVaccination";
@@ -44,6 +45,11 @@ export default function Routes() {
           path="/center/dashboard"
           exact
           component={MedicalCenterDashboard}
+        />
+        <MedicalCenterRoute
+          path="/create/staff"
+          exact
+          component={AddMedicalStaff}
         />
         <AdminRoute
           path="/update/center/:centerId"
