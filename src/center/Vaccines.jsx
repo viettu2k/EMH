@@ -39,12 +39,24 @@ export default function Vaccines() {
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Type</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Consumed</th>
-          <th scope="col">Time Consuming (Months)</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Delete</th>
+          <th className="text-center" scope="col">
+            Type
+          </th>
+          <th className="text-center" scope="col">
+            Quantity
+          </th>
+          <th className="text-center" scope="col">
+            Consumed
+          </th>
+          <th className="text-center" scope="col">
+            Time Consuming (Months)
+          </th>
+          <th className="text-center" scope="col">
+            Edit
+          </th>
+          <th className="text-center" scope="col">
+            Delete
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -54,11 +66,11 @@ export default function Vaccines() {
               <tr key={i}>
                 <th scope="row">{i + 1}</th>
                 <td>{v.name}</td>
-                <td>{v.type}</td>
-                <td>{v.quantity}</td>
-                <td>{v.consumed}</td>
-                <td>{v.timeConsuming}</td>
-                <td>
+                <td className="text-center">{v.type}</td>
+                <td className="text-center">{v.quantity}</td>
+                <td className="text-center">{v.consumed}</td>
+                <td className="text-center">{v.timeConsuming}</td>
+                <td className="text-center">
                   <Link
                     to={`/vaccines/${v._id}/${_id}`}
                     className="btn btn-raised btn-primary btn-sm"
@@ -66,7 +78,14 @@ export default function Vaccines() {
                     Edit
                   </Link>
                 </td>
-                <td></td>
+                <td>
+                  <Link
+                    to={`/vaccines/${v._id}/${_id}`}
+                    className="btn btn-raised btn-danger btn-sm"
+                  >
+                    Delete
+                  </Link>
+                </td>
               </tr>
             );
           })}
@@ -85,9 +104,15 @@ export default function Vaccines() {
 
   return (
     <div className="container">
-      <h2 className="mt-5 mb-5">
+      <h2 className="mt-5 mb-2">
         {!vaccines.length ? "No more vaccine!" : "Recent vaccine!"}
       </h2>
+      <Link
+        to={`/create/vaccine`}
+        className="btn btn-raised btn-success btn-sm mb-1"
+      >
+        <h6>Add a new Vaccine</h6>
+      </Link>
       {renderVaccines(vaccines)}
       {showError()}
     </div>

@@ -23,6 +23,7 @@ import EditVaccination from "./core/EditVaccination";
 import EditCenter from "./core/EditCenter";
 import MedicalCenterRoute from "./auth/MedicalCenterRoute";
 import VaccineManagement from "./center/VaccineManagement";
+import AddVaccine from "./center/AddVaccine";
 
 export default function Routes() {
   return (
@@ -58,9 +59,9 @@ export default function Routes() {
           component={VaccineManagement}
         />
         <MedicalCenterRoute
-          path="/vaccines/create"
+          path="/create/vaccine"
           exact
-          component={VaccineManagement}
+          component={AddVaccine}
         />
         <AdminRoute
           path="/update/center/:centerId"

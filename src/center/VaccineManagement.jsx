@@ -6,7 +6,7 @@ export default function VaccineManagement() {
   return (
     <Layout
       title="Vaccine Management Page"
-      description="ELECTRONIC MEDICAL HANDBOOK"
+      description="Welcome to the Vaccine Management"
       className="container-fluid"
     >
       <Vaccines />

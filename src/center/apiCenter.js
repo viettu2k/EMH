@@ -62,3 +62,21 @@ export const getVaccinesByCenter = (userId, token) => {
         })
         .catch((err) => console.log(err));
 };
+
+export const createVaccine = (userId, token, vaccine) => {
+    return fetch(`${API}/vaccines/${userId}`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(vaccine),
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};

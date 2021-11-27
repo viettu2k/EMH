@@ -187,8 +187,8 @@ const AddMedicalStaff = () => {
 
   return (
     <Layout
-      title="Add a new medical center center"
-      description={`G'day ${user.name}, ready to add a new center?`}
+      title="Add a new medical staff"
+      description={`G'day ${user.name}, ready to add a new medical staff?`}
     >
       <div className="row">
         <div className="col-md-8 offset-md-2">

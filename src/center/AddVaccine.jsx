@@ -92,7 +92,7 @@ const AddVaccine = () => {
       <div className="form-group">
         <label className="text-muted">Time Consuming (Months)</label>
         <input
-          type="datetime-local"
+          type="number"
           onChange={handleChange("timeConsuming")}
           className="form-control"
           value={timeConsuming}
