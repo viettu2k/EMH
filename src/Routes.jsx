@@ -6,6 +6,7 @@ import Home from "./core/Home";
 import PrivateRoute from "./auth/PrivateRoute";
 import AdminRoute from "./auth/AdminRoute";
 import AdminDashboard from "./admin/AdminDashboard";
+import MedicalCenterDashboard from "./center/MedicalCenterDashboard";
 import UserDashboard from "./user/UserDashboard";
 import AddCenter from "./admin/AddCenter";
 import MedicalStaffRoute from "./auth/MedicalStaffRoute";
@@ -19,6 +20,7 @@ import Center from "./core/Center";
 import Vaccination from "./core/Vaccination";
 import EditVaccination from "./core/EditVaccination";
 import EditCenter from "./core/EditCenter";
+import MedicalCenterRoute from "./auth/MedicalCenterRoute";
 
 export default function Routes() {
   return (
@@ -38,6 +40,11 @@ export default function Routes() {
         <PrivateRoute path="/profile/:userId" exact component={UpdateProfile} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
         <AdminRoute path="/create/center" exact component={AddCenter} />
+        <MedicalCenterRoute
+          path="/center/dashboard"
+          exact
+          component={MedicalCenterDashboard}
+        />
         <AdminRoute
           path="/update/center/:centerId"
           exact
