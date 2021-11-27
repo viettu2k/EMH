@@ -7,6 +7,9 @@ import { createCenter } from "./apiAdmin";
 const AddCenter = () => {
   const [values, setValues] = useState({
     name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     description: "",
     phoneNumber: "",
     address: "",
@@ -21,6 +24,9 @@ const AddCenter = () => {
   const { user, token } = isAuthenticated();
   const {
     name,
+    email,
+    password,
+    confirmPassword,
     description,
     phoneNumber,
     address,
@@ -28,7 +34,6 @@ const AddCenter = () => {
     loading,
     error,
     createdCenter,
-    // redirectToProfile,
     formData,
   } = values;
 
@@ -40,15 +45,21 @@ const AddCenter = () => {
 
   const clickSubmit = (event) => {
     event.preventDefault();
+    if (confirmPassword !== password) {
+      setValues({ ...values, error: "Your password doesn't match" });
+      return false;
+    }
     setValues({ ...values, error: "", loading: true });
-
-    createCenter(user._id, token, formData).then((data) => {
+    createCenter(token, formData).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
         setValues({
           ...values,
           name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
           description: "",
           phoneNumber: "",
           address: "",
@@ -81,6 +92,36 @@ const AddCenter = () => {
           type="text"
           className="form-control"
           value={name}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Email</label>
+        <input
+          onChange={handleChange("email")}
+          type="email"
+          className="form-control"
+          value={email}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Password</label>
+        <input
+          onChange={handleChange("password")}
+          type="password"
+          className="form-control"
+          value={password}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Confirm Password</label>
+        <input
+          onChange={handleChange("confirmPassword")}
+          type="password"
+          className="form-control"
+          value={confirmPassword}
         />
       </div>
 
@@ -152,7 +193,7 @@ const AddCenter = () => {
 
   return (
     <Layout
-      title="Add a new center"
+      title="Add a new medical center center"
       description={`G'day ${user.name}, ready to add a new center?`}
     >
       <div className="row">
