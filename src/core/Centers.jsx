@@ -73,7 +73,7 @@ export default function Centers() {
   return (
     <Layout
       title="Medical Centers"
-      description="Medical Center list in Da Nang City"
+      description="The list of the medical centers in Da Nang City"
       className="container"
     >
       {showError()}
