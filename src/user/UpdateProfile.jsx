@@ -167,7 +167,7 @@ const UpdateProfile = ({ match }) => {
     <Layout
       title="Profile"
       description="Update your profile"
-      className="container-fluid"
+      className="container col-md-8 offset-md-2"
     >
       <h2 className="mb-4">Profile update</h2>
       {profileUpdate(name, email, password, phoneNumber, dob, address)}
