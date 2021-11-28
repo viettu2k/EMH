@@ -43,7 +43,7 @@ export default function MedicalStaffDashboard() {
           </li>
           <li className="list-group-item">
             <Link className="nav-link" to="/create/vaccination">
-              Create Vaccination
+              Create Vaccination Schedule
             </Link>
           </li>
         </ul>
@@ -106,8 +106,8 @@ export default function MedicalStaffDashboard() {
       className="container"
     >
       <div className="row">
-        <div className="col-3">{staffLinks()}</div>
-        <div className="col-9">
+        <div className="col-4">{staffLinks()}</div>
+        <div className="col-8">
           {staffInfo()}
           {myVaccination()}
         </div>

@@ -2,16 +2,20 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { createVaccinationSchedule, getVaccinesByCenter } from "./apiStaff";
+import {
+  createVaccinationSchedule,
+  getVaccinesByCenter,
+  updateVaccine,
+} from "./apiStaff";
 
 const AddVaccinationSchedule = () => {
   const [values, setValues] = useState({
     name: "",
-    type: "",
+    vaccine: {},
     notes: "",
     address: "",
     limit: "",
-    centers: [],
+    vaccines: [],
     ownership: "",
     loading: false,
     error: "",
@@ -21,12 +25,12 @@ const AddVaccinationSchedule = () => {
   const { user, token } = isAuthenticated();
   const {
     name,
-    type,
+    // vaccine,
     notes,
     address,
     limit,
     vaccineDate,
-    centers,
+    vaccines,
     loading,
     error,
     createdVaccination,
@@ -34,11 +38,11 @@ const AddVaccinationSchedule = () => {
 
   // load categories and set form data
   const init = () => {
-    getVaccinesByCenter(user._id, token).then((data) => {
+    getVaccinesByCenter(user.references, token).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, centers: data });
+        setValues({ ...values, vaccines: data });
       }
     });
   };
@@ -52,36 +56,53 @@ const AddVaccinationSchedule = () => {
   );
 
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+    setValues({ ...values, [name]: event.target.value, error: "" });
+  };
+
+  const getIndex = (array, id) => {
+    let temp = 0;
+    array.forEach((element, i) => {
+      if (element["_id"] === id) {
+        temp = i;
+      }
+    });
+    return temp;
   };
 
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    const { name, type, notes, address, limit, ownership } = values;
+    const { name, vaccine, notes, address, limit } = values;
+    let index = getIndex(vaccines, vaccine);
+
+    updateVaccine(vaccine, user.references, token, {
+      consumed: vaccines[index].consumed + parseInt(limit),
+      quantity: vaccines[index].quantity - parseInt(limit),
+    }).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      }
+    });
     createVaccinationSchedule(user._id, token, {
       name,
-      type,
+      vaccine,
       notes,
       address,
       limit,
-      ownership,
       vaccineDate,
     }).then((data) => {
-      console.log(data);
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
         setValues({
           ...values,
           name: "",
-          type: "",
+          vaccine: "",
           limit: "",
           notes: "",
           address: "",
-          ownership: "",
           centers: "",
-          vaccineDate: undefined,
+          vaccineDate: "",
           loading: false,
           createdVaccination: data.name,
         });
@@ -102,13 +123,16 @@ const AddVaccinationSchedule = () => {
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Type</label>
-        <input
-          onChange={handleChange("type")}
-          type="text"
-          className="form-control"
-          value={type}
-        />
+        <label className="text-muted">Vaccine</label>
+        <select onChange={handleChange("vaccine")} className="form-control">
+          <option>Please select</option>
+          {vaccines &&
+            vaccines.map((v, i) => (
+              <option key={i} value={v._id}>
+                {v.name}
+              </option>
+            ))}
+        </select>
       </div>
 
       <div className="form-group">
@@ -150,20 +174,9 @@ const AddVaccinationSchedule = () => {
         />
       </div>
 
-      <div className="form-group">
-        <label className="text-muted">Ownership</label>
-        <select onChange={handleChange("ownership")} className="form-control">
-          <option>Please select</option>
-          {centers &&
-            centers.map((c, i) => (
-              <option key={i} value={c._id}>
-                {c.name}
-              </option>
-            ))}
-        </select>
-      </div>
-
-      <button className="btn btn-outline-primary">Create Vaccination</button>
+      <button className="btn btn-outline-primary">
+        Create Vaccination Schedule
+      </button>
     </form>
   );
 

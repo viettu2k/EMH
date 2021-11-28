@@ -33,6 +33,24 @@ export const getVaccinesByCenter = (userId, token) => {
         .catch((err) => console.log(err));
 };
 
+export const updateVaccine = (vaccineId, userId, token, vaccine) => {
+    return fetch(`${API}/vaccines/${vaccineId}/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(vaccine),
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
 export const getVaccinationSchedule = (vaccinationId) => {
     return fetch(`${API}/vaccinations/${vaccinationId}`, {
             method: "GET",

@@ -92,7 +92,6 @@ export const getVaccine = (vaccineId) => {
 };
 
 export const updateVaccine = (vaccineId, userId, token, vaccine) => {
-    console.log(vaccine);
     return fetch(`${API}/vaccines/${vaccineId}/${userId}`, {
             method: "PUT",
             headers: {
