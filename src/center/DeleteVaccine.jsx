@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import { removeVaccine } from "./apiCenter";
 
@@ -21,7 +20,7 @@ export default function DeleteVaccine({ vaccineId }) {
 
   const redirectToVaccineManagement = () => {
     if (redirect) {
-      return <Redirect to={`/vaccines/${isAuthenticated().user._id}`} />;
+      return window.location.reload();
     }
   };
 
