@@ -187,7 +187,10 @@ export default function UpdateVaccine(props) {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to={`/vaccines/${id}`} className="text-warning">
+      <Link
+        to={`/vaccines/${isAuthenticated().user._id}`}
+        className="text-warning"
+      >
         Back to Vaccine Management
       </Link>
     </div>

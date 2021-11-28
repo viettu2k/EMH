@@ -130,8 +130,11 @@ const AddVaccine = () => {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to="/center/dashboard" className="text-warning">
-        Back to Dashboard
+      <Link
+        to={`/vaccines/${isAuthenticated().user._id}`}
+        className="text-warning"
+      >
+        Back to Vaccine Management
       </Link>
     </div>
   );
