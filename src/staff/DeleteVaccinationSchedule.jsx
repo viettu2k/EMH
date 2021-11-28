@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
-import { removeVaccination } from "./apiCore";
+import { removeVaccinationSchedule } from "./apiStaff";
 
 export default function DeleteVaccination({ vaccinationId }) {
   const [redirect, setRedirect] = useState(false);
@@ -9,7 +9,7 @@ export default function DeleteVaccination({ vaccinationId }) {
   const deleteVaccination = () => {
     const token = isAuthenticated().token;
     const userId = isAuthenticated().user._id;
-    removeVaccination(vaccinationId, userId, token).then((data) => {
+    removeVaccinationSchedule(vaccinationId, userId, token).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {

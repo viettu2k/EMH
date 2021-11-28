@@ -12,14 +12,14 @@ import AddCenter from "./admin/AddCenter";
 import AddMedicalStaff from "./center/AddMedicalStaff";
 import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import MedicalStaffDashboard from "./staff/MedicalStaffDashboard";
-import AddVaccination from "./staff/AddVaccination";
+import AddVaccination from "./staff/AddVaccinationSchedule";
 import UpdateProfile from "./user/UpdateProfile";
 import ForgotPassword from "./user/ForgotPassword";
 import ResetPassword from "./user/ResetPassword";
 import Centers from "./core/Centers";
 import Center from "./core/Center";
-import Vaccination from "./core/Vaccination";
-import EditVaccination from "./core/EditVaccination";
+import Vaccination from "./core/SingleVaccinationSchedule";
+import UpdateVaccinationSchedule from "./staff/UpdateVaccinationSchedule";
 import EditCenter from "./core/EditCenter";
 import MedicalCenterRoute from "./auth/MedicalCenterRoute";
 import VaccineManagement from "./center/VaccineManagement";
@@ -87,7 +87,7 @@ export default function Routes() {
         <MedicalStaffRoute
           path="/update/vaccination/:vaccinationId"
           exact
-          component={EditVaccination}
+          component={UpdateVaccinationSchedule}
         />
         <Route path="/centers/:centerId" exact component={Center} />
         <Route

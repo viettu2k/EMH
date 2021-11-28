@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "./Layout";
-import Vaccinations from "./Vaccinations";
+import ListVaccinationSchedule from "./ListVaccinationSchedule";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       description="ELECTRONIC MEDICAL HANDBOOK"
       className="container-fluid"
     >
-      <Vaccinations />
+      {/* <ListVaccinationSchedule /> */}
     </Layout>
   );
 }

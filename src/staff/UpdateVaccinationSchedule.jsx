@@ -1,55 +1,95 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../core/Layout";
-import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { createVaccination, getCenters } from "./apiStaff";
+import { isAuthenticated } from "../auth";
+import {
+  getVaccinationSchedule,
+  updateVaccinationSchedule,
+  getVaccinesByCenter,
+} from "./apiStaff";
+import Layout from "../core/Layout";
 
-const AddVaccination = () => {
+export default function EditCenter(props) {
   const [values, setValues] = useState({
+    id: "",
     name: "",
     type: "",
     notes: "",
     address: "",
     limit: "",
-    centers: [],
     ownership: "",
     loading: false,
     error: "",
-    createdVaccination: "",
+    editedVaccination: "",
   });
 
-  const { user, token } = isAuthenticated();
-  const {
-    name,
-    type,
-    notes,
-    address,
-    limit,
-    vaccineDate,
-    centers,
-    loading,
-    error,
-    createdVaccination,
-  } = values;
+  const [centers, setCenters] = useState([]);
 
-  // load categories and set form data
-  const init = () => {
-    getCenters().then((data) => {
+  const initCenters = () => {
+    getVaccinesByCenter(user._id, token).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setValues({ ...values, centers: data });
+        setCenters(data);
+      }
+    });
+  };
+
+  const init = (vaccinationId) => {
+    getVaccinationSchedule(vaccinationId).then((data) => {
+      if (data.error) {
+        setValues({ error: data.error });
+      } else {
+        // console.log(data);
+        setValues({
+          ...values,
+          id: data._id,
+          name: data.name,
+          type: data.type,
+          notes: data.notes,
+          limit: data.limit,
+          ownership: data.ownership,
+          address: data.address,
+        });
+        initCenters();
       }
     });
   };
 
   useEffect(
     () => {
-      init();
+      const vaccinationId = props.match.params.vaccinationId;
+      init(vaccinationId);
     },
     // eslint-disable-next-line
     []
   );
+
+  const { user, token } = isAuthenticated();
+  const {
+    id,
+    name,
+    type,
+    notes,
+    limit,
+    ownership,
+    address,
+    loading,
+    error,
+    editedVaccination,
+  } = values;
+
+  const isValid = () => {
+    if (!name || !type || !address || !limit || !ownership) {
+      setValues({
+        ...values,
+        error: "All fields are required",
+        loading: false,
+      });
+      return false;
+    }
+
+    return true;
+  };
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -59,34 +99,26 @@ const AddVaccination = () => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
     const { name, type, notes, address, limit, ownership } = values;
-    createVaccination(user._id, token, {
-      name,
-      type,
-      notes,
-      address,
-      limit,
-      ownership,
-      vaccineDate,
-    }).then((data) => {
-      console.log(data);
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({
-          ...values,
-          name: "",
-          type: "",
-          limit: "",
-          notes: "",
-          address: "",
-          ownership: "",
-          centers: "",
-          vaccineDate: undefined,
-          loading: false,
-          createdVaccination: data.name,
-        });
-      }
-    });
+    if (isValid) {
+      updateVaccinationSchedule(id, user._id, token, {
+        name,
+        type,
+        notes,
+        limit,
+        ownership,
+        address,
+      }).then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          setValues({
+            ...values,
+            loading: false,
+            editedVaccination: name,
+          });
+        }
+      });
+    }
   };
 
   const newPostForm = () => (
@@ -122,16 +154,6 @@ const AddVaccination = () => {
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Vaccine Date</label>
-        <input
-          type="datetime-local"
-          onChange={handleChange("vaccineDate")}
-          className="form-control"
-          value={vaccineDate}
-        />
-      </div>
-
-      <div className="form-group">
         <label className="text-muted">Notes</label>
         <textarea
           onChange={handleChange("notes")}
@@ -163,7 +185,9 @@ const AddVaccination = () => {
         </select>
       </div>
 
-      <button className="btn btn-outline-primary">Create Vaccination</button>
+      <button className="btn btn-outline-primary">
+        Edit Vaccination Schedule
+      </button>
     </form>
   );
 
@@ -179,9 +203,9 @@ const AddVaccination = () => {
   const showSuccess = () => (
     <div
       className="alert alert-info"
-      style={{ display: createdVaccination ? "" : "none" }}
+      style={{ display: editedVaccination ? "" : "none" }}
     >
-      <h2>{`${createdVaccination} is created!`}</h2>
+      <h2>{`${editedVaccination} is edited!`}</h2>
     </div>
   );
 
@@ -194,16 +218,18 @@ const AddVaccination = () => {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to="/admin/dashboard" className="text-warning">
-        Back to Dashboard
+      <Link to={`/vaccinations/${id}`} className="text-warning">
+        Back to Vaccination Schedule
       </Link>
     </div>
   );
 
   return (
     <Layout
-      title="Add a new vaccination"
-      description={`G'day ${user.name}, ready to add a new vaccination?`}
+      title="Edit Vaccination Schedule"
+      description={`G'day ${
+        isAuthenticated().user.name
+      }, ready to edit vaccination schedule?`}
     >
       <div className="row">
         <div className="col-md-8 offset-md-2">
@@ -216,6 +242,4 @@ const AddVaccination = () => {
       </div>
     </Layout>
   );
-};
-
-export default AddVaccination;
+}

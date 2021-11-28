@@ -1,91 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
-import { getVaccination, updateVaccination, getCenters } from "./apiCore";
-import Layout from "./Layout";
+import { Link } from "react-router-dom";
+import { createVaccinationSchedule, getVaccinesByCenter } from "./apiStaff";
 
-export default function EditCenter(props) {
+const AddVaccinationSchedule = () => {
   const [values, setValues] = useState({
-    id: "",
     name: "",
     type: "",
     notes: "",
     address: "",
     limit: "",
+    centers: [],
     ownership: "",
     loading: false,
     error: "",
-    editedVaccination: "",
+    createdVaccination: "",
   });
 
-  const [centers, setCenters] = useState([]);
+  const { user, token } = isAuthenticated();
+  const {
+    name,
+    type,
+    notes,
+    address,
+    limit,
+    vaccineDate,
+    centers,
+    loading,
+    error,
+    createdVaccination,
+  } = values;
 
-  const initCenters = () => {
-    getCenters().then((data) => {
+  // load categories and set form data
+  const init = () => {
+    getVaccinesByCenter(user._id, token).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setCenters(data);
-      }
-    });
-  };
-
-  const init = (vaccinationId) => {
-    getVaccination(vaccinationId).then((data) => {
-      if (data.error) {
-        setValues({ error: data.error });
-      } else {
-        // console.log(data);
-        setValues({
-          ...values,
-          id: data._id,
-          name: data.name,
-          type: data.type,
-          notes: data.notes,
-          limit: data.limit,
-          ownership: data.ownership,
-          address: data.address,
-        });
-        initCenters();
+        setValues({ ...values, centers: data });
       }
     });
   };
 
   useEffect(
     () => {
-      const vaccinationId = props.match.params.vaccinationId;
-      init(vaccinationId);
+      init();
     },
     // eslint-disable-next-line
     []
   );
-
-  const { user, token } = isAuthenticated();
-  const {
-    id,
-    name,
-    type,
-    notes,
-    limit,
-    ownership,
-    address,
-    loading,
-    error,
-    editedVaccination,
-  } = values;
-
-  const isValid = () => {
-    if (!name || !type || !address || !limit || !ownership) {
-      setValues({
-        ...values,
-        error: "All fields are required",
-        loading: false,
-      });
-      return false;
-    }
-
-    return true;
-  };
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -95,26 +59,34 @@ export default function EditCenter(props) {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
     const { name, type, notes, address, limit, ownership } = values;
-    if (isValid) {
-      updateVaccination(id, user._id, token, {
-        name,
-        type,
-        notes,
-        limit,
-        ownership,
-        address,
-      }).then((data) => {
-        if (data.error) {
-          setValues({ ...values, error: data.error });
-        } else {
-          setValues({
-            ...values,
-            loading: false,
-            editedVaccination: name,
-          });
-        }
-      });
-    }
+    createVaccinationSchedule(user._id, token, {
+      name,
+      type,
+      notes,
+      address,
+      limit,
+      ownership,
+      vaccineDate,
+    }).then((data) => {
+      console.log(data);
+      if (data.error) {
+        setValues({ ...values, error: data.error });
+      } else {
+        setValues({
+          ...values,
+          name: "",
+          type: "",
+          limit: "",
+          notes: "",
+          address: "",
+          ownership: "",
+          centers: "",
+          vaccineDate: undefined,
+          loading: false,
+          createdVaccination: data.name,
+        });
+      }
+    });
   };
 
   const newPostForm = () => (
@@ -150,6 +122,16 @@ export default function EditCenter(props) {
       </div>
 
       <div className="form-group">
+        <label className="text-muted">Vaccine Date</label>
+        <input
+          type="datetime-local"
+          onChange={handleChange("vaccineDate")}
+          className="form-control"
+          value={vaccineDate}
+        />
+      </div>
+
+      <div className="form-group">
         <label className="text-muted">Notes</label>
         <textarea
           onChange={handleChange("notes")}
@@ -181,9 +163,7 @@ export default function EditCenter(props) {
         </select>
       </div>
 
-      <button className="btn btn-outline-primary">
-        Edit Vaccination Schedule
-      </button>
+      <button className="btn btn-outline-primary">Create Vaccination</button>
     </form>
   );
 
@@ -199,9 +179,9 @@ export default function EditCenter(props) {
   const showSuccess = () => (
     <div
       className="alert alert-info"
-      style={{ display: editedVaccination ? "" : "none" }}
+      style={{ display: createdVaccination ? "" : "none" }}
     >
-      <h2>{`${editedVaccination} is edited!`}</h2>
+      <h2>{`${createdVaccination} is created!`}</h2>
     </div>
   );
 
@@ -214,18 +194,16 @@ export default function EditCenter(props) {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to={`/vaccinations/${id}`} className="text-warning">
-        Back to Vaccination Schedule
+      <Link to="/admin/dashboard" className="text-warning">
+        Back to Dashboard
       </Link>
     </div>
   );
 
   return (
     <Layout
-      title="Edit Vaccination Schedule"
-      description={`G'day ${
-        isAuthenticated().user.name
-      }, ready to edit vaccination schedule?`}
+      title="Add a new vaccination"
+      description={`G'day ${user.name}, ready to add a new vaccination?`}
     >
       <div className="row">
         <div className="col-md-8 offset-md-2">
@@ -238,4 +216,6 @@ export default function EditCenter(props) {
       </div>
     </Layout>
   );
-}
+};
+
+export default AddVaccinationSchedule;

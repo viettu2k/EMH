@@ -8,10 +8,10 @@ import {
 } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import DeleteVaccination from "./DeleteVaccination";
+import DeleteVaccinationSchedule from "../staff/DeleteVaccinationSchedule";
 import moment from "moment";
 
-export default function Vaccination(props) {
+export default function SingleVaccinationSchedule(props) {
   const [values, setValues] = useState({
     vaccination: {},
     load: false,
@@ -145,7 +145,7 @@ export default function Vaccination(props) {
         {vaccination && (
           <>
             <div className="card col-md-3 border-secondary">
-              {isAuthenticated() && isAuthenticated().user.role >= 1 && (
+              {isAuthenticated() && isAuthenticated().user.role === 1 && (
                 <div className="card-body">
                   <h5 className="card-title text-danger">
                     Edit/Delete
@@ -159,7 +159,7 @@ export default function Vaccination(props) {
                   >
                     Edit Vaccination Schedule
                   </Link>
-                  <DeleteVaccination vaccinationId={vaccination._id} />
+                  <DeleteVaccinationSchedule vaccinationId={vaccination._id} />
                 </div>
               )}
               {isAuthenticated() && isAuthenticated().user.role === 0 && (
