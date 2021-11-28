@@ -21,7 +21,6 @@ export default function UpdateVaccine(props) {
       if (data.error) {
         setValues({ error: data.error });
       } else {
-        // console.log(data);
         setValues({
           ...values,
           id: data._id,
@@ -188,8 +187,8 @@ export default function UpdateVaccine(props) {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to={`/vaccinations/${id}`} className="text-warning">
-        Back to Vaccination Schedule
+      <Link to={`/vaccines/${id}`} className="text-warning">
+        Back to Vaccine Management
       </Link>
     </div>
   );
