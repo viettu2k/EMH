@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getVaccinesByCenter } from "./apiCenter";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import DeleteVaccine from "./DeleteVaccine";
 
 export default function Vaccines() {
   const [values, setValues] = useState({
@@ -79,12 +80,7 @@ export default function Vaccines() {
                   </Link>
                 </td>
                 <td>
-                  <Link
-                    to={`/vaccines/${v._id}/${_id}`}
-                    className="btn btn-raised btn-danger btn-sm"
-                  >
-                    Delete
-                  </Link>
+                  <DeleteVaccine vaccineId={v._id} />
                 </td>
               </tr>
             );
