@@ -80,3 +80,32 @@ export const createVaccine = (userId, token, vaccine) => {
             console.log(err);
         });
 };
+
+export const getVaccine = (vaccineId) => {
+    return fetch(`${API}/vaccines/${vaccineId}`, {
+            method: "GET",
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};
+
+export const updateVaccine = (vaccineId, userId, token, vaccine) => {
+    console.log(vaccine);
+    return fetch(`${API}/vaccines/${vaccineId}/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(vaccine),
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
