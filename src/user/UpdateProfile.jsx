@@ -11,18 +11,32 @@ const UpdateProfile = ({ match }) => {
     email: "",
     password: "",
     phoneNumber: "",
-    dob: "",
+    description: "",
     address: "",
+    photo: "",
+    dob: "",
     error: "",
+    fileSize: 0,
+    redirectToProfile: false,
+    formData: new FormData(),
     success: false,
   });
 
   const { token } = isAuthenticated();
-  const { name, email, password, phoneNumber, dob, address, error, success } =
-    values;
+  const {
+    name,
+    email,
+    password,
+    phoneNumber,
+    dob,
+    fileSize,
+    address,
+    error,
+    success,
+    formData,
+  } = values;
 
   const init = (userId) => {
-    // console.log(userId);
     read(userId, token).then((data) => {
       if (data.error) {
         setValues({ ...values, error: true });
@@ -47,8 +61,43 @@ const UpdateProfile = ({ match }) => {
     []
   );
 
-  const handleChange = (name) => (e) => {
-    setValues({ ...values, error: false, [name]: e.target.value });
+  const handleChange = (name) => (event) => {
+    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    formData.set(name, value);
+    setValues({ ...values, [name]: value });
+  };
+
+  const isValid = () => {
+    if (fileSize > 100000) {
+      setValues({
+        ...values,
+        error: "File size should be less than 100kb",
+        loading: false,
+      });
+      return false;
+    }
+    if (name.length === 0) {
+      setValues({ error: "Name is required", loading: false });
+      return false;
+    }
+    // email@domain.com
+    if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setValues({
+        ...values,
+        error: "A valid Email is required",
+        loading: false,
+      });
+      return false;
+    }
+    if (password.length >= 1 && password.length <= 5) {
+      setValues({
+        ...values,
+        error: "Password must be at least 6 characters",
+        loading: false,
+      });
+      return false;
+    }
+    return true;
   };
 
   const clickSubmit = (e) => {
