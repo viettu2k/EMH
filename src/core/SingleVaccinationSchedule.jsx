@@ -145,7 +145,7 @@ export default function SingleVaccinationSchedule(props) {
         {vaccination && (
           <>
             <div className="col-md-2">
-              {isAuthenticated() && isAuthenticated().user.role === 1 && (
+              {isAuthenticated() && isAuthenticated().user.role >= 1 && (
                 <div className="">
                   <div className="col">
                     <div className="row mb-2">
@@ -167,11 +167,11 @@ export default function SingleVaccinationSchedule(props) {
               )}
               {isAuthenticated() && isAuthenticated().user.role === 0 && (
                 <div className="card-body">
-                  <h5 className="card-title text-success">
-                    Register/Cancel Register vaccination
-                  </h5>
                   {!register ? (
-                    <h5 onClick={registerToggle}>
+                    <h5
+                      onClick={registerToggle}
+                      className="btn btn-raised btn-success"
+                    >
                       <i
                         className="fa fa-check-circle text-success bg-dark"
                         style={{ padding: "10px", borderRadius: "50%" }}
@@ -179,7 +179,10 @@ export default function SingleVaccinationSchedule(props) {
                       Register Vaccination
                     </h5>
                   ) : (
-                    <h5 onClick={registerToggle}>
+                    <h5
+                      onClick={registerToggle}
+                      className="btn btn-raised btn-danger"
+                    >
                       <i
                         className="fa fa-times-circle text-warning bg-dark"
                         style={{ padding: "10px", borderRadius: "50%" }}
@@ -190,29 +193,36 @@ export default function SingleVaccinationSchedule(props) {
                 </div>
               )}
             </div>
-            <div className="col-md-5">
-              <div className="lead mt-2">
-                <p>{vaccination.name}</p>
-                <p>
-                  Vaccine: {vaccination.vaccine && vaccination.vaccine.name}
-                </p>
-                <p>Address: {vaccination.address}</p>
-                <p>Limit: {vaccination.limit}</p>
-                <p>
-                  Vaccination time:{" "}
-                  {moment(vaccination.vaccineDate).format("LLLL")}
-                </p>
-                {vaccination.ownership && (
-                  <p>
-                    Organized By:{" "}
-                    <Link
-                      to={`/centers/${vaccination.ownership}`}
-                      className="btn btn-raised btn-primary btn-sm"
-                    >
-                      {center.name}
-                    </Link>
-                  </p>
-                )}
+            <div className="col-5">
+              <div className="card mb-5">
+                <h3 className="card-header">Information</h3>
+                <ul className="list-group">
+                  <li className="list-group-item">{vaccination.name}</li>
+                  <li className="list-group-item">
+                    Vaccine: {vaccination.vaccine && vaccination.vaccine.name}
+                  </li>
+                  <li className="list-group-item">
+                    Address: {vaccination.address}
+                  </li>
+                  <li className="list-group-item">
+                    Limit: {vaccination.limit}
+                  </li>
+                  <li className="list-group-item">
+                    Vaccination time:{" "}
+                    {moment(vaccination.vaccineDate).format("LLLL")}
+                  </li>
+                  {vaccination.ownership && (
+                    <li className="list-group-item">
+                      Organized By:{" "}
+                      <Link
+                        to={`/centers/${vaccination.ownership}`}
+                        className="btn btn-raised btn-primary btn-sm"
+                      >
+                        {center.name}
+                      </Link>
+                    </li>
+                  )}
+                </ul>
               </div>
             </div>
             <div className="col-md-4">

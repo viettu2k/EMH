@@ -90,7 +90,7 @@ export default function Routes() {
           component={UpdateVaccinationSchedule}
         />
         <Route path="/centers/:centerId" exact component={Center} />
-        <Route
+        <PrivateRoute
           path="/vaccinations/:vaccinationId"
           exact
           component={Vaccination}
