@@ -93,8 +93,8 @@ const UserDashboard = () => {
       className="container"
     >
       <div className="row">
-        <div className="col-3">{userLinks()}</div>
-        <div className="col-9">
+        <div className="col-4">{userLinks()}</div>
+        <div className="col-8">
           {userInfo()}
           {vaccinationHistory()}
           {testHistory()}

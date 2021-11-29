@@ -110,8 +110,8 @@ export default function MedicalCenterDashboard() {
       className="container"
     >
       <div className="row">
-        <div className="col-3">{centerLinks()}</div>
-        <div className="col-9">
+        <div className="col-4">{centerLinks()}</div>
+        <div className="col-8">
           {centerInfo()}
           {listMembers()}
         </div>

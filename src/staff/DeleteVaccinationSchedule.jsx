@@ -13,7 +13,6 @@ export default function DeleteVaccination({ vaccinationId }) {
       if (data.error) {
         console.log(data.error);
       } else {
-        // redirect
         setRedirect(true);
       }
     });
