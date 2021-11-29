@@ -3,6 +3,8 @@ import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import { listByMedicalStaff } from "./apiStaff";
+import { API } from "../config";
+import DefaultAvatar from "../images/avatar.jpg";
 import moment from "moment";
 
 export default function MedicalStaffDashboard() {
@@ -99,6 +101,24 @@ export default function MedicalStaffDashboard() {
     );
   };
 
+  const userAvatar = () => {
+    const photoUrl = _id
+      ? `${API}/user/photo/${_id}?${new Date().getTime()}`
+      : DefaultAvatar;
+    return (
+      <div className="card mb-5">
+        <h3 className="card-header">Avatar</h3>
+        <img
+          style={{ height: "250px", width: "auto" }}
+          className="img-thumbnail rounded border border-primary"
+          src={photoUrl}
+          onError={(i) => (i.target.src = `${DefaultAvatar}`)}
+          alt={name}
+        />
+      </div>
+    );
+  };
+
   return (
     <Layout
       title="Dashboard"
@@ -106,7 +126,10 @@ export default function MedicalStaffDashboard() {
       className="container"
     >
       <div className="row">
-        <div className="col-4">{staffLinks()}</div>
+        <div className="col-4">
+          {userAvatar()}
+          {staffLinks()}
+        </div>
         <div className="col-8">
           {staffInfo()}
           {myVaccination()}
