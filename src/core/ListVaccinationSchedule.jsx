@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getVaccinations } from "./apiCore";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 export default function Vaccinations() {
   const [values, setValues] = useState({
@@ -34,7 +35,7 @@ export default function Vaccinations() {
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Type</th>
+          <th scope="col">Vaccination time</th>
           <th className="text-center" scope="col">
             Status
           </th>
@@ -51,7 +52,7 @@ export default function Vaccinations() {
               <tr key={i}>
                 <th scope="row">{i + 1}</th>
                 <td>{v.name}</td>
-                <td>{v.type}</td>
+                <td>{moment(v.vaccineDate).format("lll")}</td>
                 <td className="text-center">
                   {v.participants.length === v.limit ? (
                     <i

@@ -9,7 +9,7 @@ export default function Home() {
       description="ELECTRONIC MEDICAL HANDBOOK"
       className="container-fluid"
     >
-      {/* <ListVaccinationSchedule /> */}
+      <ListVaccinationSchedule />
     </Layout>
   );
 }
