@@ -5,31 +5,49 @@ import {
   getVaccinationSchedule,
   updateVaccinationSchedule,
   getVaccinesByCenter,
+  updateVaccine,
 } from "./apiStaff";
 import Layout from "../core/Layout";
+import moment from "moment";
 
-export default function EditCenter(props) {
+export default function UpdateVaccinationSchedule(props) {
   const [values, setValues] = useState({
     id: "",
     name: "",
-    type: "",
+    vaccine: {},
+    tempVaccine: {},
     notes: "",
     address: "",
     limit: "",
-    ownership: "",
+    oldLimit: "",
+    vaccines: [],
+    vaccineDate: "",
     loading: false,
     error: "",
-    editedVaccination: "",
+    updatedVaccination: "",
   });
 
-  const [centers, setCenters] = useState([]);
+  const { user, token } = isAuthenticated();
+  const {
+    id,
+    name,
+    vaccine,
+    notes,
+    address,
+    limit,
+    vaccineDate,
+    vaccines,
+    loading,
+    error,
+    updatedVaccination,
+  } = values;
 
-  const initCenters = () => {
-    getVaccinesByCenter(user._id, token).then((data) => {
+  const initVaccines = () => {
+    getVaccinesByCenter(user.references, token).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        setCenters(data);
+        setValues({ ...values, vaccines: data });
       }
     });
   };
@@ -39,50 +57,54 @@ export default function EditCenter(props) {
       if (data.error) {
         setValues({ error: data.error });
       } else {
-        // console.log(data);
         setValues({
           ...values,
           id: data._id,
           name: data.name,
-          type: data.type,
+          tempVaccine: data.vaccine,
           notes: data.notes,
           limit: data.limit,
-          ownership: data.ownership,
+          oldLimit: data.limit,
+          vaccineDate: moment(data.vaccineDate).format("YYYY-MM-DDTkk:mm"),
           address: data.address,
         });
-        initCenters();
       }
     });
   };
 
   useEffect(
     () => {
-      const vaccinationId = props.match.params.vaccinationId;
-      init(vaccinationId);
+      initVaccines();
     },
     // eslint-disable-next-line
     []
   );
 
-  const { user, token } = isAuthenticated();
-  const {
-    id,
-    name,
-    type,
-    notes,
-    limit,
-    ownership,
-    address,
-    loading,
-    error,
-    editedVaccination,
-  } = values;
+  useEffect(
+    () => {
+      if (vaccines) {
+        const vaccinationId = props.match.params.vaccinationId;
+        init(vaccinationId);
+      }
+    },
+    // eslint-disable-next-line
+    [vaccines]
+  );
 
   const isValid = () => {
-    if (!name || !type || !address || !limit || !ownership) {
+    if (!name || !vaccine || !address || !limit || !vaccineDate) {
       setValues({
         ...values,
         error: "All fields are required",
+        loading: false,
+      });
+      return false;
+    }
+
+    if (limit < 0) {
+      setValues({
+        ...values,
+        error: "Limit cannot be negative",
         loading: false,
       });
       return false;
@@ -92,20 +114,43 @@ export default function EditCenter(props) {
   };
 
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+    setValues({ ...values, [name]: event.target.value, error: "" });
+  };
+
+  const getIndex = (array, id) => {
+    let temp = 0;
+    array.forEach((element, i) => {
+      if (element["_id"] === id) {
+        temp = i;
+      }
+    });
+    return temp;
   };
 
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    const { name, type, notes, address, limit, ownership } = values;
-    if (isValid) {
+    const { name, tempVaccine, notes, address, limit, oldLimit } = values;
+    let index = getIndex(vaccines, tempVaccine);
+    const vaccine = { name: vaccines[index].name, id: tempVaccine };
+    setValues({
+      ...values,
+      vaccine: vaccine,
+    });
+    if (isValid()) {
+      updateVaccine(tempVaccine, user.references, token, {
+        consumed: vaccines[index].consumed + parseInt(limit) - oldLimit,
+        quantity: vaccines[index].quantity - parseInt(limit) + oldLimit,
+      }).then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        }
+      });
       updateVaccinationSchedule(id, user._id, token, {
         name,
-        type,
+        vaccine,
         notes,
         limit,
-        ownership,
         address,
       }).then((data) => {
         if (data.error) {
@@ -114,7 +159,7 @@ export default function EditCenter(props) {
           setValues({
             ...values,
             loading: false,
-            editedVaccination: name,
+            updatedVaccination: name,
           });
         }
       });
@@ -134,13 +179,16 @@ export default function EditCenter(props) {
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Type</label>
-        <input
-          onChange={handleChange("type")}
-          type="text"
-          className="form-control"
-          value={type}
-        />
+        <label className="text-muted">Vaccine</label>
+        <select onChange={handleChange("tempVaccine")} className="form-control">
+          <option>Please select</option>
+          {vaccines &&
+            vaccines.map((v, i) => (
+              <option key={i} value={v._id}>
+                {v.name}
+              </option>
+            ))}
+        </select>
       </div>
 
       <div className="form-group">
@@ -150,6 +198,16 @@ export default function EditCenter(props) {
           onChange={handleChange("limit")}
           className="form-control"
           value={limit}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Vaccine Date</label>
+        <input
+          type="datetime-local"
+          onChange={handleChange("vaccineDate")}
+          className="form-control"
+          value={vaccineDate}
         />
       </div>
 
@@ -172,21 +230,8 @@ export default function EditCenter(props) {
         />
       </div>
 
-      <div className="form-group">
-        <label className="text-muted">Ownership</label>
-        <select onChange={handleChange("ownership")} className="form-control">
-          <option>Please select</option>
-          {centers &&
-            centers.map((c, i) => (
-              <option key={i} value={c._id}>
-                {c.name}
-              </option>
-            ))}
-        </select>
-      </div>
-
       <button className="btn btn-outline-primary">
-        Edit Vaccination Schedule
+        Update Vaccination Schedule
       </button>
     </form>
   );
@@ -203,9 +248,9 @@ export default function EditCenter(props) {
   const showSuccess = () => (
     <div
       className="alert alert-info"
-      style={{ display: editedVaccination ? "" : "none" }}
+      style={{ display: updatedVaccination ? "" : "none" }}
     >
-      <h2>{`${editedVaccination} is edited!`}</h2>
+      <h2>{`${updatedVaccination} is updated!`}</h2>
     </div>
   );
 
