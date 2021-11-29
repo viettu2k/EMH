@@ -139,27 +139,30 @@ export default function SingleVaccinationSchedule(props) {
           ? "Status: Full"
           : "Status: Available"
       }
-      className="container-fluid"
+      className="container"
     >
       <div className="row">
         {vaccination && (
           <>
-            <div className="card col-md-3 border-secondary">
+            <div className="col-md-2">
               {isAuthenticated() && isAuthenticated().user.role === 1 && (
-                <div className="card-body">
-                  <h5 className="card-title text-danger">
-                    Edit/Delete
-                    {`${
-                      isAuthenticated().user.role === 1 ? "" : "as an Admin"
-                    }`}
-                  </h5>
-                  <Link
-                    className="btn btn-raised btn-success mr-5"
-                    to={`/update/vaccination/${props.match.params.vaccinationId}`}
-                  >
-                    Edit Vaccination Schedule
-                  </Link>
-                  <DeleteVaccinationSchedule vaccinationId={vaccination._id} />
+                <div className="">
+                  <div className="col">
+                    <div className="row mb-2">
+                      <Link
+                        className="btn btn-raised btn-success"
+                        to={`/update/vaccination/${props.match.params.vaccinationId}`}
+                      >
+                        Update Vaccination Schedule
+                      </Link>
+                    </div>
+
+                    <div className="row">
+                      <DeleteVaccinationSchedule
+                        vaccinationId={vaccination._id}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
               {isAuthenticated() && isAuthenticated().user.role === 0 && (
@@ -190,7 +193,9 @@ export default function SingleVaccinationSchedule(props) {
             <div className="col-md-5">
               <div className="lead mt-2">
                 <p>{vaccination.name}</p>
-                <p>Type: {vaccination.type}</p>
+                <p>
+                  Vaccine: {vaccination.vaccine && vaccination.vaccine.name}
+                </p>
                 <p>Address: {vaccination.address}</p>
                 <p>Limit: {vaccination.limit}</p>
                 <p>

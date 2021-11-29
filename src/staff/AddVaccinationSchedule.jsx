@@ -12,6 +12,7 @@ const AddVaccinationSchedule = () => {
   const [values, setValues] = useState({
     name: "",
     vaccine: {},
+    tempVaccine: {},
     notes: "",
     address: "",
     limit: "",
@@ -72,10 +73,14 @@ const AddVaccinationSchedule = () => {
   const clickSubmit = (event) => {
     event.preventDefault();
     setValues({ ...values, error: "", loading: true });
-    const { name, vaccine, notes, address, limit } = values;
-    let index = getIndex(vaccines, vaccine);
-
-    updateVaccine(vaccine, user.references, token, {
+    const { name, tempVaccine, notes, address, limit } = values;
+    let index = getIndex(vaccines, tempVaccine);
+    const vaccine = { name: vaccines[index].name, id: tempVaccine };
+    setValues({
+      ...values,
+      vaccine: vaccine,
+    });
+    updateVaccine(tempVaccine, user.references, token, {
       consumed: vaccines[index].consumed + parseInt(limit),
       quantity: vaccines[index].quantity - parseInt(limit),
     }).then((data) => {
@@ -124,7 +129,7 @@ const AddVaccinationSchedule = () => {
 
       <div className="form-group">
         <label className="text-muted">Vaccine</label>
-        <select onChange={handleChange("vaccine")} className="form-control">
+        <select onChange={handleChange("tempVaccine")} className="form-control">
           <option>Please select</option>
           {vaccines &&
             vaccines.map((v, i) => (

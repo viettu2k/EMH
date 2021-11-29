@@ -11,7 +11,7 @@ export const getVaccinations = () => {
 };
 
 export const getCenter = (centerId) => {
-    return fetch(`${API}/centers/${centerId}`, {
+    return fetch(`${API}/user/${centerId}`, {
             method: "GET",
         })
         .then((response) => {
