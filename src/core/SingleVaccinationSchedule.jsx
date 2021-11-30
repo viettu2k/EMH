@@ -5,6 +5,7 @@ import {
   registerVaccination,
   cancelRegister,
   getCenter,
+  // sendVaccinationTime,
 } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -15,7 +16,6 @@ export default function SingleVaccinationSchedule(props) {
   const [values, setValues] = useState({
     vaccination: {},
     load: false,
-    usersName: [],
     center: {},
     register: false,
     error: "",
@@ -106,6 +106,17 @@ export default function SingleVaccinationSchedule(props) {
         });
       }
     });
+    // if (callApi == registerVaccination) {
+    //   sendVaccinationTime(email,name, ).then((data) => {
+    //     if (data.error) {
+    //       // console.log(data.error);
+    //       setValues({ ...values, error: data.error });
+    //     } else {
+    //       // console.log(data.message);
+    //       setValues({ ...values, message: data.message });
+    //     }
+    //   });
+    // }
   };
 
   const showError = () => (
@@ -136,9 +147,9 @@ export default function SingleVaccinationSchedule(props) {
       className="alert alert-info"
       style={{ display: success ? "" : "none" }}
     >
-      <h2>{`Registration successful! Your vaccine time is ${handleVaccineTime(
+      <h2>{`You have successfully registered for vaccination! Your vaccine time is: ${handleVaccineTime(
         vaccination.vaccineDate
-      )} `}</h2>
+      )}`}</h2>
     </div>
   );
 
@@ -159,7 +170,7 @@ export default function SingleVaccinationSchedule(props) {
           <>
             <div className="col-md-2">
               {isAuthenticated() && isAuthenticated().user.role >= 1 && (
-                <div className="">
+                <>
                   <div className="col">
                     <div className="row mb-2">
                       <Link
@@ -176,34 +187,38 @@ export default function SingleVaccinationSchedule(props) {
                       />
                     </div>
                   </div>
-                </div>
+                </>
               )}
               {isAuthenticated() && isAuthenticated().user.role === 0 && (
-                <div className="card-body">
+                <>
                   {!register ? (
                     <h5
                       onClick={registerToggle}
                       className="btn btn-raised btn-success"
+                      style={{ cursor: "pointer" }}
                     >
                       <i
                         className="fa fa-check-circle text-success bg-dark"
                         style={{ padding: "10px", borderRadius: "50%" }}
-                      />{" "}
+                      />
+                      <br />
                       Register Vaccination
                     </h5>
                   ) : (
                     <h5
                       onClick={registerToggle}
                       className="btn btn-raised btn-danger"
+                      style={{ cursor: "pointer" }}
                     >
                       <i
                         className="fa fa-times-circle text-warning bg-dark"
                         style={{ padding: "10px", borderRadius: "50%" }}
-                      />{" "}
+                      />
+                      <br />
                       Cancel Register Vaccination
                     </h5>
                   )}
-                </div>
+                </>
               )}
             </div>
             <div className="col-5">
@@ -238,21 +253,24 @@ export default function SingleVaccinationSchedule(props) {
                 </ul>
               </div>
             </div>
-            <div className="col-md-4">
-              <div className="lead mt-3">
-                <h4>Participants</h4>
+            <div className="col-md-5">
+              <div className="card mb-5">
+                <h3 className="card-header">Participants</h3>
                 <ol className="list-group list-group-numbered">
                   {vaccination.participants &&
                     vaccination.participants.map((p, i) => {
                       return (
-                        <li key={i} className="row">
-                          <div className="col">
-                            {i + 1}.{p.name}
-                          </div>
-                          <div className="col">
-                            {`${moment(vaccination.vaccineDate)
-                              .add(i * 3, "m")
-                              .calendar()}`}
+                        <li key={i} className="list-group-item">
+                          <div className="row">
+                            <div className="col">
+                              {i + 1}.
+                              <Link to={`/public/${p.id}`}>{p.name}</Link>
+                            </div>
+                            <div className="col">
+                              {`${moment(vaccination.vaccineDate)
+                                .add(i * 3, "m")
+                                .calendar()}`}
+                            </div>
                           </div>
                         </li>
                       );

@@ -138,7 +138,7 @@ export const registerVaccination = (token, user) => {
 };
 
 export const cancelRegister = (token, user) => {
-    return fetch(`${API}/vaccinations/cancelregister`, {
+    return fetch(`${API}/vaccinations/cancel-register`, {
             method: "PUT",
             headers: {
                 Accept: "application/json",
@@ -151,4 +151,20 @@ export const cancelRegister = (token, user) => {
             return response.json();
         })
         .catch((err) => console.error(err));
+};
+
+export const sendVaccinationTime = (email, name, vaccinationTime) => {
+    return fetch(`${API}/send-vaccination-time/`, {
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, name, vaccinationTime }),
+        })
+        .then((response) => {
+            console.log("forgot password response: ", response);
+            return response.json();
+        })
+        .catch((err) => console.log(err));
 };
