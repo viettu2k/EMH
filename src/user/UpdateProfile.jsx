@@ -21,6 +21,8 @@ export default function UpdateProfile({ match }) {
     dob: "",
     loading: false,
     error: "",
+    reload: "",
+
     fileSize: 0,
     formData: new FormData(),
   });
@@ -57,9 +59,9 @@ export default function UpdateProfile({ match }) {
     phoneNumber,
     address,
     dob,
-    // photo,
     loading,
     error,
+    reload,
     formData,
     fileSize,
   } = values;
@@ -122,6 +124,7 @@ export default function UpdateProfile({ match }) {
             setValues({
               ...values,
               loading: false,
+              reload: true,
             });
           });
         }
@@ -227,6 +230,7 @@ export default function UpdateProfile({ match }) {
       </form>
     );
   };
+
   const showError = () => (
     <div
       className="alert alert-danger"
@@ -262,6 +266,12 @@ export default function UpdateProfile({ match }) {
     );
   };
 
+  const reloadPage = () => {
+    if (reload) {
+      return window.location.reload();
+    }
+  };
+
   const userAvatar = () => {
     const photoUrl = user._id ? `${API}/user/photo/${user._id}` : DefaultAvatar;
     return (
@@ -289,6 +299,7 @@ export default function UpdateProfile({ match }) {
         <div className="col-md-8 offset-md-2">
           {showLoading()}
           {showError()}
+          {reloadPage()}
           {userAvatar()}
           {newPostForm()}
           {goBack()}
