@@ -1,71 +1,76 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../core/Layout";
+import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
-import { Redirect } from "react-router-dom";
 import { read, update, updateUser } from "./apiUser";
+import { API } from "../config";
+import Layout from "../core/Layout";
 import moment from "moment";
+import DefaultAvatar from "../images/avatar.jpg";
 
-const UpdateProfile = ({ match }) => {
+export default function UpdateProfile({ match }) {
   const [values, setValues] = useState({
+    id: "",
     name: "",
     email: "",
     password: "",
-    phoneNumber: "",
+    confirmPassword: "",
     description: "",
+    phoneNumber: "",
     address: "",
     photo: "",
     dob: "",
+    loading: false,
     error: "",
     fileSize: 0,
-    redirectToProfile: false,
     formData: new FormData(),
-    success: false,
   });
 
-  const { token } = isAuthenticated();
-  const {
-    name,
-    email,
-    password,
-    phoneNumber,
-    dob,
-    fileSize,
-    address,
-    error,
-    success,
-    formData,
-  } = values;
-
-  const init = (userId) => {
-    read(userId, token).then((data) => {
+  const init = () => {
+    const token = isAuthenticated().token;
+    read(match.params.userId, token).then((data) => {
       if (data.error) {
-        setValues({ ...values, error: true });
+        setValues({ error: data.error });
       } else {
+        console.log(data);
         setValues({
           ...values,
+          id: data._id,
           name: data.name,
           email: data.email,
+          description: data.description,
           phoneNumber: data.phoneNumber,
-          dob: moment(data.dob).format("YYYY-MM-DD"),
           address: data.address,
+          dob: moment(data.dob).format("YYYY-MM-DD"),
         });
       }
     });
   };
 
+  const { user, token } = isAuthenticated();
+  const {
+    id,
+    name,
+    email,
+    password,
+    confirmPassword,
+    description,
+    phoneNumber,
+    address,
+    dob,
+    // photo,
+    loading,
+    error,
+    formData,
+    fileSize,
+  } = values;
+
   useEffect(
     () => {
-      init(match.params.userId);
+      init();
     },
     // eslint-disable-next-line
     []
   );
-
-  const handleChange = (name) => (event) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
-    formData.set(name, value);
-    setValues({ ...values, [name]: value });
-  };
 
   const isValid = () => {
     if (fileSize > 100000) {
@@ -76,61 +81,152 @@ const UpdateProfile = ({ match }) => {
       });
       return false;
     }
-    if (name.length === 0) {
-      setValues({ error: "Name is required", loading: false });
-      return false;
-    }
-    // email@domain.com
-    if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+
+    if (!name || !description || !address || !phoneNumber) {
       setValues({
         ...values,
-        error: "A valid Email is required",
+        error: "All fields are required",
         loading: false,
       });
       return false;
     }
-    if (password.length >= 1 && password.length <= 5) {
-      setValues({
-        ...values,
-        error: "Password must be at least 6 characters",
-        loading: false,
-      });
-      return false;
-    }
+
     return true;
   };
 
-  const clickSubmit = (e) => {
-    e.preventDefault();
-    update(match.params.userId, token, {
-      name,
-      email,
-      password,
-      phoneNumber,
-      dob,
-      address,
-    }).then((data) => {
-      if (data.error) {
-        setValues({
-          ...values,
-          error: data.error,
-        });
-      } else {
-        updateUser(data, () => {
-          setValues({
-            ...values,
-            name: data.name,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            dob: data.dob,
-            address: data.address,
-            success: true,
-          });
-        });
-      }
-    });
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: "" });
+    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    const fileSize = name === "photo" ? event.target.files[0].size : 0;
+    formData.set(name, value);
+    setValues({ ...values, [name]: value, fileSize });
   };
 
+  const clickSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, error: "", loading: true });
+    if (confirmPassword !== password) {
+      setValues({
+        ...values,
+        error: "Your password doesn't match",
+        loading: false,
+      });
+      return false;
+    }
+    if (isValid()) {
+      update(id, token, formData).then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          updateUser(data, () => {
+            setValues({
+              ...values,
+              loading: false,
+            });
+          });
+        }
+      });
+    }
+  };
+
+  const newPostForm = () => {
+    return (
+      <form className="mb-3" onSubmit={clickSubmit}>
+        <h4>Post Photo</h4>
+        <div className="form-group">
+          <label className="btn btn-secondary">
+            <input
+              onChange={handleChange("photo")}
+              type="file"
+              name="photo"
+              accept="image/*"
+            />
+          </label>
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Name</label>
+          <input
+            onChange={handleChange("name")}
+            type="text"
+            className="form-control"
+            value={name}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Email</label>
+          <input
+            onChange={handleChange("email")}
+            type="email"
+            className="form-control"
+            value={email}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Password</label>
+          <input
+            onChange={handleChange("password")}
+            type="password"
+            className="form-control"
+            value={password}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Confirm Password</label>
+          <input
+            onChange={handleChange("confirmPassword")}
+            type="password"
+            className="form-control"
+            value={confirmPassword}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Description</label>
+          <textarea
+            onChange={handleChange("description")}
+            className="form-control"
+            value={description}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Phone Number</label>
+          <input
+            onChange={handleChange("phoneNumber")}
+            type="text"
+            className="form-control"
+            value={phoneNumber}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Address</label>
+          <input
+            onChange={handleChange("address")}
+            type="text"
+            className="form-control"
+            value={address}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="text-muted">Date of Birth</label>
+          <input
+            type="date"
+            onChange={handleChange("dob")}
+            className="form-control"
+            value={dob}
+          />
+        </div>
+
+        <button className="btn btn-outline-primary">Update Profile</button>
+      </form>
+    );
+  };
   const showError = () => (
     <div
       className="alert alert-danger"
@@ -140,90 +236,64 @@ const UpdateProfile = ({ match }) => {
     </div>
   );
 
-  const redirectUser = (success) => {
-    if (success) {
-      return <Redirect to="/" />;
-    }
+  const showLoading = () =>
+    loading && (
+      <div className="alert alert-success">
+        <h2>Loading...</h2>
+      </div>
+    );
+
+  const goBack = () => {
+    const role = user.role;
+    let temp =
+      role === 0
+        ? "user"
+        : role === 1
+        ? "staff"
+        : role === 2
+        ? "center"
+        : "admin";
+    return (
+      <div className="mt-5">
+        <Link to={`/${temp}/dashboard`} className="text-warning">
+          Back to Dashboard
+        </Link>
+      </div>
+    );
   };
 
-  const profileUpdate = (name, email, password, phoneNumber, dob, address) => (
-    <form>
-      <div className="form-group">
-        <label className="text-muted">Name</label>
-        <input
-          type="text"
-          onChange={handleChange("name")}
-          className="form-control"
-          value={name}
+  const userAvatar = () => {
+    const photoUrl = user._id ? `${API}/user/photo/${user._id}` : DefaultAvatar;
+    return (
+      <>
+        <h4>Present photo</h4>
+        <img
+          style={{ height: "250px", width: "auto" }}
+          className="img-thumbnail rounded border border-primary"
+          src={photoUrl}
+          onError={(i) => (i.target.src = `${DefaultAvatar}`)}
+          alt={name}
         />
-      </div>
-      <div className="form-group">
-        <label className="text-muted">Email</label>
-        <input
-          type="email"
-          onChange={handleChange("email")}
-          className="form-control"
-          value={email}
-        />
-      </div>
-      <div className="form-group">
-        <label className="text-muted">Password</label>
-        <input
-          type="password"
-          onChange={handleChange("password")}
-          className="form-control"
-          value={password}
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="text-muted">Address</label>
-        <input
-          type="text"
-          onChange={handleChange("address")}
-          className="form-control"
-          value={address}
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="text-muted">Phone Number</label>
-        <input
-          type="text"
-          onChange={handleChange("phoneNumber")}
-          className="form-control"
-          value={phoneNumber}
-        />
-      </div>
-
-      <div className="form-group">
-        <label className="text-muted">Date of Birth</label>
-        <input
-          type="date"
-          onChange={handleChange("dob")}
-          className="form-control"
-          value={dob}
-        />
-      </div>
-
-      <button onClick={clickSubmit} className="btn btn-primary">
-        Submit
-      </button>
-    </form>
-  );
+      </>
+    );
+  };
 
   return (
     <Layout
-      title="Profile"
-      description="Update your profile"
-      className="container col-md-8 offset-md-2"
+      title="Update Profile"
+      description={`G'day ${
+        isAuthenticated().user.name
+      }, ready to update profile?`}
     >
-      <h2 className="mb-4">Profile update</h2>
-      {profileUpdate(name, email, password, phoneNumber, dob, address)}
-      {redirectUser(success)}
-      {showError()}
+      <div className="row">
+        <div className="col-md-8 offset-md-2">
+          {showLoading()}
+          {showError()}
+          {userAvatar()}
+          {newPostForm()}
+          {goBack()}
+        </div>
+      </div>
     </Layout>
   );
-};
-
-export default UpdateProfile;
+}
