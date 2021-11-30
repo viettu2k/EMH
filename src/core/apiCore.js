@@ -121,7 +121,7 @@ export const getVaccinationByCenter = (centerId) => {
         .catch((err) => console.log(err));
 };
 
-export const registerVaccination = (name, token, vaccinationId) => {
+export const registerVaccination = (token, user) => {
     return fetch(`${API}/vaccinations/register`, {
             method: "PUT",
             headers: {
@@ -129,7 +129,7 @@ export const registerVaccination = (name, token, vaccinationId) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ name, vaccinationId }),
+            body: JSON.stringify(user),
         })
         .then((response) => {
             return response.json();
@@ -137,7 +137,7 @@ export const registerVaccination = (name, token, vaccinationId) => {
         .catch((err) => console.error(err));
 };
 
-export const cancelRegister = (name, token, vaccinationId) => {
+export const cancelRegister = (token, user) => {
     return fetch(`${API}/vaccinations/cancelregister`, {
             method: "PUT",
             headers: {
@@ -145,7 +145,7 @@ export const cancelRegister = (name, token, vaccinationId) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ name, vaccinationId }),
+            body: JSON.stringify(user),
         })
         .then((response) => {
             return response.json();

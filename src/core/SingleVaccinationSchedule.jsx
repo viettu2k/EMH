@@ -24,9 +24,19 @@ export default function SingleVaccinationSchedule(props) {
 
   const { vaccination, register, error, center, load, success } = values;
 
+  const getIndex = (array, name) => {
+    let temp = -1;
+    array.forEach((element, i) => {
+      if (element["name"] === name) {
+        temp = i;
+      }
+    });
+    return temp;
+  };
+
   const checkRegister = (participants = []) => {
     const name = isAuthenticated() && isAuthenticated().user.name;
-    let match = participants.indexOf(name) !== -1;
+    let match = getIndex(participants, name) !== -1;
     return match;
   };
 
@@ -77,11 +87,14 @@ export default function SingleVaccinationSchedule(props) {
 
   const registerToggle = () => {
     let callApi = !register ? registerVaccination : cancelRegister;
-    const name = isAuthenticated().user.name;
-    const token = isAuthenticated().token;
-    const vaccinationId = vaccination._id;
+    const {
+      user: { _id, name },
+      token,
+    } = isAuthenticated();
+    const id = _id;
+    const vaccinationId = props.match.params.vaccinationId;
 
-    callApi(name, token, vaccinationId).then((data) => {
+    callApi(token, { vaccinationId, name, id }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
@@ -234,7 +247,7 @@ export default function SingleVaccinationSchedule(props) {
                       return (
                         <li key={i} className="row">
                           <div className="col">
-                            {i + 1}.{p}
+                            {i + 1}.{p.name}
                           </div>
                           <div className="col">
                             {`${moment(vaccination.vaccineDate)
