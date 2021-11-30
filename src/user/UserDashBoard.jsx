@@ -77,17 +77,6 @@ const UserDashboard = () => {
     );
   };
 
-  const testHistory = () => {
-    return (
-      <div className="card mb-5">
-        <h3 className="card-header">Test history</h3>
-        <ul className="list-group">
-          <li className="list-group-item">history</li>
-        </ul>
-      </div>
-    );
-  };
-
   const userAvatar = () => {
     const photoUrl = _id
       ? `${API}/user/photo/${_id}?${new Date().getTime()}`
@@ -120,7 +109,6 @@ const UserDashboard = () => {
         <div className="col-8">
           {userInfo()}
           {vaccinationHistory()}
-          {testHistory()}
         </div>
       </div>
     </Layout>

@@ -35,10 +35,10 @@ export default function Vaccinations() {
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
-          <th scope="col">Vaccination time</th>
           <th className="text-center" scope="col">
             Status
           </th>
+          <th scope="col">Vaccination time</th>
           <th scope="col">Address</th>
           <th className="text-center" scope="col">
             View
@@ -52,7 +52,6 @@ export default function Vaccinations() {
               <tr key={i}>
                 <th scope="row">{i + 1}</th>
                 <td>{v.name}</td>
-                <td>{moment(v.vaccineDate).format("lll")}</td>
                 <td className="text-center">
                   {v.participants.length === v.limit ? (
                     <i
@@ -66,6 +65,7 @@ export default function Vaccinations() {
                     ></i>
                   )}
                 </td>
+                <td>{moment(v.vaccineDate).format("lll")}</td>
                 <td>{v.address}</td>
                 <td className="text-center">
                   <Link
