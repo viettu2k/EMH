@@ -22,6 +22,7 @@ export default function MedicalCenterDashboard() {
   } = isAuthenticated();
 
   const centerLinks = () => {
+    console.log(isAuthenticated().user);
     return (
       <div className="card">
         <h4 className="card-header">Admin Links</h4>
