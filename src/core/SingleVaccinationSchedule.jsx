@@ -5,7 +5,7 @@ import {
   registerVaccination,
   cancelRegister,
   getCenter,
-  // sendVaccinationTime,
+  sendVaccinationTime,
 } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -17,14 +17,16 @@ export default function SingleVaccinationSchedule(props) {
     vaccination: {},
     load: false,
     center: {},
+    sentEmail: false,
     register: false,
     error: "",
     success: false,
   });
 
-  const { vaccination, register, error, center, load, success } = values;
+  const { vaccination, register, error, center, load, success, sentEmail } =
+    values;
 
-  const getIndex = (array, name) => {
+  const getIndex = (array = [], name) => {
     let temp = -1;
     array.forEach((element, i) => {
       if (element["name"] === name) {
@@ -85,6 +87,17 @@ export default function SingleVaccinationSchedule(props) {
     [load]
   );
 
+  const handleVaccineTime = (participants = [], vaccineTime) => {
+    const name = isAuthenticated() && isAuthenticated().user.name;
+    let temp = -1;
+    participants.forEach((element, i) => {
+      if (element["name"] === name) {
+        temp = i;
+      }
+    });
+    return moment(vaccineTime).add(temp * 3, "m");
+  };
+
   const registerToggle = () => {
     let callApi = !register ? registerVaccination : cancelRegister;
     const {
@@ -92,6 +105,11 @@ export default function SingleVaccinationSchedule(props) {
       token,
     } = isAuthenticated();
     const id = _id;
+    if (!register) {
+      setValues({ ...values, sentEmail: false });
+    } else {
+      setValues({ ...values, sentEmail: true });
+    }
     const vaccinationId = props.match.params.vaccinationId;
 
     callApi(token, { vaccinationId, name, id }).then((data) => {
@@ -106,18 +124,146 @@ export default function SingleVaccinationSchedule(props) {
         });
       }
     });
-    // if (callApi == registerVaccination) {
-    //   sendVaccinationTime(email,name, ).then((data) => {
-    //     if (data.error) {
-    //       // console.log(data.error);
-    //       setValues({ ...values, error: data.error });
-    //     } else {
-    //       // console.log(data.message);
-    //       setValues({ ...values, message: data.message });
-    //     }
-    //   });
-    // }
   };
+
+  const sendEmail = () => {
+    const {
+      user: { name, email },
+    } = isAuthenticated();
+    const { name: vaccinationName, vaccineDate, participants } = vaccination;
+    if (getIndex(participants, name) !== -1 && !sentEmail) {
+      const vaccinationTime = handleVaccineTime(
+        participants,
+        vaccineDate
+      ).format("LLLL");
+      sendVaccinationTime(email, vaccinationName, vaccinationTime).then(
+        (data) => {
+          if (data.error) {
+            // console.log(data.error);
+            setValues({ ...values, error: data.error });
+          } else {
+            // console.log(data.message);
+            // setValues({ ...values, sentEmail: true });
+          }
+        }
+      );
+    }
+  };
+
+  const informationForm = () => (
+    <div className="row">
+      {vaccination && (
+        <>
+          <div className="col-md-2">
+            {isAuthenticated() && isAuthenticated().user.role >= 1 && (
+              <>
+                <div className="col">
+                  <div className="row mb-2">
+                    <Link
+                      className="btn btn-raised btn-success"
+                      to={`/update/vaccination/${props.match.params.vaccinationId}`}
+                    >
+                      Update Vaccination Schedule
+                    </Link>
+                  </div>
+                  <div className="row">
+                    <DeleteVaccinationSchedule
+                      vaccinationId={vaccination._id}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+            {isAuthenticated() && isAuthenticated().user.role === 0 && (
+              <>
+                {!register ? (
+                  <h5
+                    onClick={registerToggle}
+                    className="btn btn-raised btn-success"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <i
+                      className="fa fa-check-circle text-success bg-dark"
+                      style={{ padding: "10px", borderRadius: "50%" }}
+                    />
+                    <br />
+                    Register Vaccination
+                  </h5>
+                ) : (
+                  <h5
+                    onClick={registerToggle}
+                    className="btn btn-raised btn-danger"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <i
+                      className="fa fa-times-circle text-warning bg-dark"
+                      style={{ padding: "10px", borderRadius: "50%" }}
+                    />
+                    <br />
+                    Cancel Register Vaccination
+                  </h5>
+                )}
+              </>
+            )}
+          </div>
+          <div className="col-5">
+            <div className="card mb-5">
+              <h3 className="card-header">Information</h3>
+              <ul className="list-group">
+                <li className="list-group-item">{vaccination.name}</li>
+                <li className="list-group-item">
+                  Vaccine: {vaccination.vaccine && vaccination.vaccine.name}
+                </li>
+                <li className="list-group-item">
+                  Address: {vaccination.address}
+                </li>
+                <li className="list-group-item">Limit: {vaccination.limit}</li>
+                <li className="list-group-item">
+                  Vaccination time:{" "}
+                  {moment(vaccination.vaccineDate).format("LLLL")}
+                </li>
+                {vaccination.ownership && (
+                  <li className="list-group-item">
+                    Organized By:{" "}
+                    <Link
+                      to={`/centers/${vaccination.ownership}`}
+                      className="btn btn-raised btn-primary btn-sm"
+                    >
+                      {center.name}
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+          <div className="col-md-5">
+            <div className="card mb-5">
+              <h3 className="card-header">Participants</h3>
+              <ol className="list-group list-group-numbered">
+                {vaccination.participants &&
+                  vaccination.participants.map((p, i) => {
+                    return (
+                      <li key={i} className="list-group-item">
+                        <div className="row">
+                          <div className="col">
+                            {i + 1}.<Link to={`/public/${p.id}`}>{p.name}</Link>
+                          </div>
+                          <div className="col">
+                            {`${moment(vaccination.vaccineDate)
+                              .add(i * 3, "m")
+                              .calendar()}`}
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+              </ol>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 
   const showError = () => (
     <div
@@ -136,20 +282,15 @@ export default function SingleVaccinationSchedule(props) {
     </div>
   );
 
-  const handleVaccineTime = (vaccineTime) => {
-    return moment(vaccineTime)
-      .add(checkRegister(vaccination.participants) * 3, "m")
-      .calendar();
-  };
-
   const showSuccess = () => (
     <div
       className="alert alert-info"
       style={{ display: success ? "" : "none" }}
     >
       <h2>{`You have successfully registered for vaccination! Your vaccine time is: ${handleVaccineTime(
+        vaccination.participants,
         vaccination.vaccineDate
-      )}`}</h2>
+      ).calendar()}. You can check your vaccine time in your email!`}</h2>
     </div>
   );
 
@@ -165,122 +306,8 @@ export default function SingleVaccinationSchedule(props) {
       }
       className="container"
     >
-      <div className="row">
-        {vaccination && (
-          <>
-            <div className="col-md-2">
-              {isAuthenticated() && isAuthenticated().user.role >= 1 && (
-                <>
-                  <div className="col">
-                    <div className="row mb-2">
-                      <Link
-                        className="btn btn-raised btn-success"
-                        to={`/update/vaccination/${props.match.params.vaccinationId}`}
-                      >
-                        Update Vaccination Schedule
-                      </Link>
-                    </div>
-
-                    <div className="row">
-                      <DeleteVaccinationSchedule
-                        vaccinationId={vaccination._id}
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-              {isAuthenticated() && isAuthenticated().user.role === 0 && (
-                <>
-                  {!register ? (
-                    <h5
-                      onClick={registerToggle}
-                      className="btn btn-raised btn-success"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <i
-                        className="fa fa-check-circle text-success bg-dark"
-                        style={{ padding: "10px", borderRadius: "50%" }}
-                      />
-                      <br />
-                      Register Vaccination
-                    </h5>
-                  ) : (
-                    <h5
-                      onClick={registerToggle}
-                      className="btn btn-raised btn-danger"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <i
-                        className="fa fa-times-circle text-warning bg-dark"
-                        style={{ padding: "10px", borderRadius: "50%" }}
-                      />
-                      <br />
-                      Cancel Register Vaccination
-                    </h5>
-                  )}
-                </>
-              )}
-            </div>
-            <div className="col-5">
-              <div className="card mb-5">
-                <h3 className="card-header">Information</h3>
-                <ul className="list-group">
-                  <li className="list-group-item">{vaccination.name}</li>
-                  <li className="list-group-item">
-                    Vaccine: {vaccination.vaccine && vaccination.vaccine.name}
-                  </li>
-                  <li className="list-group-item">
-                    Address: {vaccination.address}
-                  </li>
-                  <li className="list-group-item">
-                    Limit: {vaccination.limit}
-                  </li>
-                  <li className="list-group-item">
-                    Vaccination time:{" "}
-                    {moment(vaccination.vaccineDate).format("LLLL")}
-                  </li>
-                  {vaccination.ownership && (
-                    <li className="list-group-item">
-                      Organized By:{" "}
-                      <Link
-                        to={`/centers/${vaccination.ownership}`}
-                        className="btn btn-raised btn-primary btn-sm"
-                      >
-                        {center.name}
-                      </Link>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </div>
-            <div className="col-md-5">
-              <div className="card mb-5">
-                <h3 className="card-header">Participants</h3>
-                <ol className="list-group list-group-numbered">
-                  {vaccination.participants &&
-                    vaccination.participants.map((p, i) => {
-                      return (
-                        <li key={i} className="list-group-item">
-                          <div className="row">
-                            <div className="col">
-                              {i + 1}.
-                              <Link to={`/public/${p.id}`}>{p.name}</Link>
-                            </div>
-                            <div className="col">
-                              {`${moment(vaccination.vaccineDate)
-                                .add(i * 3, "m")
-                                .calendar()}`}
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    })}
-                </ol>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
+      {informationForm()}
+      {sendEmail()}
       {showSuccess()}
       {showError()}
       {goBack()}
