@@ -56,13 +56,13 @@ export default function Vaccinations() {
                   {v.participants.length === v.limit ? (
                     <i
                       style={{ color: "red" }}
-                      className="fas fa-window-close"
-                    ></i>
+                      className="fas fa-lg fa-window-close"
+                    />
                   ) : (
                     <i
                       style={{ color: "green" }}
-                      className="fas fa-check-square"
-                    ></i>
+                      className="fas fa-lg fa-check-square"
+                    />
                   )}
                 </td>
                 <td>{moment(v.vaccineDate).format("lll")}</td>

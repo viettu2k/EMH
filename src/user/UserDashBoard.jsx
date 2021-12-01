@@ -84,12 +84,12 @@ const UserDashboard = () => {
                     {!h.status ? (
                       <i
                         style={{ color: "red" }}
-                        className="fas fa-window-close"
+                        className="fas fa-lg fa-window-close"
                       />
                     ) : (
                       <i
                         style={{ color: "green" }}
-                        className="fas fa-check-square"
+                        className="fas fa-lg fa-check-square"
                       />
                     )}
                   </div>
