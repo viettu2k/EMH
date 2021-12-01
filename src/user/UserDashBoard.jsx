@@ -67,7 +67,6 @@ const UserDashboard = () => {
   };
 
   const vaccinationHistory = () => {
-    console.log(histories);
     return (
       <div className="card mb-5">
         <h3 className="card-header">Vaccination history</h3>
@@ -81,8 +80,21 @@ const UserDashboard = () => {
                       {h.vaccinationName}
                     </Link>
                   </div>
-                  <div className="col">
-                    {`${moment(h.vaccinationTime).format("LLLL")}`}
+                  <div className="col  text-center">
+                    {!h.status ? (
+                      <i
+                        style={{ color: "red" }}
+                        className="fas fa-window-close"
+                      />
+                    ) : (
+                      <i
+                        style={{ color: "green" }}
+                        className="fas fa-check-square"
+                      />
+                    )}
+                  </div>
+                  <div className="col-md-5">
+                    {`${moment(h.vaccinationTime).format("LLL")}`}
                   </div>
                 </div>
               </li>
