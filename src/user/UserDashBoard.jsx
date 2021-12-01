@@ -8,7 +8,7 @@ import DefaultAvatar from "../images/avatar.jpg";
 
 const UserDashboard = () => {
   const {
-    user: { _id, name, email, role, dob, address, phoneNumber },
+    user: { _id, name, email, role, dob, address, phoneNumber, histories },
   } = isAuthenticated();
 
   const userLinks = () => {
@@ -67,11 +67,31 @@ const UserDashboard = () => {
   };
 
   const vaccinationHistory = () => {
+    console.log(histories);
     return (
       <div className="card mb-5">
         <h3 className="card-header">Vaccination history</h3>
         <ul className="list-group">
-          <li className="list-group-item">history</li>
+          {histories &&
+            histories.map((h, i) => (
+              <li key={i} className="list-group-item">
+                <div className="row">
+                  <div className="col">
+                    <Link to={`/vaccinations/${h.vaccinationId}`}>
+                      {h.vaccinationName}
+                    </Link>
+                  </div>
+                  <div className="col">
+                    {`${moment(h.vaccinationTime).format("LLLL")}`}
+                  </div>
+                </div>
+              </li>
+            ))}
+          {histories.length === 0 && (
+            <li className="list-group-item">
+              You don't register any vaccination schedule!
+            </li>
+          )}
         </ul>
       </div>
     );

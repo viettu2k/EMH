@@ -6,6 +6,9 @@ import {
   cancelRegister,
   getCenter,
   sendVaccinationTime,
+  addToHistory,
+  removeFromHistory,
+  updateUser,
 } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
@@ -99,7 +102,7 @@ export default function SingleVaccinationSchedule(props) {
   };
 
   const registerToggle = () => {
-    let callApi = !register ? registerVaccination : cancelRegister;
+    let callApiRegister = !register ? registerVaccination : cancelRegister;
     const {
       user: { _id, name },
       token,
@@ -111,8 +114,7 @@ export default function SingleVaccinationSchedule(props) {
       setValues({ ...values, sentEmail: true });
     }
     const vaccinationId = props.match.params.vaccinationId;
-
-    callApi(token, { vaccinationId, name, id }).then((data) => {
+    callApiRegister(token, { vaccinationId, name, id }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
@@ -124,29 +126,57 @@ export default function SingleVaccinationSchedule(props) {
         });
       }
     });
+
+    if (callApiRegister === cancelRegister) {
+      const { name: vaccinationName, vaccineDate, participants } = vaccination;
+      const vaccinationTime = handleVaccineTime(participants, vaccineDate);
+      removeFromHistory(token, {
+        _id,
+        vaccinationId,
+        vaccinationName,
+        vaccinationTime,
+      }).then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        }
+        updateUser(data, () => {});
+      });
+    }
   };
 
   const sendEmail = () => {
     const {
-      user: { name, email },
+      user: { _id, name, email },
+      token,
     } = isAuthenticated();
     const { name: vaccinationName, vaccineDate, participants } = vaccination;
+    const vaccinationTime = handleVaccineTime(participants, vaccineDate);
+    const vaccinationId = props.match.params.vaccinationId;
     if (getIndex(participants, name) !== -1 && !sentEmail) {
-      const vaccinationTime = handleVaccineTime(
-        participants,
-        vaccineDate
-      ).format("LLLL");
-      sendVaccinationTime(email, vaccinationName, vaccinationTime).then(
-        (data) => {
-          if (data.error) {
-            // console.log(data.error);
-            setValues({ ...values, error: data.error });
-          } else {
-            // console.log(data.message);
-            // setValues({ ...values, sentEmail: true });
-          }
+      addToHistory(token, {
+        _id,
+        vaccinationId,
+        vaccinationName,
+        vaccinationTime,
+      }).then((data) => {
+        if (data.error) {
+          console.log(data.error);
         }
-      );
+        updateUser(data, () => {});
+      });
+      sendVaccinationTime(
+        email,
+        vaccinationName,
+        vaccinationTime.format("LLLL")
+      ).then((data) => {
+        if (data.error) {
+          // console.log(data.error);
+          setValues({ ...values, error: data.error });
+        } else {
+          // console.log(data.message);
+          // setValues({ ...values, sentEmail: true });
+        }
+      });
     }
   };
 
@@ -282,17 +312,19 @@ export default function SingleVaccinationSchedule(props) {
     </div>
   );
 
-  const showSuccess = () => (
-    <div
-      className="alert alert-info"
-      style={{ display: success ? "" : "none" }}
-    >
-      <h2>{`You have successfully registered for vaccination! Your vaccine time is: ${handleVaccineTime(
-        vaccination.participants,
-        vaccination.vaccineDate
-      ).calendar()}. You can check your vaccine time in your email!`}</h2>
-    </div>
-  );
+  const showSuccess = () => {
+    return (
+      <div
+        className="alert alert-info"
+        style={{ display: success ? "" : "none" }}
+      >
+        <h2>{`You have successfully registered for vaccination! Your vaccine time is: ${handleVaccineTime(
+          vaccination.participants,
+          vaccination.vaccineDate
+        ).calendar()}. You can check your vaccine time in your email!`}</h2>
+      </div>
+    );
+  };
 
   return (
     <Layout
