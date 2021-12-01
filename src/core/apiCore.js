@@ -156,7 +156,9 @@ export const cancelRegister = (token, user) => {
 export const sendVaccinationTime = (
     email,
     vaccinationName,
-    vaccinationTime
+    vaccinationTime,
+    name,
+    address
 ) => {
     return fetch(`${API}/send-vaccination-time`, {
             method: "POST",
@@ -164,7 +166,13 @@ export const sendVaccinationTime = (
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, vaccinationName, vaccinationTime }),
+            body: JSON.stringify({
+                email,
+                vaccinationName,
+                vaccinationTime,
+                name,
+                address,
+            }),
         })
         .then((response) => {
             return response.json();

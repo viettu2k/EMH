@@ -29,10 +29,10 @@ export default function SingleVaccinationSchedule(props) {
   const { vaccination, register, error, center, load, success, sentEmail } =
     values;
 
-  const getIndex = (array = [], name) => {
+  const getIndex = (array = [], id) => {
     let temp = -1;
     array.forEach((element, i) => {
-      if (element["name"] === name) {
+      if (element["id"] === id) {
         temp = i;
       }
     });
@@ -40,8 +40,8 @@ export default function SingleVaccinationSchedule(props) {
   };
 
   const checkRegister = (participants = []) => {
-    const name = isAuthenticated() && isAuthenticated().user.name;
-    let match = getIndex(participants, name) !== -1;
+    const id = isAuthenticated() && isAuthenticated().user._id;
+    let match = getIndex(participants, id) !== -1;
     return match;
   };
 
@@ -91,10 +91,10 @@ export default function SingleVaccinationSchedule(props) {
   );
 
   const handleVaccineTime = (participants = [], vaccineTime) => {
-    const name = isAuthenticated() && isAuthenticated().user.name;
+    const id = isAuthenticated() && isAuthenticated().user._id;
     let temp = -1;
     participants.forEach((element, i) => {
-      if (element["name"] === name) {
+      if (element["id"] === id) {
         temp = i;
       }
     });
@@ -149,10 +149,15 @@ export default function SingleVaccinationSchedule(props) {
       user: { _id, name, email },
       token,
     } = isAuthenticated();
-    const { name: vaccinationName, vaccineDate, participants } = vaccination;
+    const {
+      name: vaccinationName,
+      vaccineDate,
+      participants,
+      address,
+    } = vaccination;
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
-    if (getIndex(participants, name) !== -1 && !sentEmail) {
+    if (getIndex(participants, _id) !== -1 && !sentEmail) {
       addToHistory(token, {
         _id,
         vaccinationId,
@@ -167,7 +172,9 @@ export default function SingleVaccinationSchedule(props) {
       sendVaccinationTime(
         email,
         vaccinationName,
-        vaccinationTime.format("LLLL")
+        vaccinationTime.format("LLLL"),
+        name,
+        address
       ).then((data) => {
         if (data.error) {
           // console.log(data.error);
