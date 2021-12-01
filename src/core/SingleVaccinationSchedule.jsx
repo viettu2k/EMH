@@ -67,6 +67,7 @@ export default function SingleVaccinationSchedule(props) {
           ...values,
           vaccination: data,
           register: checkRegister(data.participants),
+          success: checkRegister(data.participants),
           load: true,
         });
       }
@@ -144,9 +145,19 @@ export default function SingleVaccinationSchedule(props) {
     }
   };
 
+  const getIndexHistory = (array = [], id) => {
+    let temp = -1;
+    array.forEach((element, i) => {
+      if (element["vaccinationId"] === id) {
+        temp = i;
+      }
+    });
+    return temp;
+  };
+
   const sendEmail = () => {
     const {
-      user: { _id, name, email },
+      user: { _id, name, email, histories },
       token,
     } = isAuthenticated();
     const {
@@ -158,17 +169,22 @@ export default function SingleVaccinationSchedule(props) {
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
     if (getIndex(participants, _id) !== -1 && !sentEmail) {
-      addToHistory(token, {
-        _id,
-        vaccinationId,
-        vaccinationName,
-        vaccinationTime,
-      }).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        }
-        updateUser(data, () => {});
-      });
+      if (getIndexHistory(histories, vaccinationId) < 0) {
+        addToHistory(token, {
+          _id,
+          vaccinationId,
+          vaccinationName,
+          vaccinationTime,
+        }).then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          }
+          updateUser(data, () => {
+            setValues({ ...values, sentEmail: true });
+          });
+        });
+      }
+
       sendVaccinationTime(
         email,
         vaccinationName,
