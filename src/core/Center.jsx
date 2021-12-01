@@ -92,11 +92,11 @@ export default function Center(props) {
                 <img
                   style={{ height: "250px", width: "auto" }}
                   className="img-fluid rounded border border-primary"
-                  src={`${API}/centers/photo/${center._id}`}
+                  src={`${API}/user/photo/${center._id}`}
                   alt={center.name}
                 />
 
-                {isAuthenticated() && isAuthenticated().user.role === 2 && (
+                {isAuthenticated() && isAuthenticated().user.role === 3 && (
                   <div className="card-body">
                     <h5 className="card-title text-danger">
                       Edit/Delete as an Admin
