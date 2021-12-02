@@ -299,7 +299,8 @@ export default function SingleVaccinationSchedule(props) {
                       <li key={i} className="list-group-item">
                         <div className="row">
                           <div className="col">
-                            {i + 1}.<Link to={`/public/${p.id}`}>{p.name}</Link>
+                            {i + 1}.
+                            <Link to={`/public-profile/${p.id}`}>{p.name}</Link>
                           </div>
                           <div className="col">
                             {`${moment(vaccination.vaccineDate)

@@ -25,6 +25,7 @@ import MedicalCenterRoute from "./auth/MedicalCenterRoute";
 import VaccineManagement from "./center/VaccineManagement";
 import AddVaccine from "./center/AddVaccine";
 import UpdateVaccine from "./center/UpdateVaccine";
+import PublicProfile from "./user/PublicProfile";
 
 export default function Routes() {
   return (
@@ -85,6 +86,7 @@ export default function Routes() {
           component={UpdateVaccinationSchedule}
         />
         <Route path="/centers/:centerId" exact component={Center} />
+        <Route path="/public-profile/:userId" exact component={PublicProfile} />
         <PrivateRoute
           path="/vaccinations/:vaccinationId"
           exact

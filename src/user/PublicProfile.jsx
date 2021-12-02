@@ -1,45 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
-import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { API } from "../config";
+import { isAuthenticated } from "../auth";
+import { getPublicProfile } from "./apiUser";
 import DefaultAvatar from "../images/avatar.jpg";
 
-const UserDashboard = () => {
-  const {
-    user: {
-      _id,
-      name,
-      email,
-      role,
-      dob,
-      address,
-      phoneNumber,
-      histories,
-      members,
-    },
-  } = isAuthenticated();
+const UserDashboard = ({ match }) => {
+  const [user, setUser] = useState({});
+  const [error, setError] = useState(false);
 
-  const userLinks = () => {
-    return (
-      <div className="card">
-        <h4 className="card-header">User Links</h4>
-        <ul className="list-group">
-          <li className="list-group-item">
-            <Link className="nav-link" to={`/profile/${_id}`}>
-              Update Profile
-            </Link>
-          </li>
-          <li className="list-group-item">
-            <Link className="nav-link" to="/create/family-member">
-              Add Family Member
-            </Link>
-          </li>
-        </ul>
-      </div>
-    );
+  const loadProfile = (userId) => {
+    getPublicProfile(userId).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        // console.log(data);
+        setUser(data);
+      }
+    });
   };
+
+  useEffect(
+    () => {
+      const userId = match.params.userId;
+      loadProfile(userId);
+    },
+    // eslint-disable-next-line
+    []
+  );
+
+  const {
+    _id,
+    name,
+    email,
+    role,
+    dob,
+    address,
+    phoneNumber,
+    histories,
+    members,
+    references,
+  } = user;
 
   const userInfo = () => {
     return (
@@ -104,11 +107,6 @@ const UserDashboard = () => {
                 </div>
               </li>
             ))}
-          {histories.length === 0 && (
-            <li className="list-group-item">
-              You don't register any vaccination schedule!
-            </li>
-          )}
         </ul>
       </div>
     );
@@ -153,21 +151,30 @@ const UserDashboard = () => {
     );
   };
 
-  return (
-    <Layout
-      title="Dashboard"
-      description="User Dashboard"
-      className="container"
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
     >
+      {error}
+    </div>
+  );
+
+  return (
+    <Layout title="Profile" description="" className="container">
+      {showError()}
       <div className="row">
-        <div className="col-4">
-          {userAvatar()}
-          {userLinks()}
-        </div>
+        <div className="col-4">{userAvatar()}</div>
         <div className="col-8">
           {userInfo()}
-          {vaccinationHistory()}
-          {familyMembers()}
+          {isAuthenticated().user.role >= 1 ||
+          references === isAuthenticated().user._id ? (
+            <>
+              {vaccinationHistory()} {familyMembers()}
+            </>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </Layout>
