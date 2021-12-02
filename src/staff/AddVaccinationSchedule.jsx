@@ -75,7 +75,11 @@ const AddVaccinationSchedule = () => {
     setValues({ ...values, error: "", loading: true });
     const { name, tempVaccine, notes, address, limit } = values;
     let index = getIndex(vaccines, tempVaccine);
-    const vaccine = { name: vaccines[index].name, id: tempVaccine };
+    const vaccine = {
+      name: vaccines[index].name,
+      id: tempVaccine,
+      timeConsuming: vaccines[index].timeConsuming,
+    };
     setValues({
       ...values,
       vaccine: vaccine,
