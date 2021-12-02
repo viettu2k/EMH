@@ -152,6 +152,7 @@ export default function UpdateVaccinationSchedule(props) {
         notes,
         limit,
         address,
+        vaccineDate,
       }).then((data) => {
         if (data.error) {
           setValues({ ...values, error: data.error });
@@ -169,70 +170,65 @@ export default function UpdateVaccinationSchedule(props) {
   const newPostForm = () => (
     <form className="mb-3" onSubmit={clickSubmit}>
       <div className="form-group">
-        <label className="text-muted">Name</label>
+        <label className="text-muted"> Name </label>{" "}
         <input
           onChange={handleChange("name")}
           type="text"
           className="form-control"
           value={name}
-        />
+        />{" "}
       </div>
-
       <div className="form-group">
-        <label className="text-muted">Vaccine</label>
+        <label className="text-muted"> Vaccine </label>{" "}
         <select onChange={handleChange("tempVaccine")} className="form-control">
-          <option>Please select</option>
+          <option> Please select </option>{" "}
           {vaccines &&
             vaccines.map((v, i) => (
               <option key={i} value={v._id}>
-                {v.name}
+                {" "}
+                {v.name}{" "}
               </option>
-            ))}
-        </select>
+            ))}{" "}
+        </select>{" "}
       </div>
-
       <div className="form-group">
-        <label className="text-muted">Limit</label>
+        <label className="text-muted"> Limit </label>{" "}
         <input
           type="number"
           onChange={handleChange("limit")}
           className="form-control"
           value={limit}
-        />
+        />{" "}
       </div>
-
       <div className="form-group">
-        <label className="text-muted">Vaccine Date</label>
+        <label className="text-muted"> Vaccine Date </label>{" "}
         <input
           type="datetime-local"
           onChange={handleChange("vaccineDate")}
           className="form-control"
           value={vaccineDate}
-        />
+        />{" "}
       </div>
-
       <div className="form-group">
-        <label className="text-muted">Notes</label>
+        <label className="text-muted"> Notes </label>{" "}
         <textarea
           onChange={handleChange("notes")}
           className="form-control"
           value={notes}
-        />
+        />{" "}
       </div>
-
       <div className="form-group">
-        <label className="text-muted">Address</label>
+        <label className="text-muted"> Address </label>{" "}
         <input
           onChange={handleChange("address")}
           type="text"
           className="form-control"
           value={address}
-        />
+        />{" "}
       </div>
-
       <button className="btn btn-outline-primary">
-        Update Vaccination Schedule
-      </button>
+        Update Vaccination Schedule{" "}
+      </button>{" "}
     </form>
   );
 
@@ -241,7 +237,7 @@ export default function UpdateVaccinationSchedule(props) {
       className="alert alert-danger"
       style={{ display: error ? "" : "none" }}
     >
-      {error}
+      {error}{" "}
     </div>
   );
 
@@ -250,22 +246,22 @@ export default function UpdateVaccinationSchedule(props) {
       className="alert alert-info"
       style={{ display: updatedVaccination ? "" : "none" }}
     >
-      <h2>{`${updatedVaccination} is updated!`}</h2>
+      <h2> {`${updatedVaccination} is updated!`} </h2>{" "}
     </div>
   );
 
   const showLoading = () =>
     loading && (
       <div className="alert alert-success">
-        <h2>Loading...</h2>
+        <h2> Loading... </h2>{" "}
       </div>
     );
 
   const goBack = () => (
     <div className="mt-5">
       <Link to={`/vaccinations/${id}`} className="text-warning">
-        Back to Vaccination Schedule
-      </Link>
+        Back to Vaccination Schedule{" "}
+      </Link>{" "}
     </div>
   );
 
@@ -278,13 +274,11 @@ export default function UpdateVaccinationSchedule(props) {
     >
       <div className="row">
         <div className="col-md-8 offset-md-2">
-          {showLoading()}
-          {showSuccess()}
-          {showError()}
-          {newPostForm()}
-          {goBack()}
-        </div>
-      </div>
+          {" "}
+          {showLoading()} {showSuccess()} {showError()} {newPostForm()}{" "}
+          {goBack()}{" "}
+        </div>{" "}
+      </div>{" "}
     </Layout>
   );
 }
