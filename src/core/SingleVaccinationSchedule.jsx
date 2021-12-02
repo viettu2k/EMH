@@ -135,11 +135,19 @@ export default function SingleVaccinationSchedule(props) {
     });
 
     if (callApiRegister === cancelRegister) {
-      const { name: vaccinationName, vaccineDate, participants } = vaccination;
+      const {
+        name: vaccinationName,
+        vaccineDate,
+        vaccine,
+        timeConsuming,
+        participants,
+      } = vaccination;
       const vaccinationTime = handleVaccineTime(participants, vaccineDate);
       removeFromHistory(token, {
         _id,
         vaccinationId,
+        vaccine,
+        timeConsuming,
         vaccinationName,
         vaccinationTime,
       }).then((data) => {
@@ -171,6 +179,8 @@ export default function SingleVaccinationSchedule(props) {
       vaccineDate,
       participants,
       address,
+      vaccine,
+      timeConsuming,
     } = vaccination;
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
@@ -179,6 +189,8 @@ export default function SingleVaccinationSchedule(props) {
         addToHistory(token, {
           _id,
           vaccinationId,
+          vaccine,
+          timeConsuming,
           vaccinationName,
           vaccinationTime,
         }).then((data) => {
