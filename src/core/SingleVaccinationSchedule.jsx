@@ -139,15 +139,14 @@ export default function SingleVaccinationSchedule(props) {
         name: vaccinationName,
         vaccineDate,
         vaccine,
-        timeConsuming,
         participants,
       } = vaccination;
+      const vaccineName = vaccination && vaccine.name;
       const vaccinationTime = handleVaccineTime(participants, vaccineDate);
       removeFromHistory(token, {
         _id,
         vaccinationId,
-        vaccine,
-        timeConsuming,
+        vaccineName,
         vaccinationName,
         vaccinationTime,
       }).then((data) => {
@@ -178,25 +177,27 @@ export default function SingleVaccinationSchedule(props) {
       name: vaccinationName,
       vaccineDate,
       participants,
-      address,
       vaccine,
-      timeConsuming,
+      address,
     } = vaccination;
+    const vaccineName = vaccine && vaccine.name;
+
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
     if (getIndex(participants, _id) !== -1 && !sentEmail) {
       if (getIndexHistory(histories, vaccinationId) < 0) {
+        // console.log(vaccination);
         addToHistory(token, {
           _id,
           vaccinationId,
-          vaccine,
-          timeConsuming,
+          vaccineName,
           vaccinationName,
           vaccinationTime,
         }).then((data) => {
           if (data.error) {
             console.log(data.error);
           }
+          // console.log(data);
           updateUser(data, () => {
             setValues({ ...values, sentEmail: true });
           });
@@ -245,12 +246,10 @@ export default function SingleVaccinationSchedule(props) {
                 </div>
               </>
             )}
-            {(isAuthenticated() &&
+            {isAuthenticated() &&
               isAuthenticated().user.role === 0 &&
               vaccination &&
-              vaccination.participants &&
-              vaccination.participants.length < vaccination.limit) ||
-              (!compareDate(vaccination.vaccineDate) && (
+              compareDate(vaccination.vaccineDate) === false && (
                 <>
                   {!register ? (
                     <h5
@@ -280,7 +279,7 @@ export default function SingleVaccinationSchedule(props) {
                     </h5>
                   )}
                 </>
-              ))}
+              )}
           </div>
           <div className="col-5">
             <div className="card mb-5">

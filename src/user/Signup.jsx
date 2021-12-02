@@ -8,12 +8,25 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
+    dob: "",
+    address: "",
+    phoneNumber: "",
     confirmPassword: "",
     error: "",
     success: false,
   });
 
-  const { name, email, password, confirmPassword, error, success } = values;
+  const {
+    name,
+    email,
+    password,
+    confirmPassword,
+    phoneNumber,
+    address,
+    dob,
+    error,
+    success,
+  } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
@@ -26,21 +39,26 @@ const Signup = () => {
       return false;
     }
     setValues({ ...values, error: false });
-    signup({ name, email, password }).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error, success: false });
-      } else {
-        setValues({
-          ...values,
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          error: "",
-          success: true,
-        });
+    signup({ name, email, password, dob, address, phoneNumber }).then(
+      (data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error, success: false });
+        } else {
+          setValues({
+            ...values,
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            dob: "",
+            address: "",
+            phoneNumber: "",
+            error: "",
+            success: true,
+          });
+        }
       }
-    });
+    );
   };
 
   const signUpForm = () => (
@@ -84,6 +102,37 @@ const Signup = () => {
           value={confirmPassword}
         />
       </div>
+
+      <div className="form-group">
+        <label className="text-muted">Phone Number</label>
+        <input
+          onChange={handleChange("phoneNumber")}
+          type="text"
+          className="form-control"
+          value={phoneNumber}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Address</label>
+        <input
+          onChange={handleChange("address")}
+          type="text"
+          className="form-control"
+          value={address}
+        />
+      </div>
+
+      <div className="form-group">
+        <label className="text-muted">Date of Birth</label>
+        <input
+          type="date"
+          onChange={handleChange("dob")}
+          className="form-control"
+          value={dob}
+        />
+      </div>
+
       <button onClick={clickSubmit} className="btn btn-primary">
         Submit
       </button>
