@@ -59,8 +59,8 @@ export default function Vaccinations() {
                 <th scope="row"> {i + 1} </th>
                 <td> {v.name} </td>
                 <td className="text-center">
-                  {v.participants.length === v.limit &&
-                  !compareDate(v.vaccineDate) ? (
+                  {v.participants.length === v.limit ||
+                  compareDate(v.vaccineDate) === true ? (
                     <i
                       style={{ color: "red" }}
                       className="fas fa-lg fa-window-close"

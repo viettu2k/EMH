@@ -102,6 +102,12 @@ export default function SingleVaccinationSchedule(props) {
     return moment(vaccineTime).add(temp * 3, "m");
   };
 
+  const compareDate = (vaccineDate) => {
+    let ms = Date.now();
+    let date = new Date(vaccineDate);
+    return ms > date;
+  };
+
   const registerToggle = () => {
     let callApiRegister = !register ? registerVaccination : cancelRegister;
     const {
@@ -227,37 +233,42 @@ export default function SingleVaccinationSchedule(props) {
                 </div>
               </>
             )}
-            {isAuthenticated() && isAuthenticated().user.role === 0 && (
-              <>
-                {!register ? (
-                  <h5
-                    onClick={registerToggle}
-                    className="btn btn-raised btn-success"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <i
-                      className="fa fa-check-circle text-success bg-dark"
-                      style={{ padding: "10px", borderRadius: "50%" }}
-                    />
-                    <br />
-                    Register Vaccination
-                  </h5>
-                ) : (
-                  <h5
-                    onClick={registerToggle}
-                    className="btn btn-raised btn-danger"
-                    style={{ cursor: "pointer" }}
-                  >
-                    <i
-                      className="fa fa-times-circle text-warning bg-dark"
-                      style={{ padding: "10px", borderRadius: "50%" }}
-                    />
-                    <br />
-                    Cancel Register Vaccination
-                  </h5>
-                )}
-              </>
-            )}
+            {(isAuthenticated() &&
+              isAuthenticated().user.role === 0 &&
+              vaccination &&
+              vaccination.participants &&
+              vaccination.participants.length < vaccination.limit) ||
+              (!compareDate(vaccination.vaccineDate) && (
+                <>
+                  {!register ? (
+                    <h5
+                      onClick={registerToggle}
+                      className="btn btn-raised btn-success"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <i
+                        className="fa fa-check-circle text-success bg-dark"
+                        style={{ padding: "10px", borderRadius: "50%" }}
+                      />
+                      <br />
+                      Register Vaccination
+                    </h5>
+                  ) : (
+                    <h5
+                      onClick={registerToggle}
+                      className="btn btn-raised btn-danger"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <i
+                        className="fa fa-times-circle text-warning bg-dark"
+                        style={{ padding: "10px", borderRadius: "50%" }}
+                      />
+                      <br />
+                      Cancel Register Vaccination
+                    </h5>
+                  )}
+                </>
+              ))}
           </div>
           <div className="col-5">
             <div className="card mb-5">
@@ -354,10 +365,11 @@ export default function SingleVaccinationSchedule(props) {
     <Layout
       title={vaccination && vaccination.name}
       description={
-        vaccination &&
-        vaccination.participants &&
-        vaccination.participants.length === vaccination.limit
-          ? "Status: Full"
+        (vaccination &&
+          vaccination.participants &&
+          vaccination.participants.length === vaccination.limit) ||
+        compareDate(vaccination.vaccineDate)
+          ? "Status: Unavailable"
           : "Status: Available"
       }
       className="container"
