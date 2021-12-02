@@ -94,7 +94,7 @@ export default function MedicalCenterDashboard() {
             members.map((m, i) => (
               <li key={i} className="list-group-item">
                 <Link
-                  to={`/users/${m.id}`}
+                  to={`/public-profile/${m.id}`}
                   className="btn btn-raised btn-primary btn-sm"
                 >
                   {m.name}
