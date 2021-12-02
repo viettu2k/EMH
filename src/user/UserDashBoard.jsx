@@ -8,7 +8,17 @@ import DefaultAvatar from "../images/avatar.jpg";
 
 const UserDashboard = () => {
   const {
-    user: { _id, name, email, role, dob, address, phoneNumber, histories },
+    user: {
+      _id,
+      name,
+      email,
+      role,
+      dob,
+      address,
+      phoneNumber,
+      histories,
+      members,
+    },
   } = isAuthenticated();
 
   const userLinks = () => {
@@ -22,13 +32,8 @@ const UserDashboard = () => {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="/register/vaccination">
-              Register Vaccination
-            </Link>
-          </li>
-          <li className="list-group-item">
-            <Link className="nav-link" to="/register/vaccination">
-              Register Test
+            <Link className="nav-link" to="/create/family-member">
+              Add Family Member
             </Link>
           </li>
         </ul>
@@ -109,6 +114,27 @@ const UserDashboard = () => {
     );
   };
 
+  const familyMembers = () => {
+    return (
+      <div className="card mb-5">
+        <h3 className="card-header">Family Members</h3>
+        <ul className="list-group">
+          {members &&
+            members.map((m, i) => (
+              <li key={i} className="list-group-item">
+                <Link
+                  to={`/users/${m.id}`}
+                  className="btn btn-raised btn-primary btn-sm"
+                >
+                  {m.name}
+                </Link>
+              </li>
+            ))}
+        </ul>
+      </div>
+    );
+  };
+
   const userAvatar = () => {
     const photoUrl = _id
       ? `${API}/user/photo/${_id}?${new Date().getTime()}`
@@ -141,6 +167,7 @@ const UserDashboard = () => {
         <div className="col-8">
           {userInfo()}
           {vaccinationHistory()}
+          {familyMembers()}
         </div>
       </div>
     </Layout>

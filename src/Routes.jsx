@@ -10,6 +10,7 @@ import MedicalCenterDashboard from "./center/MedicalCenterDashboard";
 import UserDashboard from "./user/UserDashboard";
 import AddCenter from "./admin/AddCenter";
 import AddMedicalStaff from "./center/AddMedicalStaff";
+import AddFamilyMember from "./user/AddFamilyMember";
 import MedicalStaffRoute from "./auth/MedicalStaffRoute";
 import MedicalStaffDashboard from "./staff/MedicalStaffDashboard";
 import AddVaccination from "./staff/AddVaccinationSchedule";
@@ -88,6 +89,11 @@ export default function Routes() {
           path="/vaccinations/:vaccinationId"
           exact
           component={Vaccination}
+        />
+        <PrivateRoute
+          path="/create/family-member"
+          exact
+          component={AddFamilyMember}
         />
       </Switch>
     </BrowserRouter>
