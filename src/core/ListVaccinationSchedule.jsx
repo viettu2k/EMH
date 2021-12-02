@@ -11,6 +11,12 @@ export default function Vaccinations() {
 
   const { vaccinations, error } = values;
 
+  const compareDate = (vaccineDate) => {
+    let ms = Date.now();
+    let date = new Date(vaccineDate);
+    return ms > date;
+  };
+
   const init = () => {
     getVaccinations().then((data) => {
       if (data.error) {
@@ -33,13 +39,13 @@ export default function Vaccinations() {
     <table className="table table-hover">
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
+          <th scope="col"> # </th>
+          <th scope="col"> Name </th>
           <th className="text-center" scope="col">
             Status
           </th>
-          <th scope="col">Vaccination time</th>
-          <th scope="col">Address</th>
+          <th scope="col"> Vaccination time </th>
+          <th scope="col"> Address </th>
           <th className="text-center" scope="col">
             View
           </th>
@@ -50,10 +56,11 @@ export default function Vaccinations() {
           vaccinations.map((v, i) => {
             return (
               <tr key={i}>
-                <th scope="row">{i + 1}</th>
-                <td>{v.name}</td>
+                <th scope="row"> {i + 1} </th>
+                <td> {v.name} </td>
                 <td className="text-center">
-                  {v.participants.length === v.limit ? (
+                  {v.participants.length === v.limit &&
+                  !compareDate(v.vaccineDate) ? (
                     <i
                       style={{ color: "red" }}
                       className="fas fa-lg fa-window-close"
@@ -65,8 +72,8 @@ export default function Vaccinations() {
                     />
                   )}
                 </td>
-                <td>{moment(v.vaccineDate).format("lll")}</td>
-                <td>{v.address}</td>
+                <td> {moment(v.vaccineDate).format("lll")} </td>
+                <td> {v.address} </td>
                 <td className="text-center">
                   <Link
                     to={`/vaccinations/${v._id}`}
@@ -98,8 +105,7 @@ export default function Vaccinations() {
           ? "No more vaccination schedule!"
           : "Recent vaccination schedule!"}
       </h2>
-      {renderVaccinations(vaccinations)}
-      {showError()}
+      {renderVaccinations(vaccinations)} {showError()}
     </div>
   );
 }
