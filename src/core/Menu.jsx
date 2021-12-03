@@ -105,6 +105,18 @@ const Menu = ({ history }) => {
           </li>
         )}
 
+        {isAuthenticated() && isAuthenticated().user.role === 3 && (
+          <li className="nav-item">
+            <Link
+              className="nav-link"
+              style={isActive(history, "/users")}
+              to="/users"
+            >
+              User Management
+            </Link>
+          </li>
+        )}
+
         {!isAuthenticated() && (
           <>
             <li className="nav-item">

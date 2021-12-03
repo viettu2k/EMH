@@ -16,3 +16,13 @@ export const createCenter = (userId, token, center) => {
             console.log(err);
         });
 };
+
+export const getListUser = () => {
+    return fetch(`${API}/users`, {
+            method: "GET",
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};

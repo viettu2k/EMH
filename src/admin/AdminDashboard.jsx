@@ -22,7 +22,7 @@ export default function AdminDashboard() {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="/verify/staff">
+            <Link className="nav-link" to="/users">
               User Management
             </Link>
           </li>
