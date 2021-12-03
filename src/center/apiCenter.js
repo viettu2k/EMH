@@ -144,3 +144,13 @@ export const getVaccinationByCenter = (centerId) => {
         })
         .catch((err) => console.log(err));
 };
+
+export const getParticipantsByCenter = (centerId) => {
+    return fetch(`${API}/vaccinations/center/participants/${centerId}`, {
+            method: "GET",
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};

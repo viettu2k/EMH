@@ -26,6 +26,7 @@ import VaccineManagement from "./center/VaccineManagement";
 import AddVaccine from "./center/AddVaccine";
 import UpdateVaccine from "./center/UpdateVaccine";
 import PublicProfile from "./user/PublicProfile";
+import Statistics from "./center/Statistics";
 
 export default function Routes() {
   return (
@@ -70,6 +71,7 @@ export default function Routes() {
           exact
           component={UpdateVaccine}
         />
+        <MedicalCenterRoute path="/statistics" exact component={Statistics} />
         <MedicalStaffRoute
           path="/staff/dashboard"
           exact

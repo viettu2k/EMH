@@ -43,7 +43,6 @@ export default function MedicalCenterDashboard() {
   );
 
   const centerLinks = () => {
-    console.log(isAuthenticated().user);
     return (
       <div className="card">
         <h4 className="card-header">Admin Links</h4>
@@ -64,8 +63,8 @@ export default function MedicalCenterDashboard() {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to="/vaccine">
-              View statistics
+            <Link className="nav-link" to="/statistics">
+              View user statistics
             </Link>
           </li>
         </ul>
