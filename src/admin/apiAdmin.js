@@ -26,3 +26,18 @@ export const getListUser = () => {
         })
         .catch((err) => console.log(err));
 };
+
+export const removeUser = (userId, token) => {
+    return fetch(`${API}/user/${userId}`, {
+            method: "DELETE",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.error(err));
+};

@@ -4,6 +4,7 @@ import Layout from "../core/Layout";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { getListUser } from "./apiAdmin";
+import DeleteUser from "./DeleteUser";
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -78,9 +79,7 @@ export default function UserManagement() {
                       </Link>
                     </td>
                     <td>
-                      <button className="btn btn-raised btn-danger btn-sm">
-                        Delete
-                      </button>
+                      <DeleteUser userId={u._id} />
                     </td>
                   </tr>
                 );
