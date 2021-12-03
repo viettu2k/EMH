@@ -85,10 +85,10 @@ const UserDashboard = ({ match }) => {
                 <div className="row">
                   <div className="col">
                     <Link to={`/vaccinations/${h.vaccinationId}`}>
-                      {h.vaccinationName}
+                      {i + 1}. {h.vaccinationName}
                     </Link>
                   </div>
-                  <div className="col  text-center">
+                  <div className="text-center">
                     {!h.status ? (
                       <i
                         style={{ color: "red" }}

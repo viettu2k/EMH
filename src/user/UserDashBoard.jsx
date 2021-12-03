@@ -44,7 +44,7 @@ const UserDashboard = () => {
   const userInfo = () => {
     return (
       <div className="card mb-5">
-        <h3 className="card-header">User Information</h3>
+        <h4 className="card-header">User Information</h4>
         <ul className="list-group">
           <li className="list-group-item">Name: {name}</li>
           <li className="list-group-item">Email: {email}</li>
@@ -74,7 +74,7 @@ const UserDashboard = () => {
   const vaccinationHistory = () => {
     return (
       <div className="card mb-5">
-        <h3 className="card-header">Vaccination history</h3>
+        <h4 className="card-header">Vaccination history</h4>
         <ul className="list-group">
           {histories &&
             histories.map((h, i) => (
@@ -82,10 +82,10 @@ const UserDashboard = () => {
                 <div className="row">
                   <div className="col">
                     <Link to={`/vaccinations/${h.vaccinationId}`}>
-                      {h.vaccinationName}
+                      {i + 1}. {h.vaccinationName}
                     </Link>
                   </div>
-                  <div className="col  text-center">
+                  <div className="text-center">
                     {!h.status ? (
                       <i
                         style={{ color: "red" }}
