@@ -35,6 +35,7 @@ export default function UserManagement() {
             <tr>
               <th scope="col"> # </th>
               <th scope="col"> Name </th>
+              <th scope="col"> Role </th>
               <th scope="col"> DOB </th>
               <th scope="col"> Address </th>
               <th scope="col"> Phone Number </th>
@@ -55,6 +56,15 @@ export default function UserManagement() {
                       >
                         {u.name}
                       </Link>
+                    </td>
+                    <td>
+                      {u.role === 0
+                        ? "Registered User"
+                        : u.role === 1
+                        ? "Medical Staff"
+                        : u.role === 2
+                        ? "Medical Center"
+                        : "Admin"}
                     </td>
                     <td> {moment(u.dob).format("DD/MM/YYYY")} </td>
                     <td> {u.address} </td>
