@@ -73,7 +73,7 @@ export default function UserManagement() {
                     <td>
                       <Link
                         className="btn btn-raised btn-success btn-sm"
-                        to={`/update/vaccination/`}
+                        to={`/edit-user/${u._id}`}
                       >
                         Edit
                       </Link>
