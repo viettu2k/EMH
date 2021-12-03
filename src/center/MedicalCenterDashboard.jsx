@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { API } from "../config";
 import DefaultAvatar from "../images/avatar.jpg";
+import { getVaccinationByCenter } from "./apiCenter";
 
 export default function MedicalCenterDashboard() {
+  const [vaccinations, setVaccinations] = useState([]);
   const {
     user: {
       _id,
@@ -19,7 +21,26 @@ export default function MedicalCenterDashboard() {
       phoneNumber,
       members,
     },
+    token,
   } = isAuthenticated();
+
+  const loadListByCenter = (centerId) => {
+    getVaccinationByCenter(centerId, token).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setVaccinations(data);
+      }
+    });
+  };
+
+  useEffect(
+    () => {
+      loadListByCenter(_id);
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const centerLinks = () => {
     console.log(isAuthenticated().user);
@@ -106,6 +127,26 @@ export default function MedicalCenterDashboard() {
     );
   };
 
+  const listByCenter = () => {
+    return (
+      <div className="card mb-5">
+        <h4 className="card-header">
+          Vaccination schedule organized by {name}
+        </h4>
+        <ul className="list-group">
+          {vaccinations &&
+            vaccinations.map((v, i) => {
+              return (
+                <li key={i} className="list-group-item list-group-item-action">
+                  <Link to={`/vaccinations/${v._id}`}>{v.name}</Link>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+    );
+  };
+
   const userAvatar = () => {
     const photoUrl = _id
       ? `${API}/user/photo/${_id}?${new Date().getTime()}`
@@ -138,6 +179,7 @@ export default function MedicalCenterDashboard() {
         <div className="col-8">
           {centerInfo()}
           {listMembers()}
+          {listByCenter()}
         </div>
       </div>
     </Layout>
