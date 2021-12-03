@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-// import moment from "moment";
+import moment from "moment";
 import { getParticipantsByCenter } from "./apiCenter";
 
 export default function Statistics() {
@@ -41,8 +41,12 @@ export default function Statistics() {
   const listByCenter = () => {
     let temp = [];
     for (let i = 0; i < participantsByCenter.length; i++) {
-      // console.log(participantsByCenter[i]);
       for (let j = 0; j < participantsByCenter[i].participants.length; j++) {
+        participantsByCenter[i].participants[j].vaccinationTime = moment(
+          participantsByCenter[i].vaccineDate
+        )
+          .add(j * 3, "m")
+          .format("LLL");
         temp.push(participantsByCenter[i].participants[j]);
       }
     }
@@ -70,6 +74,8 @@ export default function Statistics() {
                         className="fas fa-lg fa-check-square"
                       />
                     )}
+                    <div className="text-center col">{p.vaccineName}</div>
+                    <div className="col">{p.vaccinationTime}</div>
                   </div>
                 </li>
               );

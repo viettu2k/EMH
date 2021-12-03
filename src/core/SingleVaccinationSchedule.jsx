@@ -122,28 +122,30 @@ export default function SingleVaccinationSchedule(props) {
     } else {
       setValues({ ...values, sentEmail: true });
     }
+    const {
+      name: vaccinationName,
+      vaccineDate,
+      vaccine,
+      participants,
+    } = vaccination;
+    const vaccineName = vaccination && vaccine.name;
     const vaccinationId = props.match.params.vaccinationId;
-    callApiRegister(token, { vaccinationId, name, id }).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setValues({
-          ...values,
-          register: !register,
-          vaccination: data,
-          success: !success,
-        });
+    callApiRegister(token, { vaccinationId, name, id, vaccineName }).then(
+      (data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          setValues({
+            ...values,
+            register: !register,
+            vaccination: data,
+            success: !success,
+          });
+        }
       }
-    });
+    );
 
     if (callApiRegister === cancelRegister) {
-      const {
-        name: vaccinationName,
-        vaccineDate,
-        vaccine,
-        participants,
-      } = vaccination;
-      const vaccineName = vaccination && vaccine.name;
       const timeConsuming = vaccine && vaccine.timeConsuming;
       const vaccinationTime = handleVaccineTime(participants, vaccineDate);
       removeFromHistory(token, {
