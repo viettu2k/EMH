@@ -98,6 +98,7 @@ const UserDashboard = () => {
                       />
                     )}
                   </div>
+                  <div className="text-center col">{h.vaccineName}</div>
                   <div className="col-md-5">
                     {`${moment(h.vaccinationTime).format("LLL")}`}
                   </div>
