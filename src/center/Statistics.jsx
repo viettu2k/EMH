@@ -30,13 +30,13 @@ export default function Statistics() {
     []
   );
 
-  const filters = () => {
-    return (
-      <div className="card">
-        <h4 className="card-header">Filters</h4>
-      </div>
-    );
-  };
+  // const filters = () => {
+  //   return (
+  //     <div className="card">
+  //       <h4 className="card-header">Filters</h4>
+  //     </div>
+  //   );
+  // };
 
   const listByCenter = () => {
     let temp = [];
@@ -88,8 +88,8 @@ export default function Statistics() {
   return (
     <Layout title="User Statistics" description={``} className="container">
       <div className="row">
-        <div className="col-3">{filters()}</div>
-        <div className="col-9">{listByCenter()}</div>
+        {/* <div className="col-3">{filters()}</div> */}
+        <div className="col-10">{listByCenter()}</div>
       </div>
     </Layout>
   );
