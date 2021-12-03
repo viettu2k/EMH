@@ -9,11 +9,13 @@ import {
   addToHistory,
   removeFromHistory,
   updateUser,
+  updateVaccinationSchedule,
 } from "./apiCore";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import DeleteVaccinationSchedule from "../staff/DeleteVaccinationSchedule";
 import moment from "moment";
+import MarkInjected from "./MarkInjected";
 
 export default function SingleVaccinationSchedule(props) {
   const [values, setValues] = useState({
@@ -142,6 +144,7 @@ export default function SingleVaccinationSchedule(props) {
         participants,
       } = vaccination;
       const vaccineName = vaccination && vaccine.name;
+      const timeConsuming = vaccine && vaccine.timeConsuming;
       const vaccinationTime = handleVaccineTime(participants, vaccineDate);
       removeFromHistory(token, {
         _id,
@@ -149,6 +152,7 @@ export default function SingleVaccinationSchedule(props) {
         vaccineName,
         vaccinationName,
         vaccinationTime,
+        timeConsuming,
       }).then((data) => {
         if (data.error) {
           console.log(data.error);
@@ -181,6 +185,7 @@ export default function SingleVaccinationSchedule(props) {
       address,
     } = vaccination;
     const vaccineName = vaccine && vaccine.name;
+    const timeConsuming = vaccine && vaccine.timeConsuming;
 
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
@@ -193,6 +198,7 @@ export default function SingleVaccinationSchedule(props) {
           vaccineName,
           vaccinationName,
           vaccinationTime,
+          timeConsuming,
         }).then((data) => {
           if (data.error) {
             console.log(data.error);
@@ -311,7 +317,7 @@ export default function SingleVaccinationSchedule(props) {
               </ul>
             </div>
           </div>
-          <div className="col-md-5">
+          <div className="col-sm-5">
             <div className="card mb-5">
               <h3 className="card-header">Participants</h3>
               <ol className="list-group list-group-numbered">
@@ -324,6 +330,17 @@ export default function SingleVaccinationSchedule(props) {
                             {i + 1}.
                             <Link to={`/public-profile/${p.id}`}>{p.name}</Link>
                           </div>
+                          <MarkInjected
+                            status={p.status}
+                            userId={p.id}
+                            vaccination={vaccination}
+                            getIndex={getIndex}
+                            updateVaccinationSchedule={
+                              updateVaccinationSchedule
+                            }
+                            token={isAuthenticated().token}
+                            staffId={isAuthenticated().user._id}
+                          />
                           <div className="col">
                             {`${moment(vaccination.vaccineDate)
                               .add(i * 3, "m")
