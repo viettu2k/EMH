@@ -29,6 +29,7 @@ import PublicProfile from "./user/PublicProfile";
 import Statistics from "./center/Statistics";
 import UserManagement from "./admin/UserManagement";
 import EditUser from "./admin/EditUser";
+import JoinChat from "./core/JoinChat";
 
 export default function Routes() {
   return (
@@ -46,6 +47,7 @@ export default function Routes() {
         <Route exact path="/centers" component={Centers} />
         <PrivateRoute path="/user/dashboard" exact component={UserDashboard} />
         <PrivateRoute path="/profile/:userId" exact component={UpdateProfile} />
+        <PrivateRoute path="/join-chat" exact component={JoinChat} />
         <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
         <AdminRoute path="/create/center" exact component={AddCenter} />
         <AdminRoute path="/users" exact component={UserManagement} />

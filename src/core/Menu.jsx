@@ -117,6 +117,18 @@ const Menu = ({ history }) => {
           </li>
         )}
 
+        {isAuthenticated() && (
+          <li className="nav-item">
+            <Link
+              className="nav-link"
+              style={isActive(history, "/chat")}
+              to="/chat"
+            >
+              Chat
+            </Link>
+          </li>
+        )}
+
         {!isAuthenticated() && (
           <>
             <li className="nav-item">
