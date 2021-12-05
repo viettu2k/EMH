@@ -121,8 +121,8 @@ const Menu = ({ history }) => {
           <li className="nav-item">
             <Link
               className="nav-link"
-              style={isActive(history, "/chat")}
-              to="/chat"
+              style={isActive(history, "/join-chat")}
+              to="join-chat"
             >
               Chat
             </Link>

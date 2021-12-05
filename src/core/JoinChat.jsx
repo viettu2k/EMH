@@ -6,7 +6,7 @@ import { getCenters } from "./apiCore";
 
 // import "./Join.css";
 
-export default function SignIn() {
+export default function JoinChat() {
   const [values, setValues] = useState({
     name: isAuthenticated().user.name,
     centers: [],
@@ -14,7 +14,7 @@ export default function SignIn() {
     error: "",
   });
 
-  const { name, centers, room, error, hasJoined } = values;
+  const { name, centers, room, error } = values;
 
   const init = () => {
     getCenters().then((data) => {
@@ -40,42 +40,40 @@ export default function SignIn() {
 
   const joinForm = () => {
     return (
-      <div style={{ display: hasJoined === false ? "" : "none" }}>
-        <form className="mb-3">
-          <h1 className="heading">Join Chat</h1>
-          <div className="form-group">
-            <label className="text-muted">Name</label>
-            <input
-              onChange={handleChange("name")}
-              type="text"
-              className="form-control"
-              value={name}
-            />
-          </div>
+      <form className="mb-3">
+        <h1 className="heading">Join Chat</h1>
+        <div className="form-group">
+          <label className="text-muted">Name</label>
+          <input
+            onChange={handleChange("name")}
+            type="text"
+            className="form-control"
+            value={name}
+          />
+        </div>
 
-          <div className="form-group">
-            <label className="text-muted">Room</label>
-            <select onChange={handleChange("room")} className="form-control">
-              <option>Please select room</option>
-              {centers &&
-                centers.map((c, i) => (
-                  <option key={i} value={c.name}>
-                    {c.name}
-                  </option>
-                ))}
-            </select>
-          </div>
+        <div className="form-group">
+          <label className="text-muted">Room</label>
+          <select onChange={handleChange("room")} className="form-control">
+            <option>Please select room</option>
+            {centers &&
+              centers.map((c, i) => (
+                <option key={i} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+          </select>
+        </div>
 
-          <Link
-            onClick={(e) => (!name || !room ? e.preventDefault() : null)}
-            to={`/chat-room?name=${name}&room=${room}`}
-          >
-            <button className="btn btn-outline-primary" type="submit">
-              Join
-            </button>
-          </Link>
-        </form>
-      </div>
+        <Link
+          onClick={(e) => (!name || !room ? e.preventDefault() : null)}
+          to={`/chat-room?name=${name}&room=${room}`}
+        >
+          <button className="btn btn-outline-primary" type="submit">
+            Join
+          </button>
+        </Link>
+      </form>
     );
   };
 
@@ -90,8 +88,8 @@ export default function SignIn() {
 
   return (
     <Layout
-      title="Home Page"
-      description="ELECTRONIC MEDICAL HANDBOOK"
+      title="Join Chat"
+      description="Select a room and join to chat"
       className="container"
     >
       {showError()}
