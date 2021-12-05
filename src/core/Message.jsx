@@ -14,18 +14,18 @@ const Message = ({ message: { text, user }, name }) => {
   }
 
   return isSentByCurrentUser ? (
-    <div className="messageContainer justifyEnd">
-      <p className="sentText pr-10">{trimmedName}</p>
-      <div className="messageBox backgroundBlue">
-        <p className="messageText colorWhite">{ReactEmoji.emojify(text)}</p>
+    <div className="chat-message-right mb-4">
+      <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+        <p className="font-weight-bold mb-1">{trimmedName}</p>
+        <p>{ReactEmoji.emojify(text)}</p>
       </div>
     </div>
   ) : (
-    <div className="messageContainer justifyStart">
-      <div className="messageBox backgroundLight">
-        <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
+    <div className="chat-message-left pb-4">
+      <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+        <p className="font-weight-bold mb-1">{user}</p>
+        <p>{ReactEmoji.emojify(text)}</p>
       </div>
-      <p className="sentText pl-10 ">{user}</p>
     </div>
   );
 };

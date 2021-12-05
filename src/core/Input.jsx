@@ -1,23 +1,26 @@
 import React from "react";
 
-// import "./Input.css";
-
 const Input = ({ setMessage, sendMessage, message }) => (
-  <form className="form">
-    <input
-      className="input"
-      type="text"
-      placeholder="Type a message..."
-      value={message}
-      onChange={({ target: { value } }) => setMessage(value)}
-      onKeyPress={(event) =>
-        event.key === "Enter" ? sendMessage(event) : null
-      }
-    />
-    <button className="sendButton" onClick={(e) => sendMessage(e)}>
-      Send
-    </button>
-  </form>
+  <div class="flex-grow-0 py-3 px-4 border-top">
+    <div class="input-group">
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Type a message..."
+        value={message}
+        onChange={({ target: { value } }) => setMessage(value)}
+        onKeyPress={(event) =>
+          event.key === "Enter" ? sendMessage(event) : null
+        }
+      />
+      <button
+        className="btn btn-success btn-send"
+        onClick={(e) => sendMessage(e)}
+      >
+        Send
+      </button>
+    </div>
+  </div>
 );
 
 export default Input;

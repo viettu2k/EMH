@@ -1,46 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-import onlineIcon from "../../images/onlineIcon.png";
-
-// import "./TextContainer.css";
+import onlineIcon from "../images/onlineIcon.png";
 
 const TextContainer = ({ users }) => (
-  <div className="textContainer">
-    <div>
-      <h1>
-        Realtime Chat Application{" "}
-        <span role="img" aria-label="emoji">
-          💬
-        </span>
-      </h1>
-      <h2>
-        Created with React, Express, Node and Socket.IO{" "}
-        <span role="img" aria-label="emoji">
-          ❤️
-        </span>
-      </h2>
-      <h2>
-        Try it out right now!{" "}
-        <span role="img" aria-label="emoji">
-          ⬅️
-        </span>
-      </h2>
-    </div>
-    {users ? (
-      <div>
-        <h1>People currently chatting:</h1>
-        <div className="activeContainer">
-          <h2>
-            {users.map(({ name }) => (
-              <div key={name} className="activeItem">
-                {name}
-                <img alt="Online Icon" src={onlineIcon} />
-              </div>
-            ))}
-          </h2>
-        </div>
-      </div>
-    ) : null}
+  <div className="card mb-5">
+    <h3 className="card-header">People currently chatting:</h3>
+    <ul className="list-group">
+      {users &&
+        users.map((u, i) => (
+          <li key={i} className="list-group-item">
+            <Link
+              to={`/public-profile/${u.id}`}
+              className="btn btn-raised btn-primary btn-sm"
+            >
+              {u.name} <img alt="Online Icon" src={onlineIcon} />
+            </Link>
+          </li>
+        ))}
+    </ul>
   </div>
 );
 
