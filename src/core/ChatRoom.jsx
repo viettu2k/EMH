@@ -4,10 +4,10 @@ import io from "socket.io-client";
 import { URL } from "../config";
 import TextContainer from "./TextContainer";
 import Messages from "./Messages";
-import InfoBar from "./InfoBar";
 import Input from "./Input";
 import Layout from "./Layout";
 import { isAuthenticated } from "../auth";
+import { Link } from "react-router-dom";
 
 let socket;
 
@@ -19,7 +19,6 @@ const Chat = ({ location }) => {
   const [messages, setMessages] = useState([]);
 
   const ENDPOINT = `${URL}`;
-  console.log(URL);
 
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
@@ -62,8 +61,15 @@ const Chat = ({ location }) => {
           style={{ padding: "0px" }}
           className="col-8 border border-secondary mb-0"
         >
-          <div className="card bg-primary">
-            <h4 className="card-header text-light">Room chat by {room}</h4>
+          <div className="list-group-item bg-primary text-light">
+            <div className="row">
+              <div className="col">
+                <h3>Room chat by {room}</h3>
+              </div>
+              <Link to="/join-chat">
+                <i className="fas fa-2x fa-window-close pointer text-light"></i>
+              </Link>
+            </div>
           </div>
           <Messages messages={messages} name={name} />
           <Input

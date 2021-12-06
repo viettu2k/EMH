@@ -4,11 +4,9 @@ import Layout from "./Layout";
 import { isAuthenticated } from "../auth";
 import { getCenters } from "./apiCore";
 
-// import "./Join.css";
-
 export default function JoinChat() {
   const [values, setValues] = useState({
-    name: isAuthenticated().user.name + " " + Math.round(Math.random() * 999),
+    name: isAuthenticated().user.name,
     centers: [],
     room: "",
     error: "",
