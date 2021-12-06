@@ -11,7 +11,7 @@ const TextContainer = ({ users }) => (
         users.map((u, i) => (
           <li key={i} className="list-group-item">
             <Link
-              to={`/public-profile/${u.id}`}
+              to={`/public-profile/${u.userId}`}
               className="btn btn-raised btn-primary btn-sm"
             >
               {u.name} <img alt="Online Icon" src={onlineIcon} />

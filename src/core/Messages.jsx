@@ -4,8 +4,6 @@ import ScrollToBottom from "react-scroll-to-bottom";
 
 import Message from "./Message";
 
-// import "./Messages.css";
-
 const Messages = ({ messages, name }) => (
   <div className="position-relative">
     <ScrollToBottom className="chat-messages p-4">

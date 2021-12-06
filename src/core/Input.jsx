@@ -1,8 +1,8 @@
 import React from "react";
 
 const Input = ({ setMessage, sendMessage, message }) => (
-  <div class="flex-grow-0 py-3 px-4 border-top">
-    <div class="input-group">
+  <div className="flex-grow-0 py-3 px-4 border-top">
+    <div className="input-group">
       <input
         className="form-control"
         type="text"

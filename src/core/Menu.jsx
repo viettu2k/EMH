@@ -122,7 +122,7 @@ const Menu = ({ history }) => {
             <Link
               className="nav-link"
               style={isActive(history, "/join-chat")}
-              to="join-chat"
+              to="/join-chat"
             >
               Chat
             </Link>

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
-
+import { URL } from "../config";
 import TextContainer from "./TextContainer";
 import Messages from "./Messages";
 import InfoBar from "./InfoBar";
 import Input from "./Input";
 import Layout from "./Layout";
-
-// import "./ChatRoom.css";
+import { isAuthenticated } from "../auth";
 
 let socket;
 
@@ -19,17 +18,19 @@ const Chat = ({ location }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const ENDPOINT = "http://localhost:8000/";
+  const ENDPOINT = `${URL}`;
+  console.log(URL);
 
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
+    const userId = isAuthenticated().user._id;
 
     socket = io(ENDPOINT, { transports: ["websocket"] });
 
     setRoom(room);
     setName(name);
 
-    socket.emit("join", { name, room }, (error) => {
+    socket.emit("join", { name, room, userId }, (error) => {
       if (error) {
         alert(error);
       }
@@ -61,7 +62,9 @@ const Chat = ({ location }) => {
           style={{ padding: "0px" }}
           className="col-8 border border-secondary mb-0"
         >
-          <InfoBar room={room} />
+          <div className="card bg-primary">
+            <h4 className="card-header text-light">Room chat by {room}</h4>
+          </div>
           <Messages messages={messages} name={name} />
           <Input
             message={message}

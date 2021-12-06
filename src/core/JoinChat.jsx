@@ -8,7 +8,7 @@ import { getCenters } from "./apiCore";
 
 export default function JoinChat() {
   const [values, setValues] = useState({
-    name: isAuthenticated().user.name,
+    name: isAuthenticated().user.name + " " + Math.round(Math.random() * 999),
     centers: [],
     room: "",
     error: "",
