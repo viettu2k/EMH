@@ -282,7 +282,10 @@ export default function UpdateVaccinationSchedule(props) {
     >
       <div className="row">
         <div className="col-md-8 offset-md-2">
-          {showLoading()} {showSuccess()} {showError()} {newPostForm()}
+          {showLoading()}
+          {showSuccess()}
+          {showError()}
+          {newPostForm()}
           {goBack()}
         </div>
       </div>
