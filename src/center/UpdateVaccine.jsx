@@ -86,8 +86,7 @@ export default function UpdateVaccine(props) {
   };
 
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
-    setValues({ ...values, error: "" });
+    setValues({ ...values, [name]: event.target.value, error: "" });
   };
 
   const clickSubmit = (event) => {
