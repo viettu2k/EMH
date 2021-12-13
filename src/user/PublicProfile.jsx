@@ -116,7 +116,11 @@ const UserDashboard = ({ match }) => {
   const familyMembers = () => {
     return (
       <div className="card mb-5">
-        <h3 className="card-header">Family Members</h3>
+        <h3 className="card-header">
+          {isAuthenticated().user.role >= 1
+            ? "List Medical Staff"
+            : "Family Members"}
+        </h3>
         <ul className="list-group">
           {members &&
             members.map((m, i) => (
