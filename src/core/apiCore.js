@@ -20,38 +20,6 @@ export const getCenter = (centerId) => {
         .catch((err) => console.log(err));
 };
 
-export const updateCenter = (centerId, userId, token, center) => {
-    return fetch(`${API}/centers/${centerId}/${userId}`, {
-            method: "PUT",
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: center,
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
-
-export const removeCenter = (centerId, userId, token) => {
-    return fetch(`${API}/centers/${centerId}/${userId}`, {
-            method: "DELETE",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .catch((err) => console.error(err));
-};
-
 export const getCenters = () => {
     return fetch(`${API}/centers`, {
             method: "GET",
@@ -78,7 +46,7 @@ export const updateVaccination = (
     token,
     vaccination
 ) => {
-    console.log(vaccination);
+    // console.log(vaccination);
     return fetch(`${API}/vaccinations/${vaccinationId}/${userId}`, {
             method: "PUT",
             headers: {
