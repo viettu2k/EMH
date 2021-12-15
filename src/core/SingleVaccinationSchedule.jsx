@@ -332,17 +332,34 @@ export default function SingleVaccinationSchedule(props) {
                             {i + 1}.
                             <Link to={`/public-profile/${p.id}`}>{p.name}</Link>
                           </div>
-                          <MarkInjected
-                            status={p.status}
-                            userId={p.id}
-                            vaccination={vaccination}
-                            getIndex={getIndex}
-                            updateVaccinationSchedule={
-                              updateVaccinationSchedule
-                            }
-                            token={isAuthenticated().token}
-                            staffId={isAuthenticated().user._id}
-                          />
+                          {isAuthenticated() &&
+                          isAuthenticated().user.role === 1 ? (
+                            <MarkInjected
+                              status={p.status}
+                              userId={p.id}
+                              vaccination={vaccination}
+                              getIndex={getIndex}
+                              updateVaccinationSchedule={
+                                updateVaccinationSchedule
+                              }
+                              token={isAuthenticated().token}
+                              staffId={isAuthenticated().user._id}
+                            />
+                          ) : (
+                            <div>
+                              {!p.status ? (
+                                <i
+                                  style={{ color: "red", cursor: "pointer" }}
+                                  className="fas fa-lg fa-window-close"
+                                />
+                              ) : (
+                                <i
+                                  style={{ color: "green", cursor: "pointer" }}
+                                  className="fas fa-lg fa-check-square"
+                                />
+                              )}
+                            </div>
+                          )}
                           <div className="col">
                             {`${moment(vaccination.vaccineDate)
                               .add(i * 3, "m")
