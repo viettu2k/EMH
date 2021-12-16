@@ -117,9 +117,7 @@ const UserDashboard = ({ match }) => {
     return (
       <div className="card mb-5">
         <h3 className="card-header">
-          {isAuthenticated().user.role >= 1
-            ? "List Medical Staff"
-            : "Family Members"}
+          {role === 3 ? "List Medical Staff" : "Family Members"}
         </h3>
         <ul className="list-group">
           {members &&
