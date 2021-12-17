@@ -102,7 +102,7 @@ export default function Center(props) {
                     </h5>
                     <Link
                       className="btn btn-raised btn-success mr-5"
-                      to={`/update/center/${props.match.params.centerId}`}
+                      to={`/edit-user/${props.match.params.centerId}`}
                     >
                       Edit Center
                     </Link>
