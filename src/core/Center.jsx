@@ -4,6 +4,7 @@ import { getCenter, getVaccinationByCenter } from "./apiCore";
 import { API } from "../config";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
+import DeleteUser from "../admin/DeleteUser";
 
 export default function Center(props) {
   const [center, setCenter] = useState({});
@@ -106,6 +107,7 @@ export default function Center(props) {
                     >
                       Edit Center
                     </Link>
+                    <DeleteUser userId={u._id} />
                   </div>
                 )}
               </div>
