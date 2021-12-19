@@ -22,7 +22,6 @@ export default function UpdateProfile({ match }) {
     loading: false,
     error: "",
     reload: "",
-
     fileSize: 0,
     formData: new FormData(),
   });
