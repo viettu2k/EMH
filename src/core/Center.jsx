@@ -107,7 +107,7 @@ export default function Center(props) {
                     >
                       Edit Center
                     </Link>
-                    <DeleteUser userId={u._id} />
+                    <DeleteUser userId={center._id} />
                   </div>
                 )}
               </div>
