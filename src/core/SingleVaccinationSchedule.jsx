@@ -349,12 +349,12 @@ export default function SingleVaccinationSchedule(props) {
                             <div>
                               {!p.status ? (
                                 <i
-                                  style={{ color: "red", cursor: "pointer" }}
+                                  style={{ color: "red" }}
                                   className="fas fa-lg fa-window-close"
                                 />
                               ) : (
                                 <i
-                                  style={{ color: "green", cursor: "pointer" }}
+                                  style={{ color: "green" }}
                                   className="fas fa-lg fa-check-square"
                                 />
                               )}
