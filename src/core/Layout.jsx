@@ -15,9 +15,9 @@ const Layout = ({
       <p className="lead">{description}</p>
     </div>
     <div className={className}>{children}</div>
-    <div class="container">
-      <footer class="py-3 my-4">
-        <p class="text-center text-muted border-top pt-2">
+    <div className="container">
+      <footer className="py-3 my-4">
+        <p className="text-center text-muted border-top pt-2">
           © 2021 Electronic Medical Handbook
         </p>
       </footer>
