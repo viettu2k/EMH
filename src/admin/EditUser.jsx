@@ -186,7 +186,9 @@ export default function Edit({ match }) {
         </div>
 
         <div className="form-group">
-          <label className="text-muted"> Date of Birth </label>
+          <label className="text-muted">
+            {role === 2 ? "Founding" : "Date of Birth"}
+          </label>
           <input
             type="date"
             onChange={handleChange("dob")}
@@ -206,7 +208,7 @@ export default function Edit({ match }) {
           </select>
         </div> */}
 
-        <button className="btn btn-outline-primary"> Edit User </button>
+        <button className="btn btn-outline-primary">Edit User</button>
       </form>
     );
   };

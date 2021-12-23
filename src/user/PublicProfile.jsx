@@ -53,7 +53,8 @@ const UserDashboard = ({ match }) => {
           <li className="list-group-item">Email: {email}</li>
           {dob && (
             <li className="list-group-item">
-              Birth Date: {moment(dob).format("DD/MM/YYYY")}
+              {role === 2 ? "Founding" : "Date of Birth"}:{" "}
+              {moment(dob).format("DD/MM/YYYY")}
             </li>
           )}
           {address && <li className="list-group-item">Address: {address}</li>}
