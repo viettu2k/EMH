@@ -51,7 +51,7 @@ export default function Edit({ match }) {
     id,
     name,
     email,
-    // role,
+    role,
     description,
     phoneNumber,
     address,
@@ -81,7 +81,7 @@ export default function Edit({ match }) {
       return false;
     }
 
-    if (!name || !description || !address || !phoneNumber) {
+    if (!name || !address || !phoneNumber) {
       setValues({
         ...values,
         error: "All fields are required",
@@ -154,14 +154,16 @@ export default function Edit({ match }) {
           />
         </div>
 
-        <div className="form-group">
-          <label className="text-muted"> Description </label>
-          <textarea
-            onChange={handleChange("description")}
-            className="form-control"
-            value={description}
-          />
-        </div>
+        {role === 2 && (
+          <div className="form-group">
+            <label className="text-muted">Description</label>
+            <textarea
+              onChange={handleChange("description")}
+              className="form-control"
+              value={description}
+            />
+          </div>
+        )}
 
         <div className="form-group">
           <label className="text-muted"> Phone Number </label>
@@ -193,7 +195,7 @@ export default function Edit({ match }) {
           />
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label className="text-muted">Role</label>
           <select onChange={handleChange("role")} className="form-control">
             <option>Please select</option>
@@ -202,7 +204,7 @@ export default function Edit({ match }) {
             <option value={2}>Medical Center</option>
             <option value={3}>Admin</option>
           </select>
-        </div>
+        </div> */}
 
         <button className="btn btn-outline-primary"> Edit User </button>
       </form>

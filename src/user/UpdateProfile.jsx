@@ -83,7 +83,7 @@ export default function UpdateProfile({ match }) {
       return false;
     }
 
-    if (!name || !description || !address || !phoneNumber) {
+    if (!name || !address || !phoneNumber) {
       setValues({
         ...values,
         error: "All fields are required",
@@ -186,14 +186,16 @@ export default function UpdateProfile({ match }) {
           />
         </div>
 
-        <div className="form-group">
-          <label className="text-muted">Description</label>
-          <textarea
-            onChange={handleChange("description")}
-            className="form-control"
-            value={description}
-          />
-        </div>
+        {user.role === 2 && (
+          <div className="form-group">
+            <label className="text-muted">Description</label>
+            <textarea
+              onChange={handleChange("description")}
+              className="form-control"
+              value={description}
+            />
+          </div>
+        )}
 
         <div className="form-group">
           <label className="text-muted">Phone Number</label>
