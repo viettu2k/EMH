@@ -75,65 +75,69 @@ const UserDashboard = ({ match }) => {
   };
 
   const vaccinationHistory = () => {
-    return (
-      <div className="card mb-5">
-        <h3 className="card-header">Vaccination history</h3>
-        <ul className="list-group">
-          {histories &&
-            histories.map((h, i) => (
-              <li key={i} className="list-group-item">
-                <div className="row">
-                  <div className="col">
-                    <Link to={`/vaccinations/${h.vaccinationId}`}>
-                      {i + 1}. {h.vaccinationName}
-                    </Link>
+    if (role === 0) {
+      return (
+        <div className="card mb-5">
+          <h3 className="card-header">Vaccination history</h3>
+          <ul className="list-group">
+            {histories &&
+              histories.map((h, i) => (
+                <li key={i} className="list-group-item">
+                  <div className="row">
+                    <div className="col">
+                      <Link to={`/vaccinations/${h.vaccinationId}`}>
+                        {i + 1}. {h.vaccinationName}
+                      </Link>
+                    </div>
+                    <div className="text-center">
+                      {!h.status ? (
+                        <i
+                          style={{ color: "red" }}
+                          className="fas fa-lg fa-window-close"
+                        />
+                      ) : (
+                        <i
+                          style={{ color: "green" }}
+                          className="fas fa-lg fa-check-square"
+                        />
+                      )}
+                    </div>
+                    <div className="text-center col">{h.vaccineName}</div>
+                    <div className="col-md-5">
+                      {`${moment(h.vaccinationTime).format("LLL")}`}
+                    </div>
                   </div>
-                  <div className="text-center">
-                    {!h.status ? (
-                      <i
-                        style={{ color: "red" }}
-                        className="fas fa-lg fa-window-close"
-                      />
-                    ) : (
-                      <i
-                        style={{ color: "green" }}
-                        className="fas fa-lg fa-check-square"
-                      />
-                    )}
-                  </div>
-                  <div className="text-center col">{h.vaccineName}</div>
-                  <div className="col-md-5">
-                    {`${moment(h.vaccinationTime).format("LLL")}`}
-                  </div>
-                </div>
-              </li>
-            ))}
-        </ul>
-      </div>
-    );
+                </li>
+              ))}
+          </ul>
+        </div>
+      );
+    }
   };
 
   const familyMembers = () => {
-    return (
-      <div className="card mb-5">
-        <h3 className="card-header">
-          {role === 3 ? "List Medical Staff" : "Family Members"}
-        </h3>
-        <ul className="list-group">
-          {members &&
-            members.map((m, i) => (
-              <li key={i} className="list-group-item">
-                <Link
-                  to={`/public-profile/${m.id}`}
-                  className="btn btn-raised btn-primary btn-sm"
-                >
-                  {m.name}
-                </Link>
-              </li>
-            ))}
-        </ul>
-      </div>
-    );
+    if (role === 2 || role === 0) {
+      return (
+        <div className="card mb-5">
+          <h3 className="card-header">
+            {role === 2 ? "List Medical Staff" : "Family Members"}
+          </h3>
+          <ul className="list-group">
+            {members &&
+              members.map((m, i) => (
+                <li key={i} className="list-group-item">
+                  <Link
+                    to={`/public-profile/${m.id}`}
+                    className="btn btn-raised btn-primary btn-sm"
+                  >
+                    {m.name}
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </div>
+      );
+    }
   };
 
   const userAvatar = () => {
