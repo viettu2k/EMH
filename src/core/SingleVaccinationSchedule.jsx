@@ -113,9 +113,44 @@ export default function SingleVaccinationSchedule(props) {
   const registerToggle = () => {
     let callApiRegister = !register ? registerVaccination : cancelRegister;
     const {
-      user: { _id, name },
+      user: { _id, name, histories },
       token,
     } = isAuthenticated();
+    if (histories.length >= 1) {
+      if (
+        histories[histories.length - 1].vaccinationName !== vaccination.name
+      ) {
+        let tempDate = new Date(histories[histories.length - 1].created);
+        let today = Date.now();
+        let date = new Date(
+          moment(tempDate)
+            .add(histories[histories.length - 1].timeConsuming, "months")
+            .format()
+        );
+        if (
+          histories[histories.length - 1].status === false &&
+          today <= date.getTime()
+        ) {
+          setValues({
+            ...values,
+            error:
+              "Oop! You have registered a vaccination schedule, please cancel to register another vaccination.",
+          });
+          return;
+        }
+        if (
+          histories[histories.length - 1].status === true &&
+          today <= date.getTime()
+        ) {
+          setValues({
+            ...values,
+            error:
+              "Oop! Oop! You have injected the vaccine. But you need time to consume it.",
+          });
+          return;
+        }
+      }
+    }
     const id = _id;
     if (!register) {
       setValues({ ...values, sentEmail: false });
@@ -191,7 +226,7 @@ export default function SingleVaccinationSchedule(props) {
 
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
-    if (getIndex(participants, _id) !== -1 && !sentEmail) {
+    if (getIndex(participants, _id) !== -1 && sentEmail === false) {
       if (getIndexHistory(histories, vaccinationId) < 0) {
         // console.log(vaccination);
         addToHistory(token, {
@@ -207,7 +242,7 @@ export default function SingleVaccinationSchedule(props) {
           }
           // console.log(data);
           updateUser(data, () => {
-            setValues({ ...values, sentEmail: true });
+            setValues({ ...values });
           });
         });
       }
@@ -223,8 +258,7 @@ export default function SingleVaccinationSchedule(props) {
           // console.log(data.error);
           setValues({ ...values, error: data.error });
         } else {
-          // console.log(data.message);
-          // setValues({ ...values, sentEmail: true });
+          setValues({ ...values, sentEmail: true });
         }
       });
     }
