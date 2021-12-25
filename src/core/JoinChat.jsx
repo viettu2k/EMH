@@ -6,7 +6,7 @@ import { getCenters } from "./apiCore";
 
 export default function JoinChat() {
   const [values, setValues] = useState({
-    name: isAuthenticated().user.name,
+    name: isAuthenticated().user.email,
     centers: [],
     room: "",
     error: "",
@@ -41,13 +41,8 @@ export default function JoinChat() {
       <form className="mb-3">
         <h1 className="heading">Join Chat</h1>
         <div className="form-group">
-          <label className="text-muted">Name</label>
-          <input
-            onChange={handleChange("name")}
-            type="text"
-            className="form-control"
-            value={name}
-          />
+          <label className="text-muted">Display Name</label>
+          <input type="text" className="form-control" value={name} />
         </div>
 
         <div className="form-group">
