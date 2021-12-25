@@ -181,7 +181,7 @@ const AddFamilyMember = () => {
 
   const goBack = () => (
     <div className="mt-5">
-      <Link to="/center/dashboard" className="text-warning">
+      <Link to="/user/dashboard" className="text-warning">
         Back to Dashboard
       </Link>
     </div>

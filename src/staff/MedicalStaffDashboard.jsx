@@ -2,18 +2,38 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { listByMedicalStaff } from "./apiStaff";
+import { listByMedicalStaff, read } from "./apiStaff";
 import { API } from "../config";
 import DefaultAvatar from "../images/avatar.jpg";
 import moment from "moment";
 
 export default function MedicalStaffDashboard() {
+  const [user, setUser] = useState({});
+  const { name, email, role, dob, address, phoneNumber } = user;
   const {
     token,
-    user: { _id, name, email, role, dob, address, phoneNumber },
+    user: { _id },
   } = isAuthenticated();
-
   const [vaccinations, setVaccinations] = useState([]);
+
+  const loadProfile = (userId) => {
+    read(userId).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        // console.log(data);
+        setUser(data);
+      }
+    });
+  };
+
+  useEffect(
+    () => {
+      loadProfile(_id);
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const init = () => {
     listByMedicalStaff(_id, token).then((data) => {
