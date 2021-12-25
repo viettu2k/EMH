@@ -53,10 +53,11 @@ const AddMedicalStaff = () => {
         setValues({ ...values, error: data.error });
       } else {
         const { _id, name } = data;
-        addMember(user._id, token, { name, id: _id }).then((data) => {
-          if (data.error) {
+        addMember(user._id, token, { name, id: _id }).then((result) => {
+          if (result.error) {
             setValues({ ...values, error: data.error });
           }
+          // updateUser(result, () => console.log("update success"));
         });
         setValues({
           ...values,

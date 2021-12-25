@@ -5,24 +5,37 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { API } from "../config";
 import DefaultAvatar from "../images/avatar.jpg";
-import { getVaccinationByCenter } from "./apiCenter";
+import { read, getVaccinationByCenter } from "./apiCenter";
 
 export default function MedicalCenterDashboard() {
+  const [user, setUser] = useState({});
+  const { name, email, description, role, dob, address, phoneNumber, members } =
+    user;
+
   const [vaccinations, setVaccinations] = useState([]);
   const {
-    user: {
-      _id,
-      name,
-      email,
-      description,
-      role,
-      dob,
-      address,
-      phoneNumber,
-      members,
-    },
+    user: { _id },
     token,
   } = isAuthenticated();
+
+  const loadProfile = (userId) => {
+    read(userId).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        // console.log(data);
+        setUser(data);
+      }
+    });
+  };
+
+  useEffect(
+    () => {
+      loadProfile(_id);
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const loadListByCenter = (centerId) => {
     getVaccinationByCenter(centerId, token).then((data) => {
@@ -45,7 +58,7 @@ export default function MedicalCenterDashboard() {
   const centerLinks = () => {
     return (
       <div className="card">
-        <h4 className="card-header">Admin Links</h4>
+        <h4 className="card-header">Center Links</h4>
         <ul className="list-group">
           <li className="list-group-item">
             <Link className="nav-link" to={`/profile/${_id}`}>
