@@ -213,3 +213,36 @@ export const updateVaccinationSchedule = (
             console.log(err);
         });
 };
+
+export const updateHistory = (userId, token, user) => {
+    return fetch(`${API}/user/history/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(user),
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+export const read = (userId, token) => {
+    return fetch(`${API}/user/${userId}`, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .catch((err) => console.log(err));
+};

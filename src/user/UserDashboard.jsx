@@ -1,25 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { API } from "../config";
 import DefaultAvatar from "../images/avatar.jpg";
+import { read } from "./apiUser";
 
 const UserDashboard = () => {
+  const [user, setUser] = useState({});
+  const { name, email, role, dob, address, phoneNumber, histories, members } =
+    user;
   const {
-    user: {
-      _id,
-      name,
-      email,
-      role,
-      dob,
-      address,
-      phoneNumber,
-      histories,
-      members,
-    },
+    user: { _id },
   } = isAuthenticated();
+
+  const loadProfile = (userId) => {
+    read(userId).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        // console.log(data);
+        setUser(data);
+      }
+    });
+  };
+
+  useEffect(
+    () => {
+      loadProfile(_id);
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   const userLinks = () => {
     return (
@@ -105,7 +118,7 @@ const UserDashboard = () => {
                 </div>
               </li>
             ))}
-          {histories.length === 0 && (
+          {histories && histories.length === 0 && (
             <li className="list-group-item">
               You don't register any vaccination schedule!
             </li>

@@ -226,9 +226,9 @@ export default function SingleVaccinationSchedule(props) {
 
     const vaccinationTime = handleVaccineTime(participants, vaccineDate);
     const vaccinationId = props.match.params.vaccinationId;
-    if (getIndex(participants, _id) !== -1 && sentEmail === false) {
+
+    if (getIndex(participants, _id) !== -1) {
       if (getIndexHistory(histories, vaccinationId) < 0) {
-        // console.log(vaccination);
         addToHistory(token, {
           _id,
           vaccinationId,
@@ -246,7 +246,8 @@ export default function SingleVaccinationSchedule(props) {
           });
         });
       }
-
+    }
+    if (getIndex(participants, _id) !== -1 && sentEmail === false) {
       sendVaccinationTime(
         email,
         vaccinationName,
@@ -376,6 +377,7 @@ export default function SingleVaccinationSchedule(props) {
                               updateVaccinationSchedule={
                                 updateVaccinationSchedule
                               }
+                              getIndexHistory={getIndexHistory}
                               token={isAuthenticated().token}
                               staffId={isAuthenticated().user._id}
                             />

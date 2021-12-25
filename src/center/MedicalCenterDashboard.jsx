@@ -11,7 +11,6 @@ export default function MedicalCenterDashboard() {
   const [user, setUser] = useState({});
   const { name, email, description, role, dob, address, phoneNumber, members } =
     user;
-
   const [vaccinations, setVaccinations] = useState([]);
   const {
     user: { _id },
