@@ -365,7 +365,13 @@ export default function SingleVaccinationSchedule(props) {
                         <div className="row">
                           <div className="col">
                             {i + 1}.
-                            <Link to={`/public-profile/${p.id}`}>{p.name}</Link>
+                            {isAuthenticated().user.role === 0 ? (
+                              <p> {p.name}</p>
+                            ) : (
+                              <Link to={`/public-profile/${p.id}`}>
+                                {p.name}
+                              </Link>
+                            )}
                           </div>
                           {isAuthenticated() &&
                           isAuthenticated().user.role === 1 ? (
