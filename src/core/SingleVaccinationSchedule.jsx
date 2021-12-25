@@ -145,7 +145,7 @@ export default function SingleVaccinationSchedule(props) {
           setValues({
             ...values,
             error:
-              "Oop! Oop! You have injected the vaccine. But you need time to consume it.",
+              "Oop! You have injected the vaccine. But you need time to consume it.",
           });
           return;
         }
@@ -270,25 +270,27 @@ export default function SingleVaccinationSchedule(props) {
       {vaccination && (
         <>
           <div className="col-md-2">
-            {isAuthenticated() && isAuthenticated().user.role >= 1 && (
-              <>
-                <div className="col">
-                  <div className="row mb-2">
-                    <Link
-                      className="btn btn-raised btn-success"
-                      to={`/update/vaccination/${props.match.params.vaccinationId}`}
-                    >
-                      Update Vaccination Schedule
-                    </Link>
+            {isAuthenticated() &&
+              isAuthenticated().user.role >= 1 &&
+              isAuthenticated().user.references === vaccination.ownership && (
+                <>
+                  <div className="col">
+                    <div className="row mb-2">
+                      <Link
+                        className="btn btn-raised btn-success"
+                        to={`/update/vaccination/${props.match.params.vaccinationId}`}
+                      >
+                        Update Vaccination Schedule
+                      </Link>
+                    </div>
+                    <div className="row">
+                      <DeleteVaccinationSchedule
+                        vaccinationId={vaccination._id}
+                      />
+                    </div>
                   </div>
-                  <div className="row">
-                    <DeleteVaccinationSchedule
-                      vaccinationId={vaccination._id}
-                    />
-                  </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
             {isAuthenticated() &&
               isAuthenticated().user.role === 0 &&
               vaccination &&
