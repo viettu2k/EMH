@@ -74,10 +74,10 @@ export default function UpdateProfile({ match }) {
   );
 
   const isValid = () => {
-    if (fileSize > 100000) {
+    if (fileSize > 1000000) {
       setValues({
         ...values,
-        error: "File size should be less than 100kb",
+        error: "File size should be less than 1mb",
         loading: false,
       });
       return false;
