@@ -17,24 +17,37 @@ const Chat = ({ location }) => {
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
+  const role = `${
+    isAuthenticated().user.role === 1
+      ? "Medical Staff"
+      : isAuthenticated().user.role === 2
+      ? "Medical Center"
+      : isAuthenticated().user.role === 3
+      ? "Admin"
+      : "User"
+  }`;
   const ENDPOINT = `${URL}`;
 
-  useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
-    const userId = isAuthenticated().user._id;
+  useEffect(
+    () => {
+      let { name, room } = queryString.parse(location.search);
+      const userId = isAuthenticated().user._id;
 
-    socket = io(ENDPOINT, { transports: ["websocket"] });
+      socket = io(ENDPOINT, { transports: ["websocket"] });
 
-    setRoom(room);
-    setName(name);
+      setRoom(room);
+      name += "-" + role;
+      setName(name);
 
-    socket.emit("join", { name, room, userId }, (error) => {
-      if (error) {
-        alert(error);
-      }
-    });
-  }, [ENDPOINT, location.search]);
+      socket.emit("join", { name, room, userId }, (error) => {
+        if (error) {
+          alert(error);
+        }
+      });
+    },
+    // eslint-disable-next-line
+    [ENDPOINT, location.search]
+  );
 
   useEffect(() => {
     socket.on("message", (message) => {
