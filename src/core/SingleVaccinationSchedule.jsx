@@ -354,66 +354,64 @@ export default function SingleVaccinationSchedule(props) {
               </ul>
             </div>
           </div>
-          <div className="col-sm-5">
-            <div className="card mb-5">
-              <h3 className="card-header">Participants</h3>
-              <ol className="list-group list-group-numbered">
-                {vaccination.participants &&
-                  vaccination.participants.map((p, i) => {
-                    return (
-                      <li key={i} className="list-group-item">
-                        <div className="row">
-                          <div className="col">
-                            {i + 1}.
-                            {isAuthenticated().user.role === 0 ? (
-                              <p> {p.name}</p>
-                            ) : (
+          {isAuthenticated() && isAuthenticated().user.role === 1 && (
+            <div className="col-sm-5">
+              <div className="card mb-5">
+                <h3 className="card-header">Participants</h3>
+                <ol className="list-group list-group-numbered">
+                  {vaccination.participants &&
+                    vaccination.participants.map((p, i) => {
+                      return (
+                        <li key={i} className="list-group-item">
+                          <div className="row">
+                            <div className="col">
+                              {i + 1}.
                               <Link to={`/public-profile/${p.id}`}>
                                 {p.name}
                               </Link>
-                            )}
-                          </div>
-                          {isAuthenticated() &&
-                          isAuthenticated().user.role === 1 ? (
-                            <MarkInjected
-                              status={p.status}
-                              userId={p.id}
-                              vaccination={vaccination}
-                              getIndex={getIndex}
-                              updateVaccinationSchedule={
-                                updateVaccinationSchedule
-                              }
-                              getIndexHistory={getIndexHistory}
-                              token={isAuthenticated().token}
-                              staffId={isAuthenticated().user._id}
-                            />
-                          ) : (
-                            <div>
-                              {!p.status ? (
-                                <i
-                                  style={{ color: "red" }}
-                                  className="fas fa-lg fa-window-close"
-                                />
-                              ) : (
-                                <i
-                                  style={{ color: "green" }}
-                                  className="fas fa-lg fa-check-square"
-                                />
-                              )}
                             </div>
-                          )}
-                          <div className="col">
-                            {`${moment(vaccination.vaccineDate)
-                              .add(i * 3, "m")
-                              .calendar()}`}
+                            {isAuthenticated() &&
+                            isAuthenticated().user.role === 1 ? (
+                              <MarkInjected
+                                status={p.status}
+                                userId={p.id}
+                                vaccination={vaccination}
+                                getIndex={getIndex}
+                                updateVaccinationSchedule={
+                                  updateVaccinationSchedule
+                                }
+                                getIndexHistory={getIndexHistory}
+                                token={isAuthenticated().token}
+                                staffId={isAuthenticated().user._id}
+                              />
+                            ) : (
+                              <div>
+                                {!p.status ? (
+                                  <i
+                                    style={{ color: "red" }}
+                                    className="fas fa-lg fa-window-close"
+                                  />
+                                ) : (
+                                  <i
+                                    style={{ color: "green" }}
+                                    className="fas fa-lg fa-check-square"
+                                  />
+                                )}
+                              </div>
+                            )}
+                            <div className="col">
+                              {`${moment(vaccination.vaccineDate)
+                                .add(i * 3, "m")
+                                .calendar()}`}
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    );
-                  })}
-              </ol>
+                        </li>
+                      );
+                    })}
+                </ol>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
     </div>
